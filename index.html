@@ -288,8 +288,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 <main>
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
   </div>
 
   <!-- キーワード検索・ハッシュタグ絞り込み -->
@@ -320,7 +320,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -470,13 +470,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">8</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">26</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">27</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display: none;">
+  <section id="shortMode" style="">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -496,6 +496,24 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="auto-link">https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA</a><div class="link-card" data-url="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" data-hydrated="1"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="link-card-inner">
+        <img class="link-card-img" src="https://img.youtube.com/vi/L2TrIJsTKHk/maxresdefault.jpg" alt="" loading="lazy">
+        <div class="link-card-body">
+          <div class="link-card-title">YouTube Music</div>
+          <div class="link-card-desc">With the YouTube Music app, enjoy over 100 million songs at your fingertips, plus albums, </div>
+          <div class="link-card-site">YouTube</div>
+        </div></a></div>
+歌詞に共感した（毎日）</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 08:58 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('93c88a7f-a5bb-4efb-965e-0c7653dd1c56')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('93c88a7f-a5bb-4efb-965e-0c7653dd1c56')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
    <div class="tweet-text">スリコのミニカメラ欲しいんだよな〜。かわいい。おしゃれ！
 ヴィネットエフェクトある感じの、ノスタルジックな写真を撮りたい</div>
    
@@ -809,7 +827,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast">GitHubの3項目を入力してね 🐙</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
