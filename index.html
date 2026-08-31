@@ -320,7 +320,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode">
+  <section id="longMode" style="">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -457,13 +457,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">7</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">18</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">19</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="display: none;">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -475,7 +475,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortPublicToggle" checked="">
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
@@ -483,6 +483,17 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">ありゃ、リンクカードおかしいな。あとでClaudeさんに直してもらお（また制限））</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 04:30 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a05619e5-4f46-43bb-abde-398834a42f1c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a05619e5-4f46-43bb-abde-398834a42f1c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
    <div class="tweet-text">・URL自動リンク、リンクカード
 ・長文日記とつぶやき日記の切り替えボタンを一番上に
 ・キーワード検索・ハッシュタグ機能
@@ -706,7 +717,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">日記を保存したよ 📖</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
