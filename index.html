@@ -1,4 +1,6 @@
-<html lang="ja"><head>
+<!doctype html>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17151b">
@@ -40,7 +42,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .entries{display:grid;gap:10px;margin-top:16px}
 .entry{border:1px solid var(--line);border-radius:15px;padding:14px;background:var(--panel)}
 .entry-head{display:flex;justify-content:space-between;gap:10px}.date{font-size:12px;color:var(--muted)}
-.entry-title{font-weight:800;margin:3px 0 6px}.preview{font-size:13px;line-height:1.65;color:#5f5961;white-space:pre-wrap}
+.entry-title{font-weight:800;margin:3px 0 6px}.preview{font-size:14px;line-height:1.75;color:var(--text);white-space:pre-wrap}
 .entry-actions{display:flex;gap:6px;margin-top:10px}.entry-actions button{padding:6px 9px;border-radius:9px;border:1px solid var(--line);background:white}
 .tweet textarea{min-height:190px}.count{font-variant-numeric:tabular-nums}
 .feed{display:grid;gap:10px;margin-top:16px}
@@ -53,6 +55,20 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .modal.open{display:flex}.modalbox{background:var(--panel);max-width:600px;width:100%;border-radius:20px;padding:20px;box-shadow:0 20px 70px rgba(0,0,0,.2)}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#29262b;color:white;padding:10px 15px;border-radius:12px;display:none;z-index:40}
 .toast.show{display:block}
+
+/* 画像用のスタイル */
+.entry-img{max-width:100%;max-height:500px;border-radius:12px;margin-top:10px;border:1px solid var(--line);object-fit:contain}
+.img-preview-box{position:relative;display:inline-block;margin-top:8px}
+.img-preview-box img{max-width:200px;max-height:200px;border-radius:12px;border:1px solid var(--line);display:block;object-fit:cover}
+.img-preview-box button{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:white;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+
+/* 閲覧モード用のスタイル */
+body.viewer-mode .admin-only{display:none !important}
+body.viewer-mode .viewer-only{display:block !important}
+body.viewer-mode .entry-actions{display:none !important}
+body.viewer-mode .tweet-foot button{display:none !important}
+body.viewer-mode .grid{grid-template-columns:1fr;max-width:700px;margin:auto}
+
 @media(max-width:760px){.grid{grid-template-columns:1fr}.side{order:2}.actions .optional{display:none}header{padding-top:max(10px,env(safe-area-inset-top))}textarea{min-height:300px}}
 @media(prefers-color-scheme:dark){
   :root{--bg:#17151b;--panel:#211e25;--text:#f2edf2;--muted:#a49ca6;--line:#37313a}
@@ -69,7 +85,6 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
 .theme-dot{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.08)}
 .dot-default{background:#f6f3f0}.dot-sakura{background:#ffd5e5}.dot-sky{background:#bdeaff}.dot-crystal{background:#dcd2ff}.dot-opal{background:linear-gradient(135deg,#c9f4eb,#e5d5ff,#ffe2f0)}.dot-sparkle{background:#ffe1a8}
 
-
 .github-box{margin-top:16px;padding:14px;border:1px dashed var(--line);border-radius:14px;background:color-mix(in srgb,var(--panel) 92%,var(--accent) 8%)}
 .github-box h3{margin-bottom:6px}.github-help{font-size:12px;color:var(--muted);line-height:1.65}
 .github-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.github-grid .full{grid-column:1/-1}
@@ -77,16 +92,23 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
 
 </style>
 </head>
-<body class="theme-sky">
+<body>
 <div class="app">
 <header>
   <div class="top">
-    <div><div class="logo">壁打ち<span>日記</span></div><div class="sub">誰にも見せなくていい。ここでは、全部あなたのもの。</div></div>
-    <div class="actions">
+    <div>
+      <div class="logo">壁打ち<span>日記</span></div>
+      <div class="sub admin-only">誰にも見せなくていい。ここでは、全部あなたのもの。</div>
+      <div class="sub viewer-only" style="display:none">公開されている日記とつぶやき</div>
+    </div>
+    <div class="actions admin-only">
       <button class="btn optional" onclick="exportData()">書き出す</button>
       <button class="btn optional" onclick="document.getElementById('importFile').click()">読み込む</button>
       <button class="btn" onclick="clearAll()">データ管理</button>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+    </div>
+    <div class="viewer-only" style="display:none">
+      <a href="?admin=1" class="btn ghost" style="text-decoration:none; font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
 </header>
@@ -100,27 +122,38 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
   <section id="longMode">
     <div class="grid">
       <div>
-        <div class="card">
+        <div class="card admin-only">
           <h1>今日のことを、長く書く</h1>
-          <p class="hint">SNSみたいに「誰かにどう見られるか」を考えなくていい日記。まとまってなくても、途中で話が飛んでも大丈夫だよ。</p>
+          <p class="hint">まとまってなくても大丈夫。思いついたことを自由に書いてみてね。</p>
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
+          
+          <label>画像</label>
+          <div style="margin-bottom:12px">
+            <input type="file" id="longImageInput" accept="image/*" onchange="handleLongImage(event)" style="display:none">
+            <button class="btn ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%; border:1px dashed var(--line); padding:10px;">📷 ギャラリーから画像を選択</button>
+            <div id="longImagePreviewBox" class="img-preview-box" style="display:none;">
+                <img id="longImagePreview" src="">
+                <button onclick="clearLongImage()">×</button>
+            </div>
+          </div>
+
           <label>本文</label>
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、愚痴、妄想、絵のこと、どうでもいいこと……何でも。"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。"></textarea>
           <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <div class="row" style="margin-top:14px">
             <button class="btn primary" onclick="saveLong()">日記を保存</button>
             <button class="btn" onclick="newLong()">新しく書く</button>
           </div>
         </div>
-        <div id="longEntries" class="entries"><div class="empty">まだ日記がないよ。<br>最初の一冊をここに置いてみよう 📖</div></div>
+        <div id="longEntries" class="entries"></div>
       </div>
 
-      <aside class="side card">
+      <aside class="side card admin-only">
         <h3>🎨 今日の色</h3>
-        <p class="hint">気分や季節に合わせて、壁打ち部屋の空気を変えられるよ。</p>
+        <p class="hint">気分や季節に合わせて、お部屋の空気を変えられますよ。</p>
         <div class="theme-picker">
           <button class="theme-choice" onclick="setTheme('default')"><span class="theme-dot dot-default"></span>素肌</button>
           <button class="theme-choice" onclick="setTheme('sakura')"><span class="theme-dot dot-sakura"></span>桜</button>
@@ -130,38 +163,47 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
           <button class="theme-choice" onclick="setTheme('sparkle')"><span class="theme-dot dot-sparkle"></span>きらきら</button>
         </div>
         <div class="github-box">
-          <h3>🐙 GitHubへ公開</h3>
-          <p class="github-help">ここから <code>index.html</code> と <code>tweets.json</code> をあなたのGitHubリポジトリへ公開できます。TokenはHTMLに埋め込まず、このブラウザのセッション中だけ使います。</p>
+          <h3>🐙 ネットのみんなに公開する</h3>
+          <p class="github-help">ここからGitHubへ公開すると、みんながあなたの作品や日記を見れるようになります！</p>
           <div class="github-grid">
             <div><label>ユーザー名 / Owner</label><input id="ghOwner" placeholder="your-name"></div>
             <div><label>リポジトリ / Repo</label><input id="ghRepo" placeholder="kabeuchi-nikki"></div>
             <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
             <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
-            <div class="full"><button class="btn primary" style="width:100%" onclick="publishToGitHub()" disabled="">📤 公開中…</button></div>
+            <div class="full"><button class="btn primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開する！</button></div>
           </div>
-          <p class="github-help" style="margin:8px 0 0">必要な権限は対象リポジトリの <b>Contents → Read and write</b>。Tokenは他人に渡さないでね。</p>
+          <p class="github-help" style="margin:8px 0 0">必要な権限は対象リポジトリの <b>Contents → Read and write</b> です。</p>
         </div>
         <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line)">
         <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">3</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
-        <p class="small" style="margin-top:14px">※このHTMLはサーバーへ送信しません。ブラウザの保存領域にデータを置きます。端末・ブラウザを変える前は「書き出す」でバックアップできます。</p>
       </aside>
     </div>
   </section>
 
   <section id="shortMode" style="display:none">
-    <div class="card tweet">
+    <div class="card tweet admin-only">
       <h1>💬 つぶやき日記</h1>
-      <p class="hint">Twitterみたいに、でもTwitterじゃない。反応をもらうためじゃなく、「今こう思った」を置いておく場所。</p><div style="margin:8px 0 12px"><button class="btn" onclick="loadPublicTweets()">🌐 GitHubの公開つぶやきを読む</button></div>
+      <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
+      
+      <div style="margin:8px 0">
+        <input type="file" id="shortImageInput" accept="image/*" onchange="handleShortImage(event)" style="display:none">
+        <button class="btn ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 10px; font-size:12px; border:1px dashed var(--line)">📷 画像を添付する</button>
+        <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;">
+            <img id="shortImagePreview" src="">
+            <button onclick="clearShortImage()">×</button>
+        </div>
+      </div>
+      
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……"></textarea>
       <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <div style="margin-top:12px;text-align:right"><button class="btn primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card"><div class="tweet-text">体調悪すぎる</div><div class="tweet-foot"><span>2026/08/31 09:34</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('bc258d3e-fd83-4f4a-a911-804813b5a349')">削除</button></div></article><article class="tweet-card"><div class="tweet-text">あか〜〜ん！お皿洗いしたくな〜〜〜〜い😭😭😭Claudeさん早く制限解除されて😭</div><div class="tweet-foot"><span>2026/08/31 09:29</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('87204845-2af7-44a8-be66-7ecea866b6f2')">削除</button></div></article><article class="tweet-card"><div class="tweet-text">今朝の頭のくらくら感と下腹部痛は何だったんだ🫨🫨🫨🫨🫨</div><div class="tweet-foot"><span>2026/08/31 09:28</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('a863ad55-0a58-4e08-b8a9-51fc76d46378')">削除</button></div></article></div>
+    <div id="shortFeed" class="feed"></div>
   </section>
 </main>
 </div>
@@ -169,7 +211,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
 <div id="modal" class="modal">
  <div class="modalbox">
    <h2>データ管理</h2>
-   <p class="hint">日記データはこのブラウザのローカル保存領域に入っています。削除すると元に戻せないので、必要なら先に「書き出す」を使ってね。</p>
+   <p class="hint">日記データはこのブラウザの中にあります。削除すると元に戻せないので、必要なら先に「書き出す」を使ってね。</p>
    <div class="row" style="margin-top:16px">
     <button class="btn" onclick="closeModal()">閉じる</button>
     <button class="btn" onclick="exportData();closeModal()">JSONを書き出す</button>
@@ -177,13 +219,15 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
    </div>
  </div>
 </div>
-<div id="toast" class="toast">削除したよ</div>
+<div id="toast" class="toast"></div>
 
 <script>
 const KEY='wall_journal_v1';
 const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 考え中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
 let editingLong=null, selectedMood='';
+let currentLongImage='';
+let currentShortImage='';
 
 function save(){localStorage.setItem(KEY,JSON.stringify(data));renderStats()}
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -199,70 +243,119 @@ function renderMoods(){
  document.getElementById('longMoods').innerHTML=moods.map(x=>`<button class="mood ${selectedMood===x?'selected':''}" onclick="selectMood('${x.replaceAll("'","&#39;")}')">${x}</button>`).join('');
 }
 function selectMood(x){selectedMood=x;renderMoods()}
-function newLong(){editingLong=null;longTitle.value='';longBody.value='';selectedMood='';renderMoods();longStatus.textContent='未保存'}
-function saveLong(){
- const body=longBody.value.trim(); if(!body){toast('本文を少し書いてみよう ✍️');return}
- const now=new Date().toISOString();
- if(editingLong){const e=data.long.find(x=>x.id===editingLong);Object.assign(e,{title:longTitle.value.trim(),body,mood:selectedMood,updated:now})}
- else{data.long.unshift({id:crypto.randomUUID(),title:longTitle.value.trim()||'無題の日記',body,mood:selectedMood,created:now,updated:now})}
- save();renderLong();longStatus.textContent='保存しました';toast('日記を保存したよ 📖');editingLong=null
+
+// 画像をいい感じにリサイズして軽くする処理です
+function processImage(file, callback) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width, h = img.height;
+            const MAX = 800; // 最大幅を800pxにして優しく圧縮します
+            if (w > MAX || h > MAX) {
+                if (w > h) { h = Math.floor(h * (MAX / w)); w = MAX; }
+                else { w = Math.floor(w * (MAX / h)); h = MAX; }
+            }
+            canvas.width = w; canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            callback(canvas.toDataURL('image/jpeg', 0.7)); // 0.7の画質で保存
+        };
+        img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
 }
-function editLong(id){const e=data.long.find(x=>x.id===id);if(!e)return;editingLong=id;longTitle.value=e.title;longBody.value=e.body;selectedMood=e.mood||'';renderMoods();longStatus.textContent='編集中';window.scrollTo({top:0,behavior:'smooth'})}
+
+function handleLongImage(ev) {
+    processImage(ev.target.files[0], (base64) => {
+        currentLongImage = base64;
+        document.getElementById('longImagePreview').src = base64;
+        document.getElementById('longImagePreviewBox').style.display = 'inline-block';
+    });
+    ev.target.value = '';
+}
+function clearLongImage() {
+    currentLongImage = '';
+    document.getElementById('longImagePreviewBox').style.display = 'none';
+}
+function handleShortImage(ev) {
+    processImage(ev.target.files[0], (base64) => {
+        currentShortImage = base64;
+        document.getElementById('shortImagePreview').src = base64;
+        document.getElementById('shortImagePreviewBox').style.display = 'inline-block';
+    });
+    ev.target.value = '';
+}
+function clearShortImage() {
+    currentShortImage = '';
+    document.getElementById('shortImagePreviewBox').style.display = 'none';
+}
+
+function newLong(){editingLong=null;longTitle.value='';longBody.value='';selectedMood='';renderMoods();longStatus.textContent='未保存';clearLongImage()}
+function saveLong(){
+ const body=longBody.value.trim(); 
+ if(!body && !currentLongImage){toast('本文か画像を書いてみよう ✍️');return}
+ const now=new Date().toISOString();
+ if(editingLong){
+   const e=data.long.find(x=>x.id===editingLong);
+   Object.assign(e,{title:longTitle.value.trim(),body,mood:selectedMood,image:currentLongImage,updated:now});
+ }else{
+   data.long.unshift({id:crypto.randomUUID(),title:longTitle.value.trim()||'無題の日記',body,mood:selectedMood,image:currentLongImage,created:now,updated:now});
+ }
+ try {
+   save();
+ } catch(e) {
+   alert('ごめんなさい、保存容量がいっぱいになっちゃったかも！古い日記を消すか、画像を少し減らしてみてね😢');
+   return;
+ }
+ renderLong();longStatus.textContent='保存しました';toast('日記を保存したよ 📖');editingLong=null;clearLongImage();
+}
+function editLong(id){
+ const e=data.long.find(x=>x.id===id);if(!e)return;
+ editingLong=id;longTitle.value=e.title;longBody.value=e.body;selectedMood=e.mood||'';
+ renderMoods();
+ if(e.image) {
+     currentLongImage = e.image;
+     document.getElementById('longImagePreview').src = e.image;
+     document.getElementById('longImagePreviewBox').style.display = 'inline-block';
+ } else {
+     clearLongImage();
+ }
+ longStatus.textContent='編集中';window.scrollTo({top:0,behavior:'smooth'});
+}
 function delLong(id){if(confirm('この日記を削除する？')){data.long=data.long.filter(x=>x.id!==id);save();renderLong();toast('削除したよ')}}
+
 function renderLong(){
  const el=document.getElementById('longEntries');
  if(!data.long.length){el.innerHTML='<div class="empty">まだ日記がないよ。<br>最初の一冊をここに置いてみよう 📖</div>';return}
  el.innerHTML=data.long.map(e=>`<article class="entry">
   <div class="entry-head"><span class="date">${formatDate(e.updated||e.created)}</span><span>${esc(e.mood||'')}</span></div>
   <div class="entry-title">${esc(e.title)}</div>
-  <div class="preview">${esc(e.body.length>260?e.body.slice(0,260)+'…':e.body)}</div>
+  <div class="preview">${esc(e.body)}</div>
+  ${e.image ? `<img src="${e.image}" class="entry-img">` : ''}
   <div class="entry-actions"><button onclick="editLong('${e.id}')">編集</button><button onclick="delLong('${e.id}')">削除</button></div>
  </article>`).join('')
 }
+
 function saveShort(){
- const body=shortBody.value.trim();if(!body){toast('何かひとこと置いてみよう 💬');return}
- data.short.unshift({id:crypto.randomUUID(),body,created:new Date().toISOString()});save();shortBody.value='';shortCount.textContent='0';shortStatus.textContent='保存しました';renderShort();toast('つぶやきを置いたよ 💬')
+ const body=shortBody.value.trim();
+ if(!body && !currentShortImage){toast('何かひとこと置いてみよう 💬');return}
+ data.short.unshift({id:crypto.randomUUID(),body,image:currentShortImage,created:new Date().toISOString()});
+ try {
+   save();
+ } catch(e) {
+   alert('ごめんなさい、保存容量がいっぱいになっちゃったかも！画像を少し減らしてみてね😢');
+   return;
+ }
+ shortBody.value='';shortCount.textContent='0';shortStatus.textContent='保存しました';clearShortImage();
+ renderShort();toast('つぶやきを置いたよ 💬')
 }
 function delShort(id){if(confirm('このつぶやきを削除する？')){data.short=data.short.filter(x=>x.id!==id);save();renderShort()}}
+
 function renderShort(){
  const el=document.getElementById('shortFeed');
  if(!data.short.length){el.innerHTML='<div class="empty">まだつぶやきがないよ。<br>ここでは誰も「いいね」を待ってない。だから好きに書いてね。</div>';return}
- el.innerHTML=data.short.map(e=>`<article class="tweet-card"><div class="tweet-text">${esc(e.body)}</div><div class="tweet-foot"><span>${formatDate(e.created)}</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('${e.id}')">削除</button></div></article>`).join('')
-}
-function renderStats(){longStat.textContent=data.long.length;shortStat.textContent=data.short.length}
-function exportData(){
- const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
- const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='wall-journal-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);toast('バックアップを書き出したよ 💾')
-}
-function importData(ev){
- const f=ev.target.files[0];if(!f)return;const r=new FileReader();
- r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.long)||!Array.isArray(x.short))throw 0;if(confirm('現在の日記を読み込んだデータで置き換える？')){data=x;save();renderAll();toast('読み込んだよ 📦')}}catch{alert('このファイルは壁打ち日記のバックアップではないみたい。')}};r.readAsText(f);ev.target.value=''
-}
-function clearAll(){document.getElementById('modal').classList.add('open')}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-function reallyClear(){if(confirm('本当に全日記を削除する？この操作は戻せないよ。')){data={long:[],short:[]};save();renderAll();newLong();closeModal();toast('すべて削除したよ')}}
-longBody.addEventListener('input',()=>longCount.textContent=longBody.value.length+'文字');
-shortBody.addEventListener('input',()=>shortCount.textContent=shortBody.value.length);
-
-function setTheme(name){
-  document.body.className = name==='default' ? '' : 'theme-'+name;
-  localStorage.setItem('wall_journal_theme',name);
-  toast('部屋の色を変えたよ ✨');
-}
-function loadTheme(){setTheme(localStorage.getItem('wall_journal_theme')||'default')}
-function saveGithubSettings(){localStorage.setItem('wall_journal_gh_owner',ghOwner.value.trim());localStorage.setItem('wall_journal_gh_repo',ghRepo.value.trim());localStorage.setItem('wall_journal_gh_branch',ghBranch.value.trim()||'main')}
-function loadGithubSettings(){ghOwner.value=localStorage.getItem('wall_journal_gh_owner')||'';ghRepo.value=localStorage.getItem('wall_journal_gh_repo')||'';ghBranch.value=localStorage.getItem('wall_journal_gh_branch')||'main'}
-function htmlForGithub(){return document.documentElement.outerHTML}
-function utf8Base64(text){const bytes=new TextEncoder().encode(text);let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary)}
-async function githubGet(path,owner,repo,branch,token){const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}?ref=${encodeURIComponent(branch)}`;const r=await fetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'} });if(r.status===404)return null;if(!r.ok)throw new Error(`GitHub読み込み失敗: HTTP ${r.status}`);return r.json()}
-async function githubPut(path,content,message,owner,repo,branch,token){const current=await githubGet(path,owner,repo,branch,token);const body={message,content:utf8Base64(content),branch};if(current?.sha)body.sha=current.sha;const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;const r=await fetch(url,{method:'PUT',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`GitHubへの保存に失敗しました: HTTP ${r.status} ${d}`)}return r.json()}
-async function publishToGitHub(){const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main',token=ghToken.value.trim();if(!owner||!repo||!token){toast('GitHubの3項目を入力してね 🐙');return}saveGithubSettings();const btn=document.querySelector('.github-box .primary');const old=btn.textContent;btn.disabled=true;btn.textContent='📤 公開中…';try{await githubPut('index.html',htmlForGithub(),'Update wall journal',owner,repo,branch,token);await githubPut('tweets.json',JSON.stringify(data.short,null,2),'Update wall journal tweets',owner,repo,branch,token);toast('GitHubへ公開したよ！ ✨');alert('公開成功！\n\nindex.html と tweets.json をGitHubへ保存しました。\nGitHub Pagesは反映まで少し時間がかかることがあります。')}catch(e){console.error(e);alert('公開できませんでした。\n\n'+e.message+'\n\nOwner / Repo / Branch、Token、Contents → Read and write を確認してね。')}finally{btn.disabled=false;btn.textContent=old}}
-async function loadPublicTweets(){const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main';if(!owner||!repo){toast('GitHubのOwnerとRepoを入力してね');return}try{const url=`https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/tweets.json?cache=${Date.now()}`;const r=await fetch(url);if(!r.ok)throw new Error('tweets.json がまだ公開されていないみたい');const publicTweets=await r.json();const el=document.getElementById('shortFeed');el.innerHTML=publicTweets.length?publicTweets.map(e=>`<article class="tweet-card"><div class="tweet-text">${esc(e.body)}</div><div class="tweet-foot"><span>${formatDate(e.created)}</span><span>🌐 公開</span></div></article>`).join(''):'<div class="empty">公開つぶやきはまだないよ。</div>';toast('GitHubから読み込んだよ 🌐')}catch(e){alert('公開つぶやきを読めませんでした。\n'+e.message)}}
-function renderAll(){renderMoods();renderLong();renderShort();renderStats()}
-loadGithubSettings();
-loadTheme();
-renderAll();
-</script>
-
-
-</body></html>
+ el.innerHTML=data.short.map(e=>`<article class="tweet-card">
+   <div class="tweet-text">${esc(e.body
