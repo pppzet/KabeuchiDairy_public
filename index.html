@@ -1,6 +1,4 @@
-<!doctype html>
-<html lang="ja">
-<head>
+<html lang="ja"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#17151b">
@@ -92,7 +90,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
 
 </style>
 </head>
-<body>
+<body class="theme-sky">
 <div class="app">
 <header>
   <div class="top">
@@ -105,7 +103,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
       <button class="btn optional" onclick="exportData()">書き出す</button>
       <button class="btn optional" onclick="document.getElementById('importFile').click()">読み込む</button>
       <button class="btn" onclick="clearAll()">データ管理</button>
-      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
     </div>
     <div class="viewer-only" style="display:none">
       <a href="?admin=1" class="btn ghost" style="text-decoration:none; font-size:12px">🔑 管理画面へ</a>
@@ -128,7 +126,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"></div>
+          <div class="moods" id="longMoods"><button class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
@@ -148,7 +146,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
             <button class="btn" onclick="newLong()">新しく書く</button>
           </div>
         </div>
-        <div id="longEntries" class="entries"></div>
+        <div id="longEntries" class="entries"><div class="empty">まだ日記がないよ。<br>最初の一冊をここに置いてみよう 📖</div></div>
       </div>
 
       <aside class="side card admin-only">
@@ -170,7 +168,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
             <div><label>リポジトリ / Repo</label><input id="ghRepo" placeholder="kabeuchi-nikki"></div>
             <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
             <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
-            <div class="full"><button class="btn primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開する！</button></div>
+            <div class="full"><button class="btn primary" style="width:100%" onclick="publishToGitHub()" disabled="">📤 公開中…</button></div>
           </div>
           <p class="github-help" style="margin:8px 0 0">必要な権限は対象リポジトリの <b>Contents → Read and write</b> です。</p>
         </div>
@@ -179,7 +177,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line)">
         <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">3</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -203,7 +201,19 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
       <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <div style="margin-top:12px;text-align:right"><button class="btn primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"></div>
+    <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">あ〜〜ん</div>
+   
+   <div class="tweet-foot"><span>2026/08/31 10:19</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('6e7a4c06-da67-44f6-aa84-90e367211c14')">削除</button></div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">あか〜〜ん！お皿洗いしたくな〜〜〜〜い😭😭😭Claudeさん早く制限解除されて😭</div>
+   
+   <div class="tweet-foot"><span>2026/08/31 09:29</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('87204845-2af7-44a8-be66-7ecea866b6f2')">削除</button></div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">今朝の頭のくらくら感と下腹部痛は何だったんだ🫨🫨🫨🫨🫨</div>
+   
+   <div class="tweet-foot"><span>2026/08/31 09:28</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('a863ad55-0a58-4e08-b8a9-51fc76d46378')">削除</button></div>
+ </article></div>
   </section>
 </main>
 </div>
@@ -459,7 +469,8 @@ async function initApp() {
 // 起動！
 initApp();
 </script>
-</body>
-</html>
 
 
+
+
+</body></html>
