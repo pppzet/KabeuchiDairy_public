@@ -244,7 +244,6 @@ function renderMoods(){
 }
 function selectMood(x){selectedMood=x;renderMoods()}
 
-// 画像をいい感じにリサイズして軽くする処理です
 function processImage(file, callback) {
     if (!file) return;
     const reader = new FileReader();
@@ -253,7 +252,7 @@ function processImage(file, callback) {
         img.onload = () => {
             const canvas = document.createElement('canvas');
             let w = img.width, h = img.height;
-            const MAX = 800; // 最大幅を800pxにして優しく圧縮します
+            const MAX = 800; 
             if (w > MAX || h > MAX) {
                 if (w > h) { h = Math.floor(h * (MAX / w)); w = MAX; }
                 else { w = Math.floor(w * (MAX / h)); h = MAX; }
@@ -261,7 +260,7 @@ function processImage(file, callback) {
             canvas.width = w; canvas.height = h;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, w, h);
-            callback(canvas.toDataURL('image/jpeg', 0.7)); // 0.7の画質で保存
+            callback(canvas.toDataURL('image/jpeg', 0.7)); 
         };
         img.src = ev.target.result;
     };
@@ -387,7 +386,6 @@ function setTheme(name){
 }
 function loadTheme(){
     const t = localStorage.getItem('wall_journal_theme')||'default';
-    // 閲覧モードの場合は、クラスが消えないように追加の形で設定します
     if(t !== 'default') document.body.classList.add('theme-'+t);
 }
 
@@ -402,9 +400,14 @@ async function publishToGitHub(){
  const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main',token=ghToken.value.trim();
  if(!owner||!repo||!token){toast('GitHubの3項目を入力してね 🐙');return}
  saveGithubSettings();
+ 
+ // 【修正ポイント】ボタンが「公開中」に変わる前に、元気な状態のHTMLを記録しておきます！
+ const safeHtml = htmlForGithub();
+
  const btn=document.querySelector('.github-box .primary');const old=btn.textContent;btn.disabled=true;btn.textContent='📤 公開中…';
  try{
-   await githubPut('index.html',htmlForGithub(),'Update wall journal',owner,repo,branch,token);
+   // 先ほど記録した、ボタンが元気な状態のHTMLをGitHubへ送ります
+   await githubPut('index.html',safeHtml,'Update wall journal',owner,repo,branch,token);
    await githubPut('tweets.json',JSON.stringify(data.short,null,2),'Update wall journal tweets',owner,repo,branch,token);
    await githubPut('journals.json',JSON.stringify(data.long,null,2),'Update wall journal journals',owner,repo,branch,token);
    toast('GitHubへ公開したよ！ ✨');
@@ -417,19 +420,16 @@ async function publishToGitHub(){
 
 function renderAll(){renderMoods();renderLong();renderShort();renderStats()}
 
-// 🌟 ここからが新機能！ ページを開いた時の自動判定処理です
 async function initApp() {
     loadGithubSettings();
     loadTheme();
     
-    // URLの最後に ?admin=1 と付いているか、パソコン内のファイルとして開いていたら「管理モード」
     const urlParams = new URLSearchParams(window.location.search);
     const isAdmin = urlParams.get('admin') === '1' || location.protocol === 'file:';
     
     let isViewer = false;
     
     if (!isAdmin) {
-        // GitHub Pagesなどで開かれた場合、公開されてるデータを探しに行きます
         try {
             const [jRes, tRes] = await Promise.all([
                 fetch('./journals.json?t=' + Date.now()).catch(()=>null),
@@ -437,7 +437,6 @@ async function initApp() {
             ]);
             
             if ((jRes && jRes.ok) || (tRes && tRes.ok)) {
-                // 公開データが見つかったら、それを読み込んで「閲覧モード」に変身させます！
                 const publicLong = (jRes && jRes.ok) ? await jRes.json() : [];
                 const publicShort = (tRes && tRes.ok) ? await tRes.json() : [];
                 
@@ -446,7 +445,6 @@ async function initApp() {
                 isViewer = true;
             }
         } catch(e) {
-            // エラー時は何もしないで管理モードになります
         }
     }
     
@@ -456,10 +454,7 @@ async function initApp() {
     }
 }
 
-// 起動！
 initApp();
 </script>
 </body>
 </html>
-
-
