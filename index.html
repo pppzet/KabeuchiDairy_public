@@ -267,19 +267,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
           <label>本文</label>
           <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。"></textarea>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">5文字</span></div>
+          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">110文字</span></div>
           <div class="row" style="margin-top:14px">
             <button class="btn btn-primary" onclick="saveLong()">日記を保存</button>
             <button class="btn btn-ghost" onclick="newLong()">新しく書く</button>
           </div>
         </div>
         <div id="longEntries" class="entries"><article class="entry">
-  <div class="entry-head"><span class="date">2026/09/01 01:54</span><span></span></div>
-  <div class="entry-title">テスト</div>
-  <div class="preview">テストです</div>
-  
-  <div class="entry-actions"><button onclick="editLong('53c7a222-0d5f-4b3b-af32-3183c267b21f')">編集</button><button onclick="delLong('53c7a222-0d5f-4b3b-af32-3183c267b21f')">削除</button></div>
- </article><article class="entry">
   <div class="entry-head"><span class="date">2026/09/01 00:27</span><span>😌 穏やか</span></div>
   <div class="entry-title">我が救世主、バイブコーディングよ</div>
   <div class="preview">こういう場所（適当に呟けて、かつ長文の日記も書ける場所）欲しかったからマジで助かる（ブログは広告多すぎ、Noteは商売っ気ありすぎ）
@@ -322,8 +316,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">4</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">12</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">3</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">11</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -348,10 +342,6 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
-   <div class="tweet-text">テスト</div>
-   
-   <div class="tweet-foot"><span>2026/09/01 01:54</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('eb039d03-f1a1-4e6e-8414-ef325da688ac')">削除</button></div>
- </article><article class="tweet-card">
    <div class="tweet-text">フリーでできるバルダーズゲート的な古典CRPG、Androidアプリで無いかなあ。フリーは流石に要求高すぎか……</div>
    
    <div class="tweet-foot"><span>2026/09/01 00:52</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('6ee4baaa-467d-45f1-b4d4-b6675628bf6c')">削除</button></div>
@@ -411,7 +401,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast">削除したよ</div>
 
 <script>
 const KEY='wall_journal_v2';
