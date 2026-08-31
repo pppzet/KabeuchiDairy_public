@@ -279,18 +279,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
 
       <aside class="side card admin-only">
-        <!-- 公開エリアを最上部に移動・整理 -->
+        <!-- GitHub公開設定エリア（サイドバー最上部） -->
         <div class="github-box">
           <h3>🐙 ネットのみんなに公開する</h3>
           <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
             ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
           </p>
-          <div style="margin-bottom:12px;">
-            <button class="btn btn-primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開する！</button>
-          </div>
-          <div style="margin-bottom:12px;">
-            <button class="btn btn-ghost" style="width:100%;font-size:12px;" onclick="openPublicPage()">🌐 公開ページを確認する</button>
-          </div>
           
           <div class="github-grid">
             <div><label>ユーザー名</label><input id="ghOwner" placeholder="your-name"></div>
@@ -298,7 +292,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
             <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
           </div>
-          <p class="github-help" style="margin:10px 0 0">必要な権限：<b>Contents → Read and write</b></p>
+          <p class="github-help" style="margin:8px 0 14px">必要な権限：<b>Contents → Read and write</b></p>
+          
+          <!-- ボタン類を設定項目の下へ移動 -->
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <button class="btn btn-primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開する！</button>
+            <button class="btn btn-ghost" style="width:100%;font-size:12px;" onclick="openPublicPage()">🌐 公開ページを確認する</button>
+          </div>
         </div>
         
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
@@ -349,7 +349,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
 <script>
 const KEY='wall_journal_v2';
-const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 考え中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
+const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 tool中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
 let editingLong=null, selectedMood='';
 let currentLongImage='';
