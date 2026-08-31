@@ -352,6 +352,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           </div>
         </div>
         <div id="longEntries" class="entries"><article class="entry">
+  <div class="entry-head"><span class="date">2026/09/01 07:04</span><span>😭 しんどい</span></div>
+  <div class="entry-title">無題の日記</div>
+  <div class="preview">結局のところ、自分の選んだ選択肢が正しいか正しくないか分からないままなんだよな。
+この場合の正しさとは、将来的にきちんと幸福になれるのかとかそういうの。</div>
+  
+  
+  <span class="pub-badge is-private">🔒 下書き</span>
+  <div class="entry-actions">
+    <button onclick="editLong('1e18d18c-c3fb-4b4d-81fc-17c8fd715ea2')">編集</button>
+    <button onclick="togglePublicLong('1e18d18c-c3fb-4b4d-81fc-17c8fd715ea2')">🌐 公開する</button>
+    <button onclick="delLong('1e18d18c-c3fb-4b4d-81fc-17c8fd715ea2')">削除</button>
+  </div>
+ </article><article class="entry">
   <div class="entry-head"><span class="date">2026/09/01 04:24</span><span></span></div>
   <div class="entry-title">Amiverseのみあちゃん</div>
   <div class="preview">Amiverseさんにて、みあちゃんのキャラデザインを描かせて頂きました！
@@ -456,8 +469,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">7</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">21</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">8</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">24</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -483,6 +496,40 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">あ！またお腹がもにょもにょしてメンタル不安だ！PMDDだ！生理前のメンタル不全だ！
+<span class="hashtag" onclick="filterByTag('#生理')">#生理</span> <span class="hashtag" onclick="filterByTag('#PMDD')">#PMDD</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:34 <span class="pub-badge is-private" style="margin-top:0">🔒</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a747bd7f-781c-42f6-be1e-1c8a0861002d')">🌐</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a747bd7f-781c-42f6-be1e-1c8a0861002d')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">さ、皿洗いがツラすぎる、なんだこの面倒くささ！🫨🫨🫨</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:16 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('03208c8b-d9fb-4a5a-9aaf-71946b58e280')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('03208c8b-d9fb-4a5a-9aaf-71946b58e280')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">うお！鬱！生理前！わお！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:04 <span class="pub-badge is-private" style="margin-top:0">🔒</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('b1317153-c8c6-4964-bebe-940a0d4fdcd8')">🌐</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b1317153-c8c6-4964-bebe-940a0d4fdcd8')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
    <div class="tweet-text">眠すぎて何もしてないままあさが来てしまった🫨🫨🫨</div>
    
    
@@ -739,7 +786,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast">お部屋の色を変えたよ ✨</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
