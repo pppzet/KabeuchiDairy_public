@@ -117,7 +117,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
     <button id="tabShort" class="tab" onclick="switchMode('short')">💬 つぶやき日記</button>
   </div>
 
-  <section id="longMode">
+  <section id="longMode" style="">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -126,7 +126,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"><button class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button class="mood selected" onclick="selectMood('😵 疲れた')">😵 疲れた</button><button class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
@@ -140,13 +140,19 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
 
           <label>本文</label>
           <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。"></textarea>
-          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">15文字</span></div>
           <div class="row" style="margin-top:14px">
             <button class="btn primary" onclick="saveLong()">日記を保存</button>
             <button class="btn" onclick="newLong()">新しく書く</button>
           </div>
         </div>
         <div id="longEntries" class="entries"><article class="entry">
+  <div class="entry-head"><span class="date">2026/08/31 11:17</span><span>😵 疲れた</span></div>
+  <div class="entry-title">テスト〜ん</div>
+  <div class="preview">ひいひい、ようやく完成しそう！</div>
+  
+  <div class="entry-actions"><button onclick="editLong('e061265d-3080-4514-a258-217aff46173a')">編集</button><button onclick="delLong('e061265d-3080-4514-a258-217aff46173a')">削除</button></div>
+ </article><article class="entry">
   <div class="entry-head"><span class="date">2026/08/31 10:58</span><span>😊 元気</span></div>
   <div class="entry-title">公開テスト</div>
   <div class="preview">画像添付しつつネット公開のテスト〜。</div>
@@ -183,14 +189,14 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line)">
-        <div class="stat"><span>長文日記</span><b id="longStat">1</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">1</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">2</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">2</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="display: none;">
     <div class="card tweet admin-only">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -205,10 +211,14 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <div style="margin-top:12px;text-align:right"><button class="btn primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">お腹痛いの直ったかなあ?</div>
+   
+   <div class="tweet-foot"><span>2026/08/31 11:17</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('c0afb5e3-dd8c-4cb1-a791-765c9829a098')">削除</button></div>
+ </article><article class="tweet-card">
    <div class="tweet-text">おお
 公開できるようになった〜〜！！🥳</div>
    
@@ -229,7 +239,7 @@ body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;-
    </div>
  </div>
 </div>
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <script>
 const KEY='wall_journal_v1';
