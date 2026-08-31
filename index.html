@@ -483,23 +483,49 @@ function clearShortImage() {
     document.getElementById('shortImagePreviewBox').style.display = 'none';
 }
 
-function newLong(){editingLong=null;longTitle.value='';longBody.value='';selectedMood='';renderMoods();longStatus.textContent='未保存';clearLongImage()}
+function newLong(){
+  editingLong=null;
+  document.getElementById('longTitle').value='';
+  document.getElementById('longBody').value='';
+  selectedMood='';
+  renderMoods();
+  document.getElementById('longStatus').textContent='未保存';
+  document.getElementById('longCount').textContent='0文字';
+  clearLongImage();
+}
+
 function saveLong(){
- const body=longBody.value.trim(); 
+ const body = document.getElementById('longBody').value.trim(); 
  if(!body && !currentLongImage){toast('本文か画像を書いてみよう ✍️');return}
- const now=new Date().toISOString();
+ const now = new Date().toISOString();
+ const titleVal = document.getElementById('longTitle').value.trim();
+ 
  if(editingLong){
    const e=data.long.find(x=>x.id===editingLong);
-   Object.assign(e,{title:longTitle.value.trim(),body,mood:selectedMood,image:currentLongImage,updated:now});
+   if(e) Object.assign(e,{title:titleVal,body,mood:selectedMood,image:currentLongImage,updated:now});
  }else{
-   data.long.unshift({id:crypto.randomUUID(),title:longTitle.value.trim()||'無題の日記',body,mood:selectedMood,image:currentLongImage,created:now,updated:now});
+   data.long.unshift({id:crypto.randomUUID(),title:titleVal||'無題の日記',body,mood:selectedMood,image:currentLongImage,created:now,updated:now});
  }
- try { save(); } catch(e) { alert('容量がいっぱいかも！古い日記を少し整理してみてね😢'); return; }
- renderLong();longStatus.textContent='保存しました';toast('日記を保存したよ 📖');editingLong=null;clearLongImage();
+ try { 
+   save(); 
+ } catch(err) { 
+   alert('容量がいっぱいかも！古い日記を少し整理してみてね😢'); 
+   return; 
+ }
+ renderLong();
+ document.getElementById('longStatus').textContent='保存しました';
+ toast('日記を保存したよ 📖');
+ editingLong=null;
+ clearLongImage();
 }
+
 function editLong(id){
  const e=data.long.find(x=>x.id===id);if(!e)return;
- editingLong=id;longTitle.value=e.title;longBody.value=e.body;selectedMood=e.mood||'';
+ editingLong=id;
+ document.getElementById('longTitle').value=e.title;
+ document.getElementById('longBody').value=e.body;
+ document.getElementById('longCount').textContent=e.body.length+'文字';
+ selectedMood=e.mood||'';
  renderMoods();
  if(e.image) {
      currentLongImage = e.image;
@@ -508,8 +534,10 @@ function editLong(id){
  } else {
      clearLongImage();
  }
- longStatus.textContent='編集中';window.scrollTo({top:0,behavior:'smooth'});
+ document.getElementById('longStatus').textContent='編集中';
+ window.scrollTo({top:0,behavior:'smooth'});
 }
+
 function delLong(id){if(confirm('この日記を削除する？')){data.long=data.long.filter(x=>x.id!==id);save();renderLong();toast('削除したよ')}}
 
 function renderLong(){
@@ -525,13 +553,24 @@ function renderLong(){
 }
 
 function saveShort(){
- const body=shortBody.value.trim();
+ const sb = document.getElementById('shortBody');
+ const body = sb.value.trim();
  if(!body && !currentShortImage){toast('何かひとこと置いてみよう 💬');return}
  data.short.unshift({id:crypto.randomUUID(),body,image:currentShortImage,created:new Date().toISOString()});
- try { save(); } catch(e) { alert('容量がいっぱいかも！画像を少し減らしてみてね😢'); return; }
- shortBody.value='';shortCount.textContent='0';shortStatus.textContent='保存しました';clearShortImage();
- renderShort();toast('つぶやきを置いたよ 💬')
+ try { 
+   save(); 
+ } catch(err) { 
+   alert('容量がいっぱいかも！画像を少し減らしてみてね😢'); 
+   return; 
+ }
+ sb.value='';
+ document.getElementById('shortCount').textContent='0';
+ document.getElementById('shortStatus').textContent='保存しました';
+ clearShortImage();
+ renderShort();
+ toast('つぶやきを置いたよ 💬')
 }
+
 function delShort(id){if(confirm('このつぶやきを削除する？')){data.short=data.short.filter(x=>x.id!==id);save();renderShort()}}
 
 function renderShort(){
@@ -555,14 +594,17 @@ function exportData(){
  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='wall-journal-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);toast('バックアップを書き出したよ 💾')
 }
+
 function importData(ev){
  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
  r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.long)||!Array.isArray(x.short))throw 0;if(confirm('現在の日記を読み込んだデータで置き換える？')){data=x;save();renderAll();toast('読み込んだよ 📦')}}catch{alert('バックアップファイルではないみたい。')}};r.readAsText(f);ev.target.value=''
 }
+
 function clearAll(){document.getElementById('modal').classList.add('open')}
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function reallyClear(){if(confirm('本当に全日記を削除する？この操作は戻せないよ。')){data={long:[],short:[]};save();renderAll();newLong();closeModal();toast('すべて削除したよ')}}
 
+// 文字数カウントのイベント設定
 const lbB = document.getElementById('longBody');
 const lc = document.getElementById('longCount');
 if(lbB && lc) lbB.addEventListener('input',()=>lc.textContent=lbB.value.length+'文字');
@@ -571,21 +613,31 @@ const sbB = document.getElementById('shortBody');
 const sc = document.getElementById('shortCount');
 if(sbB && sc) sbB.addEventListener('input',()=>sc.textContent=sbB.value.length);
 
-function saveGithubSettings(){localStorage.setItem('wall_journal_gh_owner',ghOwner.value.trim());localStorage.setItem('wall_journal_gh_repo',ghRepo.value.trim());localStorage.setItem('wall_journal_gh_branch',ghBranch.value.trim()||'main')}
+function saveGithubSettings(){
+  localStorage.setItem('wall_journal_gh_owner', document.getElementById('ghOwner').value.trim());
+  localStorage.setItem('wall_journal_gh_repo', document.getElementById('ghRepo').value.trim());
+  localStorage.setItem('wall_journal_gh_branch', document.getElementById('ghBranch').value.trim()||'main');
+}
+
 function loadGithubSettings(){
   if(document.getElementById('ghOwner')) {
-    ghOwner.value=localStorage.getItem('wall_journal_gh_owner')||'';
-    ghRepo.value=localStorage.getItem('wall_journal_gh_repo')||'';
-    ghBranch.value=localStorage.getItem('wall_journal_gh_branch')||'main';
+    document.getElementById('ghOwner').value = localStorage.getItem('wall_journal_gh_owner')||'';
+    document.getElementById('ghRepo').value = localStorage.getItem('wall_journal_gh_repo')||'';
+    document.getElementById('ghBranch').value = localStorage.getItem('wall_journal_gh_branch')||'main';
   }
 }
+
 function htmlForGithub(){return document.documentElement.outerHTML}
 function utf8Base64(text){const bytes=new TextEncoder().encode(text);let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary)}
 async function githubGet(path,owner,repo,branch,token){const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}?ref=${encodeURIComponent(branch)}`;const r=await fetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'} });if(r.status===404)return null;if(!r.ok)throw new Error(`GitHub読み込み失敗: HTTP ${r.status}`);return r.json()}
 async function githubPut(path,content,message,owner,repo,branch,token){const current=await githubGet(path,owner,repo,branch,token);const body={message,content:utf8Base64(content),branch};if(current?.sha)body.sha=current.sha;const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;const r=await fetch(url,{method:'PUT',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`保存に失敗しちゃいました: HTTP ${r.status} ${d}`)}return r.json()}
 
 async function publishToGitHub(){
- const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main',token=ghToken.value.trim();
+ const owner=document.getElementById('ghOwner').value.trim();
+ const repo=document.getElementById('ghRepo').value.trim();
+ const branch=document.getElementById('ghBranch').value.trim()||'main';
+ const token=document.getElementById('ghToken').value.trim();
+ 
  if(!owner||!repo||!token){toast('GitHubの3項目を入力してね 🐙');return}
  saveGithubSettings();
  const safeHtml = htmlForGithub();
@@ -603,11 +655,13 @@ async function publishToGitHub(){
 }
 
 function openPublicPage(){
- const owner=ghOwner.value.trim(),repo=ghRepo.value.trim();
+ const owner=document.getElementById('ghOwner').value.trim();
+ const repo=document.getElementById('ghRepo').value.trim();
  if(!owner||!repo){toast('ユーザー名とリポジトリ名を入力してね 🐙');return}
  saveGithubSettings();
  window.open(`https://${owner}.github.io/${repo}/`, '_blank');
 }
+
 function renderAll(){renderMoods();renderLong();renderShort();renderStats();renderSwatches()}
 
 async function initApp() {
