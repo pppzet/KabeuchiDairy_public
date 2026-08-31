@@ -260,11 +260,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   </div>
 
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
   </div>
 
-  <section id="longMode" style="display: none;">
+  <section id="longMode" style="">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -273,7 +273,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood selected" onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
@@ -287,18 +287,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
           <label>本文</label>
           <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。"></textarea>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">3文字</span></div>
+          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">101文字</span></div>
           <div class="row" style="margin-top:14px">
             <button class="btn btn-primary" onclick="saveLong()">日記を保存</button>
             <button class="btn btn-ghost" onclick="newLong()">新しく書く</button>
           </div>
         </div>
         <div id="longEntries" class="entries"><article class="entry">
-  <div class="entry-head"><span class="date">2026/09/01 02:19</span><span></span></div>
-  <div class="entry-title">テスト</div>
-  <div class="preview">テスト</div>
+  <div class="entry-head"><span class="date">2026/09/01 02:22</span><span>🙂 まあまあ</span></div>
+  <div class="entry-title">これでひとまず……</div>
+  <div class="preview">管理画面に日記投稿欄は出ちゃうけど、一番上に「※アクセストークン無いと公開できない」旨を記載したから閲覧者さん安心できるかな。
+パスワード入力で管理画面はいるとかも検討したけど、普通に面倒だったので……</div>
   
-  <div class="entry-actions"><button onclick="editLong('7c749ec9-713a-40c5-960e-6055d9e68626')">編集</button><button onclick="delLong('7c749ec9-713a-40c5-960e-6055d9e68626')">削除</button></div>
+  <div class="entry-actions"><button onclick="editLong('23f2388b-55fc-4655-b622-abe564cce28b')">編集</button><button onclick="delLong('23f2388b-55fc-4655-b622-abe564cce28b')">削除</button></div>
  </article><article class="entry">
   <div class="entry-head"><span class="date">2026/09/01 00:27</span><span>😌 穏やか</span></div>
   <div class="entry-title">我が救世主、バイブコーディングよ</div>
@@ -328,13 +329,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">4</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">12</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">11</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="">
+  <section id="shortMode" style="display: none;">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -349,14 +350,10 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
-   <div class="tweet-text">テスト</div>
-   
-   <div class="tweet-foot"><span>2026/09/01 02:19</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('27739755-2422-4ad9-9a8f-fe5ff5c15e20')">削除</button></div>
- </article><article class="tweet-card">
    <div class="tweet-text">フリーでできるバルダーズゲート的な古典CRPG、Androidアプリで無いかなあ。フリーは流石に要求高すぎか……</div>
    
    <div class="tweet-foot"><span>2026/09/01 00:52</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('6ee4baaa-467d-45f1-b4d4-b6675628bf6c')">削除</button></div>
@@ -416,7 +413,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast">日記を保存したよ 📖</div>
 
 <script>
 const KEY='wall_journal_v2';
