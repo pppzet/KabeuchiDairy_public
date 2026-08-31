@@ -1,4 +1,4 @@
-<html lang="ja" style="--bg: #f2f7fb; --bg-alt: #e4eff7; --surface: #ffffff; --surface-2: #ebf3f9; --text: #1c2d3d; --text-muted: #5b7894; --accent-lavender: #4a8cb8; --accent-pink: #73a9d0; --text-on-primary: #ffffff; --line: rgba(28,45,61,0.12); --header-bg: rgba(242,247,251,0.96);"><head>
+<html lang="ja" style="--bg: #faf7f0; --bg-alt: #f2ece0; --surface: #ffffff; --surface-2: #f5f0e6; --text: #332818; --text-muted: #906850; --accent-lavender: #8868c0; --accent-pink: #c07870; --text-on-primary: #ffffff; --line: rgba(51,40,24,0.12); --header-bg: rgba(250,247,240,0.96);"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
@@ -272,7 +272,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw active" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw active" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
         </div>
@@ -470,7 +470,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">8</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">24</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">25</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -496,6 +496,17 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">や〜〜〜ん病院行かなきゃ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:44 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('d2f22e99-6117-49ff-9186-6519bd4fe43c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('d2f22e99-6117-49ff-9186-6519bd4fe43c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
    <div class="tweet-text">あ！またお腹がもにょもにょしてメンタル不安だ！PMDDだ！生理前のメンタル不全だ！
 <span class="hashtag" onclick="filterByTag('#生理')">#生理</span> <span class="hashtag" onclick="filterByTag('#PMDD')">#PMDD</span></div>
    
@@ -786,7 +797,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">お部屋の色を変えたよ ✨</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
