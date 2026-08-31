@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17151b">
+<title>壁打ち日記 — 自分だけの場所</title>
+<style>
+:root{
+  --bg:#f6f3f0; --panel:#fffdfb; --text:#29262b; --muted:#817b83;
+  --line:#e8e1e5; --accent:#c87998; --accent2:#8b78b8; --danger:#c45b69;
+  --shadow:0 8px 30px rgba(45,35,45,.08); --radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:1050px;margin:auto;min-height:100vh;padding-bottom:40px}
+header{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(12px);padding:14px 16px;border-bottom:1px solid var(--line)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:800;font-size:20px}.logo span{color:var(--accent)}
+.sub{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel);color:var(--text);padding:9px 12px;border-radius:12px}
+.btn.primary{background:var(--accent);color:white;border-color:var(--accent)}
+.btn.ghost{background:transparent}
+main{padding:18px 16px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab{flex:1;padding:12px;border:1px solid var(--line);background:var(--panel);border-radius:14px;color:var(--muted);font-weight:700}
+.tab.active{background:var(--text);color:white;border-color:var(--text)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:24px;margin-bottom:5px}.hint{color:var(--muted);font-size:13px;line-height:1.6}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 6px}
+input,textarea,select{width:100%;border:1px solid var(--line);background:#fff;color:var(--text);border-radius:12px;padding:11px;outline:none}
+textarea{resize:vertical;min-height:360px;line-height:1.75}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:7px}
+.moods{display:flex;gap:7px;flex-wrap:wrap}.mood{border:1px solid var(--line);background:white;border-radius:12px;padding:8px 10px}.mood.selected{outline:2px solid var(--accent);background:#fff5f8}
+.entries{display:grid;gap:10px;margin-top:16px}
+.entry{border:1px solid var(--line);border-radius:15px;padding:14px;background:var(--panel)}
+.entry-head{display:flex;justify-content:space-between;gap:10px}.date{font-size:12px;color:var(--muted)}
+.entry-title{font-weight:800;margin:3px 0 6px}.preview{font-size:13px;line-height:1.65;color:#5f5961;white-space:pre-wrap}
+.entry-actions{display:flex;gap:6px;margin-top:10px}.entry-actions button{padding:6px 9px;border-radius:9px;border:1px solid var(--line);background:white}
+.tweet textarea{min-height:190px}.count{font-variant-numeric:tabular-nums}
+.feed{display:grid;gap:10px;margin-top:16px}
+.tweet-card{padding:15px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.tweet-text{white-space:pre-wrap;line-height:1.7}.tweet-foot{display:flex;justify-content:space-between;margin-top:9px;color:var(--muted);font-size:11px}
+.empty{text-align:center;color:var(--muted);padding:35px 15px}
+.stat{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.stat:last-child{border-bottom:0}
+.small{font-size:11px;color:var(--muted)}
+.modal{position:fixed;inset:0;background:rgba(20,16,22,.48);display:none;align-items:center;justify-content:center;padding:16px;z-index:30}
+.modal.open{display:flex}.modalbox{background:var(--panel);max-width:600px;width:100%;border-radius:20px;padding:20px;box-shadow:0 20px 70px rgba(0,0,0,.2)}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#29262b;color:white;padding:10px 15px;border-radius:12px;display:none;z-index:40}
+.toast.show{display:block}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.side{order:2}.actions .optional{display:none}header{padding-top:max(10px,env(safe-area-inset-top))}textarea{min-height:300px}}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#17151b;--panel:#211e25;--text:#f2edf2;--muted:#a49ca6;--line:#37313a}
+  input,textarea,select,.entry-actions button,.mood{background:#19171d;color:var(--text)}
+}
+
+body.theme-sakura{--bg:#fff1f7;--panel:#fffafd;--text:#342831;--muted:#927784;--line:#f1d9e4;--accent:#d879a2;--accent2:#b48bc8}
+body.theme-sky{--bg:#eef9ff;--panel:#fbfeff;--text:#26333b;--muted:#718791;--line:#d8ebf3;--accent:#65afd0;--accent2:#8da8dc}
+body.theme-crystal{--bg:#f2f0ff;--panel:#fffefe;--text:#302b3b;--muted:#827c91;--line:#e1dcef;--accent:#9b8bd1;--accent2:#73bdd0}
+body.theme-opal{--bg:#f4fbfa;--panel:#fffefd;--text:#2d3435;--muted:#7b8888;--line:#dcebea;--accent:#73b9b0;--accent2:#c68fc1}
+body.theme-sparkle{--bg:#fffaf0;--panel:#fffefa;--text:#342f27;--muted:#8c8374;--line:#eee2c9;--accent:#d8a55e;--accent2:#c88da9}
+.theme-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.theme-choice{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:8px 10px;display:flex;align-items:center;gap:7px;color:var(--text)}
+.theme-dot{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.08)}
+.dot-default{background:#f6f3f0}.dot-sakura{background:#ffd5e5}.dot-sky{background:#bdeaff}.dot-crystal{background:#dcd2ff}.dot-opal{background:linear-gradient(135deg,#c9f4eb,#e5d5ff,#ffe2f0)}.dot-sparkle{background:#ffe1a8}
+
+
+.github-box{margin-top:16px;padding:14px;border:1px dashed var(--line);border-radius:14px;background:color-mix(in srgb,var(--panel) 92%,var(--accent) 8%)}
+.github-box h3{margin-bottom:6px}.github-help{font-size:12px;color:var(--muted);line-height:1.65}
+.github-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.github-grid .full{grid-column:1/-1}
+@media(max-width:760px){.github-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="top">
+    <div><div class="logo">壁打ち<span>日記</span></div><div class="sub">誰にも見せなくていい。ここでは、全部あなたのもの。</div></div>
+    <div class="actions">
+      <button class="btn optional" onclick="exportData()">書き出す</button>
+      <button class="btn optional" onclick="document.getElementById('importFile').click()">読み込む</button>
+      <button class="btn" onclick="clearAll()">データ管理</button>
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="tabs">
+    <button id="tabLong" class="tab active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab" onclick="switchMode('short')">💬 つぶやき日記</button>
+  </div>
+
+  <section id="longMode">
+    <div class="grid">
+      <div>
+        <div class="card">
+          <h1>今日のことを、長く書く</h1>
+          <p class="hint">SNSみたいに「誰かにどう見られるか」を考えなくていい日記。まとまってなくても、途中で話が飛んでも大丈夫だよ。</p>
+          <label>タイトル</label>
+          <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
+          <label>気分</label>
+          <div class="moods" id="longMoods"></div>
+          <label>本文</label>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、愚痴、妄想、絵のこと、どうでもいいこと……何でも。"></textarea>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
+          <div class="row" style="margin-top:14px">
+            <button class="btn primary" onclick="saveLong()">日記を保存</button>
+            <button class="btn" onclick="newLong()">新しく書く</button>
+          </div>
+        </div>
+        <div id="longEntries" class="entries"></div>
+      </div>
+
+      <aside class="side card">
+        <h3>🎨 今日の色</h3>
+        <p class="hint">気分や季節に合わせて、壁打ち部屋の空気を変えられるよ。</p>
+        <div class="theme-picker">
+          <button class="theme-choice" onclick="setTheme('default')"><span class="theme-dot dot-default"></span>素肌</button>
+          <button class="theme-choice" onclick="setTheme('sakura')"><span class="theme-dot dot-sakura"></span>桜</button>
+          <button class="theme-choice" onclick="setTheme('sky')"><span class="theme-dot dot-sky"></span>水色</button>
+          <button class="theme-choice" onclick="setTheme('crystal')"><span class="theme-dot dot-crystal"></span>水晶</button>
+          <button class="theme-choice" onclick="setTheme('opal')"><span class="theme-dot dot-opal"></span>オパール</button>
+          <button class="theme-choice" onclick="setTheme('sparkle')"><span class="theme-dot dot-sparkle"></span>きらきら</button>
+        </div>
+        <div class="github-box">
+          <h3>🐙 GitHubへ公開</h3>
+          <p class="github-help">ここから <code>index.html</code> と <code>tweets.json</code> をあなたのGitHubリポジトリへ公開できます。TokenはHTMLに埋め込まず、このブラウザのセッション中だけ使います。</p>
+          <div class="github-grid">
+            <div><label>ユーザー名 / Owner</label><input id="ghOwner" placeholder="your-name"></div>
+            <div><label>リポジトリ / Repo</label><input id="ghRepo" placeholder="kabeuchi-nikki"></div>
+            <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
+            <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
+            <div class="full"><button class="btn primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開</button></div>
+          </div>
+          <p class="github-help" style="margin:8px 0 0">必要な権限は対象リポジトリの <b>Contents → Read and write</b>。Tokenは他人に渡さないでね。</p>
+        </div>
+        <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+        <h3>📌 この場所のルール</h3>
+        <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
+        <hr style="border:0;border-top:1px solid var(--line)">
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
+        <div class="stat"><span>保存方式</span><b>端末内</b></div>
+        <p class="small" style="margin-top:14px">※このHTMLはサーバーへ送信しません。ブラウザの保存領域にデータを置きます。端末・ブラウザを変える前は「書き出す」でバックアップできます。</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="shortMode" style="display:none">
+    <div class="card tweet">
+      <h1>💬 つぶやき日記</h1>
+      <p class="hint">Twitterみたいに、でもTwitterじゃない。反応をもらうためじゃなく、「今こう思った」を置いておく場所。</p><div style="margin:8px 0 12px"><button class="btn" onclick="loadPublicTweets()">🌐 GitHubの公開つぶやきを読む</button></div>
+      <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……"></textarea>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div style="margin-top:12px;text-align:right"><button class="btn primary" onclick="saveShort()">つぶやきを保存</button></div>
+    </div>
+    <div id="shortFeed" class="feed"></div>
+  </section>
+</main>
+</div>
+
+<div id="modal" class="modal">
+ <div class="modalbox">
+   <h2>データ管理</h2>
+   <p class="hint">日記データはこのブラウザのローカル保存領域に入っています。削除すると元に戻せないので、必要なら先に「書き出す」を使ってね。</p>
+   <div class="row" style="margin-top:16px">
+    <button class="btn" onclick="closeModal()">閉じる</button>
+    <button class="btn" onclick="exportData();closeModal()">JSONを書き出す</button>
+    <button class="btn" style="color:var(--danger)" onclick="reallyClear()">全削除</button>
+   </div>
+ </div>
+</div>
+<div id="toast" class="toast"></div>
+
+<script>
+const KEY='wall_journal_v1';
+const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 考え中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
+let editingLong=null, selectedMood='';
+
+function save(){localStorage.setItem(KEY,JSON.stringify(data));renderStats()}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function formatDate(iso){return new Date(iso).toLocaleString('ja-JP',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1800)}
+function switchMode(m){
+ document.getElementById('longMode').style.display=m==='long'?'':'none';
+ document.getElementById('shortMode').style.display=m==='short'?'':'none';
+ document.getElementById('tabLong').classList.toggle('active',m==='long');
+ document.getElementById('tabShort').classList.toggle('active',m==='short');
+}
+function renderMoods(){
+ document.getElementById('longMoods').innerHTML=moods.map(x=>`<button class="mood ${selectedMood===x?'selected':''}" onclick="selectMood('${x.replaceAll("'","&#39;")}')">${x}</button>`).join('');
+}
+function selectMood(x){selectedMood=x;renderMoods()}
+function newLong(){editingLong=null;longTitle.value='';longBody.value='';selectedMood='';renderMoods();longStatus.textContent='未保存'}
+function saveLong(){
+ const body=longBody.value.trim(); if(!body){toast('本文を少し書いてみよう ✍️');return}
+ const now=new Date().toISOString();
+ if(editingLong){const e=data.long.find(x=>x.id===editingLong);Object.assign(e,{title:longTitle.value.trim(),body,mood:selectedMood,updated:now})}
+ else{data.long.unshift({id:crypto.randomUUID(),title:longTitle.value.trim()||'無題の日記',body,mood:selectedMood,created:now,updated:now})}
+ save();renderLong();longStatus.textContent='保存しました';toast('日記を保存したよ 📖');editingLong=null
+}
+function editLong(id){const e=data.long.find(x=>x.id===id);if(!e)return;editingLong=id;longTitle.value=e.title;longBody.value=e.body;selectedMood=e.mood||'';renderMoods();longStatus.textContent='編集中';window.scrollTo({top:0,behavior:'smooth'})}
+function delLong(id){if(confirm('この日記を削除する？')){data.long=data.long.filter(x=>x.id!==id);save();renderLong();toast('削除したよ')}}
+function renderLong(){
+ const el=document.getElementById('longEntries');
+ if(!data.long.length){el.innerHTML='<div class="empty">まだ日記がないよ。<br>最初の一冊をここに置いてみよう 📖</div>';return}
+ el.innerHTML=data.long.map(e=>`<article class="entry">
+  <div class="entry-head"><span class="date">${formatDate(e.updated||e.created)}</span><span>${esc(e.mood||'')}</span></div>
+  <div class="entry-title">${esc(e.title)}</div>
+  <div class="preview">${esc(e.body.length>260?e.body.slice(0,260)+'…':e.body)}</div>
+  <div class="entry-actions"><button onclick="editLong('${e.id}')">編集</button><button onclick="delLong('${e.id}')">削除</button></div>
+ </article>`).join('')
+}
+function saveShort(){
+ const body=shortBody.value.trim();if(!body){toast('何かひとこと置いてみよう 💬');return}
+ data.short.unshift({id:crypto.randomUUID(),body,created:new Date().toISOString()});save();shortBody.value='';shortCount.textContent='0';shortStatus.textContent='保存しました';renderShort();toast('つぶやきを置いたよ 💬')
+}
+function delShort(id){if(confirm('このつぶやきを削除する？')){data.short=data.short.filter(x=>x.id!==id);save();renderShort()}}
+function renderShort(){
+ const el=document.getElementById('shortFeed');
+ if(!data.short.length){el.innerHTML='<div class="empty">まだつぶやきがないよ。<br>ここでは誰も「いいね」を待ってない。だから好きに書いてね。</div>';return}
+ el.innerHTML=data.short.map(e=>`<article class="tweet-card"><div class="tweet-text">${esc(e.body)}</div><div class="tweet-foot"><span>${formatDate(e.created)}</span><button class="btn ghost" style="padding:3px 7px" onclick="delShort('${e.id}')">削除</button></div></article>`).join('')
+}
+function renderStats(){longStat.textContent=data.long.length;shortStat.textContent=data.short.length}
+function exportData(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='wall-journal-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);toast('バックアップを書き出したよ 💾')
+}
+function importData(ev){
+ const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+ r.onload=()=>{try{const x=JSON.parse(r.result);if(!Array.isArray(x.long)||!Array.isArray(x.short))throw 0;if(confirm('現在の日記を読み込んだデータで置き換える？')){data=x;save();renderAll();toast('読み込んだよ 📦')}}catch{alert('このファイルは壁打ち日記のバックアップではないみたい。')}};r.readAsText(f);ev.target.value=''
+}
+function clearAll(){document.getElementById('modal').classList.add('open')}
+function closeModal(){document.getElementById('modal').classList.remove('open')}
+function reallyClear(){if(confirm('本当に全日記を削除する？この操作は戻せないよ。')){data={long:[],short:[]};save();renderAll();newLong();closeModal();toast('すべて削除したよ')}}
+longBody.addEventListener('input',()=>longCount.textContent=longBody.value.length+'文字');
+shortBody.addEventListener('input',()=>shortCount.textContent=shortBody.value.length);
+
+function setTheme(name){
+  document.body.className = name==='default' ? '' : 'theme-'+name;
+  localStorage.setItem('wall_journal_theme',name);
+  toast('部屋の色を変えたよ ✨');
+}
+function loadTheme(){setTheme(localStorage.getItem('wall_journal_theme')||'default')}
+function saveGithubSettings(){localStorage.setItem('wall_journal_gh_owner',ghOwner.value.trim());localStorage.setItem('wall_journal_gh_repo',ghRepo.value.trim());localStorage.setItem('wall_journal_gh_branch',ghBranch.value.trim()||'main')}
+function loadGithubSettings(){ghOwner.value=localStorage.getItem('wall_journal_gh_owner')||'';ghRepo.value=localStorage.getItem('wall_journal_gh_repo')||'';ghBranch.value=localStorage.getItem('wall_journal_gh_branch')||'main'}
+function htmlForGithub(){return document.documentElement.outerHTML}
+function utf8Base64(text){const bytes=new TextEncoder().encode(text);let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary)}
+async function githubGet(path,owner,repo,branch,token){const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}?ref=${encodeURIComponent(branch)}`;const r=await fetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'} });if(r.status===404)return null;if(!r.ok)throw new Error(`GitHub読み込み失敗: HTTP ${r.status}`);return r.json()}
+async function githubPut(path,content,message,owner,repo,branch,token){const current=await githubGet(path,owner,repo,branch,token);const body={message,content:utf8Base64(content),branch};if(current?.sha)body.sha=current.sha;const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;const r=await fetch(url,{method:'PUT',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`GitHubへの保存に失敗しました: HTTP ${r.status} ${d}`)}return r.json()}
+async function publishToGitHub(){const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main',token=ghToken.value.trim();if(!owner||!repo||!token){toast('GitHubの3項目を入力してね 🐙');return}saveGithubSettings();const btn=document.querySelector('.github-box .primary');const old=btn.textContent;btn.disabled=true;btn.textContent='📤 公開中…';try{await githubPut('index.html',htmlForGithub(),'Update wall journal',owner,repo,branch,token);await githubPut('tweets.json',JSON.stringify(data.short,null,2),'Update wall journal tweets',owner,repo,branch,token);toast('GitHubへ公開したよ！ ✨');alert('公開成功！\n\nindex.html と tweets.json をGitHubへ保存しました。\nGitHub Pagesは反映まで少し時間がかかることがあります。')}catch(e){console.error(e);alert('公開できませんでした。\n\n'+e.message+'\n\nOwner / Repo / Branch、Token、Contents → Read and write を確認してね。')}finally{btn.disabled=false;btn.textContent=old}}
+async function loadPublicTweets(){const owner=ghOwner.value.trim(),repo=ghRepo.value.trim(),branch=ghBranch.value.trim()||'main';if(!owner||!repo){toast('GitHubのOwnerとRepoを入力してね');return}try{const url=`https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/tweets.json?cache=${Date.now()}`;const r=await fetch(url);if(!r.ok)throw new Error('tweets.json がまだ公開されていないみたい');const publicTweets=await r.json();const el=document.getElementById('shortFeed');el.innerHTML=publicTweets.length?publicTweets.map(e=>`<article class="tweet-card"><div class="tweet-text">${esc(e.body)}</div><div class="tweet-foot"><span>${formatDate(e.created)}</span><span>🌐 公開</span></div></article>`).join(''):'<div class="empty">公開つぶやきはまだないよ。</div>';toast('GitHubから読み込んだよ 🌐')}catch(e){alert('公開つぶやきを読めませんでした。\n'+e.message)}}
+function renderAll(){renderMoods();renderLong();renderShort();renderStats()}
+loadGithubSettings();
+loadTheme();
+renderAll();
+</script>
+</body>
+</html>
