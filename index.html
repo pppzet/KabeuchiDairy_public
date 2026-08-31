@@ -253,7 +253,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood selected" onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
@@ -317,7 +317,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">3</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">8</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">10</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -342,6 +342,15 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">管理画面がみんなに見えちゃうの、混乱させちゃうわね……！🫨🫨🫨🫨ごめんなさい〜〜！！！
+Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨🫨🫨</div>
+   
+   <div class="tweet-foot"><span>2026/09/01 00:44</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f193f349-78b7-4391-b9c2-f4886ffeecd3')">削除</button></div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">Claudeさん早く制限解除されて😡（4:00まで待たなきゃならない）</div>
+   
+   <div class="tweet-foot"><span>2026/09/01 00:30</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b7797382-10ff-4389-a2cf-0744bcbfb5ca')">削除</button></div>
+ </article><article class="tweet-card">
    <div class="tweet-text">絵を描く気力が働かん！今は文章練ってたい感じだ</div>
    
    <div class="tweet-foot"><span>2026/09/01 00:24</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('257e1c42-d147-48e7-a791-43653b12e1f4')">削除</button></div>
@@ -388,7 +397,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast">日記を保存したよ 📖</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <script>
 const KEY='wall_journal_v2';
