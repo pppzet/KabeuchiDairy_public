@@ -1,4 +1,4 @@
-<html lang="ja" style="--bg: #faf4f6; --bg-alt: #f2e6ec; --surface: #ffffff; --surface-2: #f7edf1; --text: #3d1c2b; --text-muted: #945b73; --accent-lavender: #b85a7d; --accent-pink: #d07fa0; --text-on-primary: #ffffff; --line: rgba(61,28,43,0.12); --header-bg: rgba(250,244,246,0.96);"><head>
+<html lang="ja" style="--bg: #f2f7fb; --bg-alt: #e4eff7; --surface: #ffffff; --surface-2: #ebf3f9; --text: #1c2d3d; --text-muted: #5b7894; --accent-lavender: #4a8cb8; --accent-pink: #73a9d0; --text-on-primary: #ffffff; --line: rgba(28,45,61,0.12); --header-bg: rgba(242,247,251,0.96);"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
@@ -224,7 +224,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw active" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw active" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
         </div>
@@ -260,11 +260,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   </div>
 
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
   </div>
 
-  <section id="longMode" style="">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -273,7 +273,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood selected" onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
@@ -329,13 +329,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">4</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">11</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">14</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display: none;">
+  <section id="shortMode" style="">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -350,10 +350,22 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">なにかもっとここを楽しくしたい。どうしよっかな</div>
+   
+   <div class="tweet-foot"><span>2026/09/01 03:40</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('4ac3d93c-dd2c-4abd-b2bb-3d0be54c3c47')">削除</button></div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">あか〜〜ん！疲れてるのに眠れない</div>
+   
+   <div class="tweet-foot"><span>2026/09/01 02:51</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('2cf6323e-077b-45ad-96fb-bd1abdbd5816')">削除</button></div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">ふとんがくしゃい😞</div>
+   
+   <div class="tweet-foot"><span>2026/09/01 02:24</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('1b0c38e1-cc67-495f-9390-bd7632ffaf9d')">削除</button></div>
+ </article><article class="tweet-card">
    <div class="tweet-text">フリーでできるバルダーズゲート的な古典CRPG、Androidアプリで無いかなあ。フリーは流石に要求高すぎか……</div>
    
    <div class="tweet-foot"><span>2026/09/01 00:52</span><button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('6ee4baaa-467d-45f1-b4d4-b6675628bf6c')">削除</button></div>
@@ -413,7 +425,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">日記を保存したよ 📖</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <script>
 const KEY='wall_journal_v2';
