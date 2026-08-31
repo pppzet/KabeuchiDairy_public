@@ -188,11 +188,10 @@ input:focus,textarea:focus,select:focus{
 .toast.show{display:block}
 
 /* GITHUB BOX */
-.github-box{margin-top:0;padding:16px;border:1px dashed var(--line);border-radius:12px;background:var(--bg)}
-.github-box h3{font-family:'Fraunces',serif;font-size:15px;margin-bottom:6px}
-.github-help{font-size:11.5px;color:var(--text-muted);line-height:1.7}
-.github-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.github-grid .full{grid-column:1/-1}
+.github-box{margin-bottom:20px;padding:20px;border:1px dashed var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow)}
+.github-box h3{font-family:'Fraunces',serif;font-size:17px;margin-bottom:6px}
+.github-help{font-size:12px;color:var(--text-muted);line-height:1.7}
+.github-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;margin-top:10px}
 
 /* VIEWER MODE */
 body.viewer-mode .admin-only{display:none !important}
@@ -241,6 +240,27 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 </header>
 
 <main>
+  <!-- ネットに公開する枠（画面全体の一番上へ移動） -->
+  <div class="github-box admin-only">
+    <h3>🐙 ネットのみんなに公開する</h3>
+    <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
+      ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
+    </p>
+    
+    <div class="github-grid">
+      <div><label>ユーザー名</label><input id="ghOwner" placeholder="your-name"></div>
+      <div><label>リポジトリ</label><input id="ghRepo" placeholder="kabeuchi-nikki"></div>
+      <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
+      <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
+    </div>
+    <p class="github-help" style="margin:8px 0 14px">必要な権限：<b>Contents → Read and write</b></p>
+    
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary" style="flex:1" onclick="publishToGitHub()">📤 GitHubへ公開する！</button>
+      <button class="btn btn-ghost" style="flex:1;font-size:12px;" onclick="openPublicPage()">🌐 公開ページを確認する</button>
+    </div>
+  </div>
+
   <div class="tab-nav">
     <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
     <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
@@ -279,29 +299,6 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
 
       <aside class="side card admin-only">
-        <!-- GitHub公開設定エリア（サイドバー最上部） -->
-        <div class="github-box">
-          <h3>🐙 ネットのみんなに公開する</h3>
-          <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
-            ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
-          </p>
-          
-          <div class="github-grid">
-            <div><label>ユーザー名</label><input id="ghOwner" placeholder="your-name"></div>
-            <div><label>リポジトリ</label><input id="ghRepo" placeholder="kabeuchi-nikki"></div>
-            <div><label>ブランチ</label><input id="ghBranch" value="main"></div>
-            <div><label>GitHub Token</label><input id="ghToken" type="password" placeholder="github_pat_..."></div>
-          </div>
-          <p class="github-help" style="margin:8px 0 14px">必要な権限：<b>Contents → Read and write</b></p>
-          
-          <!-- ボタン類を設定項目の下へ移動 -->
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <button class="btn btn-primary" style="width:100%" onclick="publishToGitHub()">📤 GitHubへ公開する！</button>
-            <button class="btn btn-ghost" style="width:100%;font-size:12px;" onclick="openPublicPage()">🌐 公開ページを確認する</button>
-          </div>
-        </div>
-        
-        <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
@@ -349,7 +346,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
 <script>
 const KEY='wall_journal_v2';
-const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 tool中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
+const moods=['😊 元気','🙂 まあまあ','😌 穏やか','🤔 考え中','😵 疲れた','😭 しんどい','😡 ぷんすこ','🥳 楽しい','🎨 創作'];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
 let editingLong=null, selectedMood='';
 let currentLongImage='';
