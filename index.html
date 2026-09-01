@@ -322,7 +322,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode">
+  <section id="longMode" style="">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -486,13 +486,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">9</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">27</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">29</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="display: none;">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -504,7 +504,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortPublicToggle" checked="">
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
@@ -512,6 +512,30 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
     <div id="shortFeed" class="feed"><article class="tweet-card">
+   <div class="tweet-text">なんとか病院来た
+病院終わったらどこ行こう……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 09:52 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('2ec953f4-136c-43dc-82f9-71e37d5a0ad8')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('2ec953f4-136c-43dc-82f9-71e37d5a0ad8')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
+   <div class="tweet-text">び、病院に行かなきゃ……病院に行かなきゃ…………🫨🫨🫨😭😭😭
+家帰ってお絵描きもしたいよー</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 09:41 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9a3e23f4-be20-4c99-8084-a6ef3a6e74b9')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9a3e23f4-be20-4c99-8084-a6ef3a6e74b9')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card">
    <div class="tweet-text"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="auto-link">https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA</a><div class="link-card" data-url="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" data-hydrated="1"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="link-card-inner">
         <div class="link-card-img-wrap"><img class="link-card-img" src="https://img.youtube.com/vi/L2TrIJsTKHk/maxresdefault.jpg" alt="" loading="lazy"></div>
         <div class="link-card-body">
@@ -843,7 +867,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">日記を保存したよ 📖</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
