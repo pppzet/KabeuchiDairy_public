@@ -380,6 +380,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <p class="github-help" style="margin:8px 0 14px">必要な権限：<b>Contents → Read and write</b></p>
     <p class="github-help" style="margin:0 0 14px">※「下書き（非公開）」にした日記・つぶやきは公開データに含まれません。</p>
     <p class="github-help" style="margin:0 0 14px">🔐 このパソコンにトークンを覚えさせておくので、次回から入力は不要です（他の人と共有するパソコンでは「トークンを削除」を押しておいてね）。</p>
+    <p class="github-help" style="margin:0 0 14px">🔒 設定したPINもここで一緒にネットへ公開されるので、他の端末から開いたときも同じPINで管理画面に入れるようになります。</p>
 
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button class="btn btn-primary" style="flex:1" onclick="publishToGitHub()">📤 GitHubへ公開する！</button>
@@ -1106,6 +1107,10 @@ async function publishToGitHub(){
    await githubPut('tweets.json',JSON.stringify(publicShort,null,2),'Update wall journal tweets',owner,repo,branch,token);
    await githubPut('journals.json',JSON.stringify(publicLong,null,2),'Update wall journal journals',owner,repo,branch,token);
    await githubPut('profile.json',JSON.stringify(data.profile||{bio:'',links:[]},null,2),'Update wall journal profile',owner,repo,branch,token);
+   const pinHash = localStorage.getItem(PIN_HASH_KEY);
+   if(pinHash){
+     await githubPut('pin.json',JSON.stringify({hash:pinHash},null,2),'Update wall journal pin',owner,repo,branch,token);
+   }
    toast('GitHubへ公開したよ！ ✨');
    alert('公開成功しました！✨\n\n数分後に公開ページからチェックしてみてね！');
  }catch(e){
@@ -1176,7 +1181,7 @@ function submitPin(){
     localStorage.setItem(PIN_UNLOCK_KEY, '1');
     hidePinScreen();
     finishBoot(false);
-    toast('PINを設定したよ🔒 次からは自動で入れるよ');
+    toast('PINを設定したよ🔒「GitHubへ公開する」を押すと他の端末でも同じPINが使えるよ');
   } else {
     const savedHash = localStorage.getItem(PIN_HASH_KEY);
     if(simpleHash(pin) === savedHash){
@@ -1251,6 +1256,24 @@ async function initApp() {
     // 管理モード：Web公開URL（?admin=1）からのアクセスはPINゲートを通す
     if (isUnlocked()) {
         finishBoot(false);
+        return;
+    }
+
+    // まだこの端末で解錠されていない → GitHub側に公開済みのPINがあるか先に確認する
+    // （これにより「まだ誰もPINを触っていない端末」でも、公開済みなら必ず「入力」画面になり、
+    //   勝手に新規設定できてしまう抜け道を防げます）
+    let remoteHash = null;
+    try {
+        const pinRes = await fetch('./pin.json?t=' + Date.now());
+        if (pinRes.ok) {
+            const pinData = await pinRes.json();
+            if (pinData && pinData.hash) remoteHash = pinData.hash;
+        }
+    } catch(e) {}
+
+    if (remoteHash) {
+        localStorage.setItem(PIN_HASH_KEY, remoteHash);
+        showPinScreen('check');
     } else if (isPinSet()) {
         showPinScreen('check');
     } else {
