@@ -383,8 +383,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
   </div>
 
   <!-- キーワード検索・ハッシュタグ絞り込み -->
@@ -423,7 +423,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="display: none;">
+  <section id="longMode" style="">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -627,7 +627,7 @@ Imposter Syndrome買っちゃったよ
     </div>
   </section>
 
-  <section id="shortMode" style="">
+  <section id="shortMode" style="display: none;">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
