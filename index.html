@@ -297,8 +297,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 <main>
   <!-- プロフィール・リンク（公開ページ表示用） -->
   <div class="card viewer-only" id="profileViewCard" style="display: block; margin-bottom: 20px;">
-    <div id="profileViewBio" class="hint" style="margin-bottom:12px;white-space:pre-wrap"></div>
-    <div class="profile-links" id="profileViewLinks"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="profile-link-chip">🔗 ポートフォリオ</a></div>
+    <div id="profileViewBio" class="hint" style="margin-bottom:12px;white-space:pre-wrap">バイブコーディング好きのイラストレーター🎨</div>
+    <div class="profile-links" id="profileViewLinks"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="profile-link-chip">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="profile-link-chip">🔗 SKIMA</a></div>
   </div>
 
   <!-- プロフィール・リンク編集（管理画面） -->
@@ -313,6 +313,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
       <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
       <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
+    </div>
+  
+    <div class="profile-link-row">
+      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
+      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
+      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
     </div>
   </div>
     <div class="profile-link-row" style="margin-top:10px">
