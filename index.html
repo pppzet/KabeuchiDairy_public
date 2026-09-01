@@ -52,15 +52,14 @@ header{
   border-bottom:1px solid var(--line);
   padding:14px 20px;
 }
-.header-row{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.titles{display:flex;flex-direction:column;gap:2px;flex:1 1 auto;min-width:0}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .logo{
   font-family:'Fraunces',serif; font-weight:440;
   font-size:clamp(20px,3.5vw,28px); letter-spacing:.01em;
   margin:0; color:var(--text);
 }
 .logo span{color:var(--accent-pink)}
-.sub{font-size:12px;color:var(--text-muted);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.sub{font-size:12px;color:var(--text-muted);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;margin-top:6px}
 
 .header-admin-link{flex-shrink:0;margin-left:auto}
 /* ↑ margin-left:auto を付けることで、画面が狭くてこのボタンだけ次の行に折り返した場合でも
@@ -320,12 +319,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 <div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
-    <div class="titles">
-      <div class="logo">壁打ち<span>日記</span></div>
-      <div class="sub admin-only">誰にも見せなくていい。ここでは、全部あなたのもの。</div>
-      <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
-      <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
-    </div>
+    <div class="logo">壁打ち<span>日記</span></div>
     <div class="toolbar admin-only">
       <button class="btn btn-primary" onclick="exportData()">書き出す</button>
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
@@ -350,6 +344,9 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
+  <div class="sub admin-only">誰にも見せなくていい。ここでは、全部あなたのもの。</div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <main>
