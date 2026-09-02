@@ -399,8 +399,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
   </div>
 
@@ -440,7 +440,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -638,13 +638,13 @@ Imposter Syndrome買っちゃったよ
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">11</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">37</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">38</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -657,14 +657,25 @@ Imposter Syndrome買っちゃったよ
       </div>
       
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortPublicToggle" checked="">
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-a9c3b683-1871-4d32-bf2e-5271503cc771">
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-03e92450-d6d4-4e3d-8f52-8889ac06b9b2">
+   <div class="tweet-text">スーパー皿洗いメンドクサモード！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 09:57 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('03e92450-d6d4-4e3d-8f52-8889ac06b9b2')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('03e92450-d6d4-4e3d-8f52-8889ac06b9b2')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-a9c3b683-1871-4d32-bf2e-5271503cc771">
    <div class="tweet-text">生理が！生理が始まれば鬱抜けするから！それまで頑張れ私！
 <span class="hashtag" onclick="filterByTag('#PMDD')">#PMDD</span> <span class="hashtag" onclick="filterByTag('#生理')">#生理</span></div>
    
@@ -1184,7 +1195,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">下書き（非公開）にしたよ 🔒</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
