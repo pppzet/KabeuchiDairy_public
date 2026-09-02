@@ -407,7 +407,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(134.9 48% 55%); --fish-fin: hsl(134.9 58% 72%); --fish-fin-dark: hsl(134.9 48% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(127.5 48% 55%); --fish-fin: hsl(127.5 58% 72%); --fish-fin-dark: hsl(127.5 48% 38%);">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
       <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
@@ -416,7 +416,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 78.874px; top: 17.044px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 176.951px; top: 16.8501px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
         <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
@@ -429,7 +429,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="aquarium-info">
       <div class="fish-stat">飼育 <b id="fishDays">2日目</b></div>
       <div class="fish-stat">色 <b id="fishColorName">若葉色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">9回</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">11回</b></div>
     </div>
   </section>
 </div>
@@ -760,7 +760,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">12</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">42</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">43</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -786,7 +786,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </label>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-f4ab2efc-0209-44dc-b02d-2afe59e4ad74">
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-8444e745-b0d7-4b94-9823-6420349759c9">
+   <div class="tweet-text">レトルトカレー食べよ！🍛😊</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 07:55 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('8444e745-b0d7-4b94-9823-6420349759c9')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('8444e745-b0d7-4b94-9823-6420349759c9')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f4ab2efc-0209-44dc-b02d-2afe59e4ad74">
    <div class="tweet-text">Tumblrにもスパムっているんだ！？😮</div>
    
    
@@ -1370,7 +1381,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">言葉を追加したよ ✨</div>
+<div id="toast" class="toast">餌をあげました🐠</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
