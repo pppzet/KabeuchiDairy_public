@@ -741,11 +741,41 @@ const FISH_STAGES = [
   {name:'桜色', body:'#c36b92', fin:'#efadc8', dark:'#843f61', label:'楽しい日'},
   {name:'深海色', body:'#3f7694', fin:'#76b5ca', dark:'#285066', label:'しんどい日'}
 ];
+
+// ベタの色は「今日の気分」そのものではなく、最近の気分の積み重ねをゆっくり反映する。
+// 餌やりは色に一切影響しない。
+const FISH_MOOD_HUES = [
+  {re:/楽しい/, hue:45, name:'晴れ色'},
+  {re:/元気|創作/, hue:58, name:'陽だまり色'},
+  {re:/穏やか|まあまあ/, hue:110, name:'若葉色'},
+  {re:/考え中/, hue:270, name:'夜空色'},
+  {re:/疲れた/, hue:205, name:'水色'},
+  {re:/しんどい|ぷんすこ/, hue:220, name:'深海色'}
+];
+function moodToFishHue(mood){
+  const hit=FISH_MOOD_HUES.find(x=>x.re.test(mood||''));
+  return hit ? hit.hue : null;
+}
+function hueDistance(a,b){ return ((b-a+540)%360)-180; }
+function fishColorName(hue){
+  const names=[
+    [35,65,'晴れ色'],[65,95,'黄緑色'],[95,145,'若葉色'],[145,190,'翡翠色'],
+    [190,225,'水色'],[225,250,'深海色'],[250,295,'夜空色'],[295,330,'紫桜色'],
+    [330,360,'桜色'],[0,35,'桃色']
+  ];
+  return names.find(([a,b])=>hue>=a&&hue<b)?.[2] || 'ふしぎ色';
+}
 function ensureFish(){
-  if(!data.fish) data.fish={bornAt:new Date().toISOString(),colorStage:0,mood:'',feedCount:0,lastFed:null};
+  if(!data.fish) data.fish={bornAt:new Date().toISOString(),colorStage:0,colorHue:270,mood:'',feedCount:0,lastFed:null};
   if(!data.fish.bornAt) data.fish.bornAt=new Date().toISOString();
-  if(typeof data.fish.colorStage!=='number') data.fish.colorStage=0;
   if(typeof data.fish.feedCount!=='number') data.fish.feedCount=0;
+  // 旧バージョンの colorStage しかない魚は、その色から新しい連続色へ引き継ぐ。
+  if(typeof data.fish.colorHue!=='number'){
+    const legacy=[270,32,198,125,260,335,215];
+    const stage=Number.isFinite(data.fish.colorStage)?Math.max(0,Math.min(6,data.fish.colorStage)):0;
+    data.fish.colorHue=legacy[stage];
+  }
+  if(typeof data.fish.colorStage!=='number') data.fish.colorStage=0;
   return data.fish;
 }
 function fishDays(){
@@ -754,18 +784,14 @@ function fishDays(){
   const a=new Date(born.getFullYear(),born.getMonth(),born.getDate()); const b=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   return Math.max(1,Math.floor((b-a)/86400000)+1);
 }
-function moodToFishStage(mood){
-  if(!mood) return 0;
-  if(/元気|楽しい|創作/.test(mood)) return /楽しい/.test(mood)?5:1;
-  if(/穏やか|まあまあ/.test(mood)) return 2;
-  if(/考え中/.test(mood)) return 4;
-  if(/疲れた|しんどい|ぷんすこ/.test(mood)) return 6;
-  return 0;
-}
 function updateFishFromMood(mood){
   const f=ensureFish();
   f.mood=mood||'';
-  f.colorStage=moodToFishStage(mood);
+  const target=moodToFishHue(mood);
+  if(target!==null){
+    // 一度の更新では8%だけ近づける。気分が変わっても、魚の色はじわじわ変化する。
+    f.colorHue=(f.colorHue + hueDistance(f.colorHue,target)*0.08 + 360)%360;
+  }
   save();
   renderFish();
 }
@@ -849,29 +875,41 @@ function toggleMoodDictAccordion(){
 function computeFishMoodFromEntries(){
   const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
   const shortMoods=data.short.map(e=>({mood:moodFromShortEntry(e), ts:e.created})).filter(x=>x.mood);
-  const recentMoods=longMoods.concat(shortMoods)
+  return longMoods.concat(shortMoods)
     .sort((a,b)=> new Date(b.ts) - new Date(a.ts))
-    .slice(0,4)
+    .slice(0,14)
     .map(x=>x.mood);
-  if(recentMoods.length===0) return '';
-  const counts={};
-  recentMoods.forEach(m=>{ counts[m]=(counts[m]||0)+1; });
-  let best=recentMoods[0], bestCount=0;
-  recentMoods.forEach(m=>{ if(counts[m]>bestCount){ bestCount=counts[m]; best=m; } });
-  return best;
 }
-// 日記・つぶやきの保存・削除・起動のたびに呼び出し、ベタの色を「直近の気分」に自動で同期させる
+// 最近14件の気分を「色の履歴」として平均し、魚の色を少しだけそちらへ動かす。
 function refreshFishMood(){
-  updateFishFromMood(computeFishMoodFromEntries());
+  const moods=computeFishMoodFromEntries();
+  const hues=moods.map(moodToFishHue).filter(h=>h!==null);
+  if(!hues.length){ renderFish(); return; }
+  const f=ensureFish();
+  const signature=moods.join('||');
+  // 同じ気分履歴でページを開くたびに色が動かないようにする。
+  if(f.colorMoodSignature===signature){ renderFish(); return; }
+  let x=0,y=0;
+  hues.forEach((h,i)=>{ const w=1/(i+1); const r=h*Math.PI/180; x+=Math.cos(r)*w; y+=Math.sin(r)*w; });
+  let target=(Math.atan2(y,x)*180/Math.PI+360)%360;
+  f.colorHue=(f.colorHue + hueDistance(f.colorHue,target)*0.12 + 360)%360;
+  f.mood=moods[0]||'';
+  f.colorMoodSignature=signature;
+  save();
+  renderFish();
 }
 function renderFish(){
-  const f=ensureFish(); const stage=FISH_STAGES[f.colorStage]||FISH_STAGES[0];
+  const f=ensureFish(); const hue=((f.colorHue%360)+360)%360;
+  // HSLで連続色を作るので、黄色→黄緑→緑→水色→青→紫→桃色…と自然につながる。
+  const body=`hsl(${hue.toFixed(1)} 48% 55%)`;
+  const fin=`hsl(${hue.toFixed(1)} 58% 72%)`;
+  const dark=`hsl(${hue.toFixed(1)} 48% 38%)`;
   const root=document.getElementById('aquariumCard'); if(!root) return;
-  root.style.setProperty('--fish-body',stage.body); root.style.setProperty('--fish-fin',stage.fin); root.style.setProperty('--fish-fin-dark',stage.dark);
+  root.style.setProperty('--fish-body',body); root.style.setProperty('--fish-fin',fin); root.style.setProperty('--fish-fin-dark',dark);
   const days=document.getElementById('fishDays'); if(days) days.textContent=fishDays()+'日目';
-  const color=document.getElementById('fishColorName'); if(color) color.textContent=stage.name;
+  const color=document.getElementById('fishColorName'); if(color) color.textContent=fishColorName(hue);
   const feed=document.getElementById('fishFeedCount'); if(feed) feed.textContent=(f.feedCount||0)+'回';
-  const label=document.getElementById('fishMoodLabel'); if(label) label.textContent=f.mood ? stage.label+' 🫧' : '今日もゆらゆら';
+  const label=document.getElementById('fishMoodLabel'); if(label) label.textContent=f.mood ? '最近の気分がゆっくり色に反映中 🫧' : '今日もゆらゆら';
 }
 function feedBetta(event){
   ensureFish();
