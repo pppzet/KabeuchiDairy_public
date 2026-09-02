@@ -735,6 +735,48 @@ function updateFishFromMood(mood){
   save();
   renderFish();
 }
+/* ===== つぶやき（気分アイコン無し）から気分を推定するための簡易キーワード辞書 =====
+   長文日記は選んだ気分アイコンでそのまま判定できるが、つぶやきにはアイコンが無いため、
+   日常でよく使われそうな言葉からポジティブ／ネガティブの傾向をざっくり判定する。
+   完璧なAI判定ではなく、あくまで「なんとなくの雰囲気」を拾うための軽量な仕組み。 */
+const MOOD_POSITIVE_WORDS=['楽しい','たのしい','嬉しい','うれしい','幸せ','しあわせ','最高','好き','大好き','わくわく','ワクワク','元気','癒された','癒やされた','可愛い','かわいい','面白い','おもしろい','やった','ハッピー','頑張った','がんばった','はかどった','捗った','満足','ラッキー','よかった','良かった','笑った','ニコニコ'];
+const MOOD_NEGATIVE_WORDS=['疲れた','つかれた','しんどい','辛い','つらい','不安','悲しい','かなしい','最悪','無理','むり','だるい','落ち込','凹んだ','へこんだ','イライラ','ムカ','ぷんすこ','泣きたい','泣いた','きつい','こわい','怖い','ストレス','モヤモヤ','もやもや'];
+function textSentimentScore(text){
+  if(!text) return 0;
+  let score=0;
+  MOOD_POSITIVE_WORDS.forEach(w=>{ if(text.includes(w)) score++; });
+  MOOD_NEGATIVE_WORDS.forEach(w=>{ if(text.includes(w)) score--; });
+  return score;
+}
+function moodFromShortEntry(entry){
+  const score=textSentimentScore(entry.body||'');
+  if(score>=2) return '🥳 楽しい';
+  if(score===1) return '😊 元気';
+  if(score===-1) return '😵 疲れた';
+  if(score<=-2) return '😭 しんどい';
+  return ''; // キーワードが見つからない・拮抗しているときは判定に使わない
+}
+// 直近の「気分がわかる」長文日記・つぶやきから、いちばん優勢な気分を採用する。
+// 長文日記は選ばれた気分アイコンを、つぶやきはキーワード辞書による推定気分を使い、
+// 更新日時順に混ぜて直近4件分の傾向で判定することで、1件だけの気分でコロコロ変わらないようにしている。
+function computeFishMoodFromEntries(){
+  const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
+  const shortMoods=data.short.map(e=>({mood:moodFromShortEntry(e), ts:e.created})).filter(x=>x.mood);
+  const recentMoods=longMoods.concat(shortMoods)
+    .sort((a,b)=> new Date(b.ts) - new Date(a.ts))
+    .slice(0,4)
+    .map(x=>x.mood);
+  if(recentMoods.length===0) return '';
+  const counts={};
+  recentMoods.forEach(m=>{ counts[m]=(counts[m]||0)+1; });
+  let best=recentMoods[0], bestCount=0;
+  recentMoods.forEach(m=>{ if(counts[m]>bestCount){ bestCount=counts[m]; best=m; } });
+  return best;
+}
+// 日記・つぶやきの保存・削除・起動のたびに呼び出し、ベタの色を「直近の気分」に自動で同期させる
+function refreshFishMood(){
+  updateFishFromMood(computeFishMoodFromEntries());
+}
 function renderFish(){
   const f=ensureFish(); const stage=FISH_STAGES[f.colorStage]||FISH_STAGES[0];
   const root=document.getElementById('aquariumCard'); if(!root) return;
@@ -1156,6 +1198,7 @@ function saveLong(){
    alert('容量がいっぱいかも！古い日記を少し整理してみてね😢'); 
    return; 
  }
+ refreshFishMood();
  renderLong();
  toast('日記を保存したよ 📖');
  editingLong=null;
@@ -1185,7 +1228,7 @@ function editLong(id){
  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function delLong(id){if(confirm('この日記を削除する？')){data.long=data.long.filter(x=>x.id!==id);save();renderLong();toast('削除したよ')}}
+function delLong(id){if(confirm('この日記を削除する？')){data.long=data.long.filter(x=>x.id!==id);save();refreshFishMood();renderLong();toast('削除したよ')}}
 
 function togglePublicLong(id){
  const e=data.long.find(x=>x.id===id); if(!e)return;
@@ -1244,11 +1287,12 @@ function saveShort(){
  document.getElementById('shortStatus').textContent='保存しました';
  document.getElementById('shortPublicToggle').checked=true;
  clearShortImage();
+ refreshFishMood();
  renderShort();
  toast('つぶやきを置いたよ 💬')
 }
 
-function delShort(id){if(confirm('このつぶやきを削除する？')){data.short=data.short.filter(x=>x.id!==id);save();renderShort()}}
+function delShort(id){if(confirm('このつぶやきを削除する？')){data.short=data.short.filter(x=>x.id!==id);save();refreshFishMood();renderShort()}}
 
 function togglePublicShort(id){
  const e=data.short.find(x=>x.id===id); if(!e)return;
@@ -1605,10 +1649,11 @@ function swimBetta(){
   const x = marginX + Math.random() * Math.max(1, tankW - marginX * 2);
   const y = marginY + Math.random() * Math.max(1, tankH - marginY * 2 - 8);
 
-  // 魚のSVGは右向きが基本。左へ泳ぐときだけ左右反転する。
-  if(fishLastX !== null){
-    fish.style.transform = x < fishLastX ? 'translate(-50%,-50%) scaleX(1)' : 'translate(-50%,-50%) scaleX(-1)';
-  }
+  // 魚のSVGは左向きが基本（頭が左、尾びれが右）。右へ泳ぐときだけ左右反転する。
+  // 初回移動時はfishLastXがnullで判定がスキップされ、最初だけ向きがおかしく見えることがあったため、
+  // 初期位置（水槽の中央＝CSSのleft:50%）を基準に向きを決めるようにした。
+  const prevX = fishLastX !== null ? fishLastX : tankW / 2;
+  fish.style.transform = x < prevX ? 'translate(-50%,-50%) scaleX(1)' : 'translate(-50%,-50%) scaleX(-1)';
   fishLastX = x;
 
   fish.style.left = `${x}px`;
@@ -1704,6 +1749,7 @@ function changePinPrompt(){
 
 function finishBoot(isViewerFlag){
     try {
+        if(!isViewerFlag) refreshFishMood(); // 管理画面側だけ、日記データから最新の気分を計算し直す
         renderAll();
     } finally {
         const root = document.getElementById('appRoot');
