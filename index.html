@@ -155,7 +155,8 @@ header{
 main{padding:20px 16px}
 
 /* TABS */
-.tab-nav{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.tab-nav{display:flex;gap:6px;margin-bottom:20px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tab-nav::-webkit-scrollbar{display:none}
 .tab-btn{
   font-family:'Inter';font-size:13px;font-weight:600;
   padding:10px 20px;border-radius:999px;
