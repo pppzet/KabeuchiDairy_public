@@ -435,7 +435,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 267.455px; top: 15.6646px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 300.001px; top: 43.1859px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
         <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
@@ -446,9 +446,9 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">2日目</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">3日目</b></div>
       <div class="fish-stat">色 <b id="fishColorName">若葉色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">46回</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">50回</b></div>
     </div>
   </section>
 </div>
@@ -519,8 +519,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
   </div>
 
@@ -560,7 +560,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -589,7 +589,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           </div>
           <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
 （URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">編集中</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>🙈 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
@@ -800,13 +800,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">13</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">53</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">55</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display: none;">
+  <section id="shortMode" style="">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
@@ -837,7 +837,33 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       </label>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-801a953e-809b-4c73-bac1-8573309530f6">
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-09aa337b-febc-4d54-adff-2c0f1ed810fe">
+   <div class="tweet-text">※体調
+<span class="spoiler-text" onclick="this.classList.toggle('revealed')">生理2週間前（丁度黄体期）のメンタル不調がヤバすぎるんだよな……。数年自己モニタリング重ねた結果、メルトダウンの全てがこの期間に起きている。
+Q.せめてその期間はSNSやめろ。
+A.壁打ち日記最高！✌️
+#PMDD #生理</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/04 01:12 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('09aa337b-febc-4d54-adff-2c0f1ed810fe')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('09aa337b-febc-4d54-adff-2c0f1ed810fe')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-1377aebf-e93e-40a6-8bf4-419bd311965c">
+   <div class="tweet-text">あたまがスッキリしないわ〜〜ん😭</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/04 01:10 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('1377aebf-e93e-40a6-8bf4-419bd311965c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('1377aebf-e93e-40a6-8bf4-419bd311965c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-801a953e-809b-4c73-bac1-8573309530f6">
    <div class="tweet-text">ひえええ〜〜！雷鳴ってる⛈️🫨🫨🫨🫨🫨</div>
    
    
@@ -1568,7 +1594,7 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
    </div>
  </div>
 </div>
-<div id="toast" class="toast">日記を保存したよ 📖</div>
+<div id="toast" class="toast">削除したよ</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
