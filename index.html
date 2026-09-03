@@ -428,7 +428,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(157.4 43% 55%); --fish-fin: hsl(157.4 54% 72%); --fish-fin-dark: hsl(157.4 41% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(170.0 43% 55%); --fish-fin: hsl(170.0 54% 72%); --fish-fin-dark: hsl(170.0 41% 38%);">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
       <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
@@ -437,7 +437,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 73.3843px; top: 14.117px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 271.449px; top: 29.5904px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
         <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
@@ -450,7 +450,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="aquarium-info">
       <div class="fish-stat">飼育 <b id="fishDays">3日目</b></div>
       <div class="fish-stat">色 <b id="fishColorName">翡翠色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">51回</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">54回</b></div>
     </div>
   </section>
 </div>
@@ -802,7 +802,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">13</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">59</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">60</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -819,7 +819,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="margin:10px 0">
         <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大6枚）</button>
-        <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
+        <div id="shortImagePreviewBox" class="img-preview-box" style="display: none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
       </div>
       
@@ -845,7 +845,20 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <button class="btn btn-ghost" onclick="newShort()">新しく書く</button>
       </div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-2224ed5c-f0e5-4ecc-97d1-a9059fe97b56">
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd">
+   <div class="tweet-text"><span class="img-cushion cushioned cushion-inline"><span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/a9bd6593-5126-4a5f-b256-0d6f383c558d.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd',0)"></span>邪悪白カモノハシ！
+<span class="hashtag" onclick="filterByTag('#ソニック')">#ソニック</span>　<span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>🎨 創作　2026/09/04 07:24 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-2224ed5c-f0e5-4ecc-97d1-a9059fe97b56">
    <div class="tweet-text">体調が終わっており😭😭😭
 病院行けないなこれ！😭</div>
    
@@ -1591,8 +1604,15 @@ Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 14枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint">📷 15枚の画像</p>
       <div id="mediaGrid" class="media-grid">
+    <div class="media-item cushioned" onclick="openLightboxFor('short','e75dadf3-f42e-4fe8-9505-66cb5f1c1ffd',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/a9bd6593-5126-4a5f-b256-0d6f383c558d.jpg" loading="lazy" alt="">
+      <span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span>
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/04 07:24</span>
+    </div>
+  
     <div class="media-item cushioned" onclick="openLightboxFor('long','08cf602c-8be7-43b9-bfb7-3bd897521219',0)">
       <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/fc9d4dac-3fcb-400d-9cb5-7a45fd443632.jpg" loading="lazy" alt="">
       <span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span>
