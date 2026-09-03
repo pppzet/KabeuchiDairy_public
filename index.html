@@ -1,13 +1,12 @@
 <!doctype html>
-<html lang="ja">
-<head>
+<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -384,18 +383,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
-      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
-        onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app is-loading" id="appRoot">
+<div class="app" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -404,12 +401,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
           <div class="dropdown-sep"></div>
@@ -417,41 +414,41 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
   <div class="sub admin-only">誰にも見せなくていい。ここでは、全部あなたのもの。</div>
-  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(129.5 48% 55%); --fish-fin: hsl(129.5 58% 72%); --fish-fin-dark: hsl(129.5 48% 38%);">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
-      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
+      <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 139.692px; top: 23.2457px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
-        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
+        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
       </svg>
       <div class="aquarium-decor"></div>
     </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">2日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">若葉色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">43回</b></div>
     </div>
   </section>
 </div>
@@ -468,7 +465,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList"></div>
+      <div id="profileLinksList">
+    <div class="profile-link-row">
+      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
+      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
+      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
+    </div>
+  
+    <div class="profile-link-row">
+      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
+      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
+      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
+    </div>
+  </div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -486,16 +495,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐠 気分の判定辞書を編集</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
+    <div class="accordion-body" id="moodDictAccordionBody" style="display: none;">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"></div>
+      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"></div>
+      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -510,8 +519,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
   </div>
 
@@ -523,11 +532,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- ネットに公開する枠 -->
   <div class="github-box accordion admin-only">
-    <button type="button" class="accordion-toggle" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="false">
+    <button type="button" class="accordion-toggle open" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="true">
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display:none">
+    <div class="accordion-body" id="githubAccordionBody" style="display: block;">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -551,7 +560,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -560,11 +569,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"></div>
+          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大6枚）</button>
             <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
@@ -578,14 +587,15 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             </div>
             <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
           </div>
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
+（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>🙈 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked>
+            <input type="checkbox" id="longPublicToggle" checked="">
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -593,29 +603,204 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <button class="btn btn-ghost" onclick="newLong()">新しく書く</button>
           </div>
         </div>
-        <div id="longEntries" class="entries"></div>
+        <div id="longEntries" class="entries"><article class="entry" id="entry-long-6cea6a03-a754-4cf5-9f70-fd6223944772">
+  <div class="entry-head"><span class="date">2026/09/03 03:34</span><span>🤔 考え中</span></div>
+  <div class="entry-title">餌やり機能の改善と背景色</div>
+  <div class="preview">餌やり機能、訪問者さんごとのローカル保存にした！これで私がサイト更新かけても訪問者さんの餌やり回数消えなくなったと思う！
+
+あと、私の選んだ背景色が訪問者さんに反映されてなかったと今知った🫨
+結構コロコロ変えてたんだけどなあ😂</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('6cea6a03-a754-4cf5-9f70-fd6223944772')">編集</button>
+    <button onclick="togglePublicLong('6cea6a03-a754-4cf5-9f70-fd6223944772')">🔒 非公開にする</button>
+    <button onclick="delLong('6cea6a03-a754-4cf5-9f70-fd6223944772')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-ddc61c60-4d64-4dcd-b0cb-1b6467e14b69">
+  <div class="entry-head"><span class="date">2026/09/03 00:48</span><span>😌 穏やか</span></div>
+  <div class="entry-title">魚の色変化🐠</div>
+  <div class="preview">魚、最近の気分によってゆっくり色変化するようにした。気分モニタリングも兼ねてるので。
+日記内のキーワードを拾ってポジティブかネガティブか反映して、その数によって色味が決まる仕組み。
+我ながらめっちゃ良くない？？？！！
+
+あとは餌やり回数を訪問者さんごとのローカル保存にしたい。今は私がサイト更新かけちゃうと、訪問者さんの餌やり回数消えてしまうので。</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('ddc61c60-4d64-4dcd-b0cb-1b6467e14b69')">編集</button>
+    <button onclick="togglePublicLong('ddc61c60-4d64-4dcd-b0cb-1b6467e14b69')">🔒 非公開にする</button>
+    <button onclick="delLong('ddc61c60-4d64-4dcd-b0cb-1b6467e14b69')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-b03a7f8e-ca47-429b-ae19-b7b32aa067da">
+  <div class="entry-head"><span class="date">2026/09/02 15:32</span><span>🙂 まあまあ</span></div>
+  <div class="entry-title">食う！バイブコーディング！寝る！</div>
+  <div class="preview">だいぶいい感じにこの日記サイトも整ってきました。
+ヘッダーの下にお魚さん泳がせた🐠かわゆかわゆ<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6d0ca94c-3868-4ff7-9c3a-83321e80593d.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','b03a7f8e-ca47-429b-ae19-b7b32aa067da',0)">↑初期色は紫でした。
+
+日記の内容によって色が変わる仕様。餌の量では色は変わりませんが、餌あげられるだけでもなんか楽しいと思う！</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('b03a7f8e-ca47-429b-ae19-b7b32aa067da')">編集</button>
+    <button onclick="togglePublicLong('b03a7f8e-ca47-429b-ae19-b7b32aa067da')">🔒 非公開にする</button>
+    <button onclick="delLong('b03a7f8e-ca47-429b-ae19-b7b32aa067da')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-8b9624cd-a6cf-428a-8994-6b781d711f62">
+  <div class="entry-head"><span class="date">2026/09/01 13:36</span><span>😊 元気</span></div>
+  <div class="entry-title">マグロサーモンアボカド丼</div>
+  <div class="preview">PMDDでメンタルが非常に悪く、食欲も一切なかったのだが、なぜか「マグロサーモンアボカド丼食べたい！！！！！🐟️🥑🍚」という感情だけはあった。
+なのでとんでん（海鮮もの系レストラン）でマグロサーモンアボカド丼を食べた。
+
+空腹とは恐ろしいもので、どうやらメンタルに直通で影響があるらしい。マグロサーモンアボカド丼を食べた途端、謎の不安感や鬱々感が消えた。食べる前はあんなに辛かったはずなのに……！不安と焦燥で駅構内でのた打ち回るところだったたのに……！！
+
+ついでに、チョコパフェも食べた。ああ、領収書を見たくない（ここで最初のメンタルに戻る）。
+
+ちなみに、とんでんはなんとホットコーヒーがお変わり自由なのだ。大盤振る舞い！</div>
+  <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/dd0f9b97-27df-4024-a8e2-2781aa096188.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('long','8b9624cd-a6cf-428a-8994-6b781d711f62',0)">
+  <div class="entry-img-strip"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/90741da6-8bd0-4f3f-8cf6-26d0859f2558.jpg" class="entry-img-thumb" onclick="openLightboxFor('long','8b9624cd-a6cf-428a-8994-6b781d711f62',1)"></div>
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('8b9624cd-a6cf-428a-8994-6b781d711f62')">編集</button>
+    <button onclick="togglePublicLong('8b9624cd-a6cf-428a-8994-6b781d711f62')">🔒 非公開にする</button>
+    <button onclick="delLong('8b9624cd-a6cf-428a-8994-6b781d711f62')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-99a2068a-6ddd-49d8-8245-04ae82d4bb27">
+  <div class="entry-head"><span class="date">2026/09/01 09:38</span><span>🤔 考え中</span></div>
+  <div class="entry-title">UIの調整とか</div>
+  <div class="preview">この壁打ち日記、PC表示とかスマホ横持ちとかタブレットの時とかでも間延びしないようにClaudeさんに整えてもらった。
+もうちょっと幅狭めてもいい気がする？わからん
+<span class="hashtag" onclick="filterByTag('#更新')">#更新</span></div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('99a2068a-6ddd-49d8-8245-04ae82d4bb27')">編集</button>
+    <button onclick="togglePublicLong('99a2068a-6ddd-49d8-8245-04ae82d4bb27')">🔒 非公開にする</button>
+    <button onclick="delLong('99a2068a-6ddd-49d8-8245-04ae82d4bb27')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-a7eb651b-47d8-41c1-92aa-0e845b33764f">
+  <div class="entry-head"><span class="date">2026/09/01 04:24</span><span></span></div>
+  <div class="entry-title">Amiverseのみあちゃん</div>
+  <div class="preview">Amiverseさんにて、みあちゃんのキャラデザインを描かせて頂きました！
+本当にありがとうございます🙏✨️デザイン考えていてとても楽しかったです！💖
+<a href="https://amiverse.net/" target="_blank" rel="noopener noreferrer" class="auto-link">https://amiverse.net/</a><div class="link-card" data-url="https://amiverse.net/" data-hydrated="1"><a href="https://amiverse.net/" target="_blank" rel="noopener noreferrer" class="link-card-inner">
+        <div class="link-card-img-wrap"><img class="link-card-img" src="https://amiverse.net/static-assets/images/amiverse-2.webp" alt="" loading="lazy"></div>
+        <div class="link-card-body">
+          <div class="link-card-title">おすすめ | Amiverse</div>
+          <div class="link-card-desc">Amiverseは、あなたの興味を広げる新しいソーシャルプラットフォームです。</div>
+          <div class="link-card-site">🔗 Amiverse</div>
+        </div></a></div></div>
+  <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/76809e29-8d8a-4b4a-bdaa-aa568bc28ae6.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('long','a7eb651b-47d8-41c1-92aa-0e845b33764f',0)">
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('a7eb651b-47d8-41c1-92aa-0e845b33764f')">編集</button>
+    <button onclick="togglePublicLong('a7eb651b-47d8-41c1-92aa-0e845b33764f')">🔒 非公開にする</button>
+    <button onclick="delLong('a7eb651b-47d8-41c1-92aa-0e845b33764f')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-f8bec242-2a99-42e6-88aa-fd086f3b9f69">
+  <div class="entry-head"><span class="date">2026/09/01 04:19</span><span>🥳 楽しい</span></div>
+  <div class="entry-title">画像複数枚投稿テスト</div>
+  <div class="preview">画像複数枚投稿テスト</div>
+  <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c01fe3bb-e850-4bca-a68e-38e56760947e.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',0)">
+  <div class="entry-img-strip"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/5fb29331-82f2-487e-979e-a8f276f7497a.jpg" class="entry-img-thumb" onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',1)"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c2c292fa-395d-4f59-9188-e2a7dbbd7f95.jpg" class="entry-img-thumb" onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',2)"></div>
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('f8bec242-2a99-42e6-88aa-fd086f3b9f69')">編集</button>
+    <button onclick="togglePublicLong('f8bec242-2a99-42e6-88aa-fd086f3b9f69')">🔒 非公開にする</button>
+    <button onclick="delLong('f8bec242-2a99-42e6-88aa-fd086f3b9f69')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-0027a745-e02a-4b65-96df-5396b9f03231">
+  <div class="entry-head"><span class="date">2026/09/01 04:18</span><span>🥳 楽しい</span></div>
+  <div class="entry-title">サムネテスト</div>
+  <div class="preview">youtubeサムネテスト<a href="https://youtu.be/MURua52_YPg?si=oNVArRRVL2K_h4yo" target="_blank" rel="noopener noreferrer" class="yt-embed"><img src="https://img.youtube.com/vi/MURua52_YPg/hqdefault.jpg" alt="YouTubeサムネイル" loading="lazy"><span class="yt-play">▶</span></a></div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('0027a745-e02a-4b65-96df-5396b9f03231')">編集</button>
+    <button onclick="togglePublicLong('0027a745-e02a-4b65-96df-5396b9f03231')">🔒 非公開にする</button>
+    <button onclick="delLong('0027a745-e02a-4b65-96df-5396b9f03231')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-23f2388b-55fc-4655-b622-abe564cce28b">
+  <div class="entry-head"><span class="date">2026/09/01 02:22</span><span>🙂 まあまあ</span></div>
+  <div class="entry-title">これでひとまず……</div>
+  <div class="preview">管理画面に日記投稿欄は出ちゃうけど、一番上に「※アクセストークン無いと公開できない」旨を記載したから閲覧者さん安心できるかな。
+パスワード入力で管理画面はいるとかも検討したけど、普通に面倒だったので……</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('23f2388b-55fc-4655-b622-abe564cce28b')">編集</button>
+    <button onclick="togglePublicLong('23f2388b-55fc-4655-b622-abe564cce28b')">🔒 非公開にする</button>
+    <button onclick="delLong('23f2388b-55fc-4655-b622-abe564cce28b')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-9e30a15c-cf6a-4d18-bc15-0760ce8c35db">
+  <div class="entry-head"><span class="date">2026/09/01 00:27</span><span>😌 穏やか</span></div>
+  <div class="entry-title">我が救世主、バイブコーディングよ</div>
+  <div class="preview">こういう場所（適当に呟けて、かつ長文の日記も書ける場所）欲しかったからマジで助かる（ブログは広告多すぎ、Noteは商売っ気ありすぎ）
+バイブコーディング助かる、サンキューバイブコーディング、フォーエバーバイブコーディング</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('9e30a15c-cf6a-4d18-bc15-0760ce8c35db')">編集</button>
+    <button onclick="togglePublicLong('9e30a15c-cf6a-4d18-bc15-0760ce8c35db')">🔒 非公開にする</button>
+    <button onclick="delLong('9e30a15c-cf6a-4d18-bc15-0760ce8c35db')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-d93badd4-9568-446f-82c2-0bf6384b205d">
+  <div class="entry-head"><span class="date">2026/08/31 18:36</span><span>😌 穏やか</span></div>
+  <div class="entry-title">お花の写真を</div>
+  <div class="preview">この前撮ったお花の写真を載せておこ❁</div>
+  <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/93c5b4b6-4f92-4474-be8a-11ca5d5bfbb0.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('long','d93badd4-9568-446f-82c2-0bf6384b205d',0)">
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('d93badd4-9568-446f-82c2-0bf6384b205d')">編集</button>
+    <button onclick="togglePublicLong('d93badd4-9568-446f-82c2-0bf6384b205d')">🔒 非公開にする</button>
+    <button onclick="delLong('d93badd4-9568-446f-82c2-0bf6384b205d')">削除</button>
+  </div>
+ </article><article class="entry" id="entry-long-c0374fab-a500-4d0e-88a1-9b483bad7845">
+  <div class="entry-head"><span class="date">2026/08/31 18:28</span><span>😭 しんどい</span></div>
+  <div class="entry-title">バイブコーディング過集中と謎の下腹部痛</div>
+  <div class="preview">バイブコーディングでClaude、ChatGPT、Geminiの3つを横断して作ったり、謎のスゴイ下腹部痛で寝込んでたりしました。なんだろうね、この腹の痛み🫨🫨🫨今度婦人科行きます😭
+
+最近、体力なくて寝っ転がりながらスマホをやってるんですが、すぐ腕が痛くなるので結局身体起こしちゃう。腕ムキムキになりたい💪</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="editLong('c0374fab-a500-4d0e-88a1-9b483bad7845')">編集</button>
+    <button onclick="togglePublicLong('c0374fab-a500-4d0e-88a1-9b483bad7845')">🔒 非公開にする</button>
+    <button onclick="delLong('c0374fab-a500-4d0e-88a1-9b483bad7845')">削除</button>
+  </div>
+ </article></div>
       </div>
 
       <aside class="side card admin-only">
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">12</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">54</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
       
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大6枚）</button>
-        <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
+        <div id="shortImagePreviewBox" class="img-preview-box" style="display: none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
       </div>
       
@@ -627,26 +812,737 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
       </div>
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>🙈 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked>
+        <input type="checkbox" id="shortPublicToggle" checked="">
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px;text-align:right"><button class="btn btn-primary" onclick="saveShort()">つぶやきを保存</button></div>
     </div>
-    <div id="shortFeed" class="feed"></div>
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-d50a7845-a1de-4429-92a3-8cd6398ccd72">
+   <div class="tweet-text"><span class="hashtag" onclick="filterByTag('#ソニック')">#ソニック</span> <span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span><span class="img-cushion cushioned cushion-inline"><span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/189c8011-65b2-4c8a-a0d5-9cb11d42782e.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','d50a7845-a1de-4429-92a3-8cd6398ccd72',0)"></span><span class="spoiler-text" onclick="this.classList.toggle('revealed')">サージ描くの楽しいんだよなあ（特に髪型）</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 22:46 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('d50a7845-a1de-4429-92a3-8cd6398ccd72')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('d50a7845-a1de-4429-92a3-8cd6398ccd72')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-801a953e-809b-4c73-bac1-8573309530f6">
+   <div class="tweet-text">ひえええ〜〜！雷鳴ってる⛈️🫨🫨🫨🫨🫨</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 19:25 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('801a953e-809b-4c73-bac1-8573309530f6')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('801a953e-809b-4c73-bac1-8573309530f6')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f43c880b-846c-4297-9dbd-03139f51164e">
+   <div class="tweet-text"><span class="hashtag" onclick="filterByTag('#ソニック')">#ソニック</span>
+※語り
+<span class="spoiler-text" onclick="this.classList.toggle('revealed')">サージを調べてるとどうしてもスカージが出てきて、やっぱりスカージのキャラデザインの良さがおかし過ぎるな……という感覚になってしまう。（IDWのキャラは本編キャラを食わないようにかなり控えめなデザインになってるとは思う）</span>
+<span class="spoiler-text" onclick="this.classList.toggle('revealed')">そしておそらく、スカージのあの感じはTracy Yardley氏にしか出せないんだよな。この世にめちゃくちゃ上手いファンアートが数あれど、Archie時代のYardley氏の勢いのある動きと表情でしか表現できないものがある。</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 19:24 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f43c880b-846c-4297-9dbd-03139f51164e')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f43c880b-846c-4297-9dbd-03139f51164e')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-e02a0d0d-b774-4253-b2a8-53d944e1b405">
+   <div class="tweet-text">絵を描きたい、散歩いきたい、眠い、じっとしてられん、雨降りそう、神経痛が出てきた
+これらが同時にやってきて身体が足りない</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 12:26 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('e02a0d0d-b774-4253-b2a8-53d944e1b405')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('e02a0d0d-b774-4253-b2a8-53d944e1b405')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-41f51758-533f-43ff-ae79-9717d9279da5">
+   <div class="tweet-text">お絵描きしてるにはしてるけど、うまくいかない練習が多くてなかなかネットに投稿できるクオリティにならないなあ</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 11:38 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('41f51758-533f-43ff-ae79-9717d9279da5')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('41f51758-533f-43ff-ae79-9717d9279da5')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-aca8e74e-e93c-485f-8044-527010278aba">
+   <div class="tweet-text">本屋さん行きたい🥲</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 11:37 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('aca8e74e-e93c-485f-8044-527010278aba')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('aca8e74e-e93c-485f-8044-527010278aba')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f26cd6b9-a48f-4064-ab3d-86d2bb6a7bb8">
+   <div class="tweet-text">ブックオフ行こうと思ったけど雨降りそうだったからやめた😶お絵描きする！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 10:41 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f26cd6b9-a48f-4064-ab3d-86d2bb6a7bb8')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f26cd6b9-a48f-4064-ab3d-86d2bb6a7bb8')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-56a5bac4-0b89-4bc8-98a8-6b2ba7543914">
+   <div class="tweet-text">ソニックランブルパーティ、サージが3300円で手が届かなかった……😭せめてラノリン……ラノリンも2000円台かぁ😭😭😭</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 09:35 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('56a5bac4-0b89-4bc8-98a8-6b2ba7543914')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('56a5bac4-0b89-4bc8-98a8-6b2ba7543914')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-c97afad1-2f5a-45b2-b00e-4ad646204990">
+   <div class="tweet-text">ブックオフ行きたい😶</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 08:33 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('c97afad1-2f5a-45b2-b00e-4ad646204990')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('c97afad1-2f5a-45b2-b00e-4ad646204990')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-b471b703-24e6-4bb2-92ed-cc906ead1508">
+   <div class="tweet-text">唐突に目の疲れから目と頭痛くなった😭</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 08:31 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('b471b703-24e6-4bb2-92ed-cc906ead1508')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b471b703-24e6-4bb2-92ed-cc906ead1508')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-49e65664-f34a-4ba9-b623-f51ef104ca08">
+   <div class="tweet-text">レトルトカレー食べた🍽️😋</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 08:12 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('49e65664-f34a-4ba9-b623-f51ef104ca08')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('49e65664-f34a-4ba9-b623-f51ef104ca08')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-8444e745-b0d7-4b94-9823-6420349759c9">
+   <div class="tweet-text">レトルトカレー食べよ！🍛😊</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 07:55 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('8444e745-b0d7-4b94-9823-6420349759c9')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('8444e745-b0d7-4b94-9823-6420349759c9')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f4ab2efc-0209-44dc-b02d-2afe59e4ad74">
+   <div class="tweet-text">Tumblrにもスパムっているんだ！？😮</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 05:36 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f4ab2efc-0209-44dc-b02d-2afe59e4ad74')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f4ab2efc-0209-44dc-b02d-2afe59e4ad74')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-2e85142e-3eb6-4e6b-95da-2dbdf3e9b024">
+   <div class="tweet-text"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/d5b89d60-7450-4958-9d44-c7280b044f70.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','2e85142e-3eb6-4e6b-95da-2dbdf3e9b024',0)">※模写パロディ
+某悪名高い海賊版ソニックコミックサイト（未単行本化漫画から最新作まで世界中のソニックコミック載ってるヤバいところ）ですら投稿されてない超速ソニック。Amazonで1万円くらいする。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/80882fae-9633-4796-a581-ac48d27232f7.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','2e85142e-3eb6-4e6b-95da-2dbdf3e9b024',1)">発売当時に本屋で買った。買っておいて良かった🫨
+<span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span> <span class="hashtag" onclick="filterByTag('#ソニック')">#ソニック</span> <span class="hashtag" onclick="filterByTag('#落書き')">#落書き</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 04:55 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('2e85142e-3eb6-4e6b-95da-2dbdf3e9b024')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('2e85142e-3eb6-4e6b-95da-2dbdf3e9b024')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-a4c6f070-f04c-4138-9cd3-7dbc0e2c56d8">
+   <div class="tweet-text">置いてたペットボトル麦茶用段ボール箱にスネを引っ掛けて擦りむいた！！ヒリヒリ！痛い〜！😭</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/03 01:20 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a4c6f070-f04c-4138-9cd3-7dbc0e2c56d8')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a4c6f070-f04c-4138-9cd3-7dbc0e2c56d8')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-737952f2-ca81-4760-a45f-da0164dde6f4">
+   <div class="tweet-text">何もせずにボーッと上の魚を見てると癒されるね……😌</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 18:35 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('737952f2-ca81-4760-a45f-da0164dde6f4')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('737952f2-ca81-4760-a45f-da0164dde6f4')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-26b1254c-0d22-4048-9d37-606177a7ebe1">
+   <div class="tweet-text">ここの魚ちゃん、最初は仮置き画像の予定だったんだけど、だんだん愛着湧いてきちゃったからこのままでいこう🥰</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 18:23 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('26b1254c-0d22-4048-9d37-606177a7ebe1')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('26b1254c-0d22-4048-9d37-606177a7ebe1')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-a6396ec9-35d3-4b2f-9a1a-04a0112014f3">
+   <div class="tweet-text">眠れん！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 18:21 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a6396ec9-35d3-4b2f-9a1a-04a0112014f3')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a6396ec9-35d3-4b2f-9a1a-04a0112014f3')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-ce86775c-8c57-4402-bd97-f49154c6865c">
+   <div class="tweet-text">ビビンバ食べた😊</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 17:03 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('ce86775c-8c57-4402-bd97-f49154c6865c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('ce86775c-8c57-4402-bd97-f49154c6865c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-c0a84999-104b-401b-8cb2-3be9a0668162">
+   <div class="tweet-text">お、サイト更新ボタン、「公開中……」で固まる問題直ったかなー🤔
+ClaudeさんとChatGPTさん行ったり来たりしてるからコードめちゃくちゃになってないか心配だぜ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 16:18 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('c0a84999-104b-401b-8cb2-3be9a0668162')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('c0a84999-104b-401b-8cb2-3be9a0668162')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-cf4bb3f7-55ab-4ff6-8bcb-d17221484dc1">
+   <div class="tweet-text">おお、絵文字登録したらベタちゃんがしんどい日色に！よく😭とか使ってるからなあ🤣🤣🤣</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 15:53 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('cf4bb3f7-55ab-4ff6-8bcb-d17221484dc1')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('cf4bb3f7-55ab-4ff6-8bcb-d17221484dc1')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-0150361f-3a3e-40ca-a676-c4837ca8e0bd">
+   <div class="tweet-text">親が珍しく知り合いとお出かけしてるから、私はずっと居間のソファでゴロゴロしながら飯食って寝てバイブコーディングしてるってワケ😌</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 15:49 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('0150361f-3a3e-40ca-a676-c4837ca8e0bd')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('0150361f-3a3e-40ca-a676-c4837ca8e0bd')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-03e92450-d6d4-4e3d-8f52-8889ac06b9b2">
+   <div class="tweet-text">スーパー皿洗いメンドクサモード！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 09:57 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('03e92450-d6d4-4e3d-8f52-8889ac06b9b2')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('03e92450-d6d4-4e3d-8f52-8889ac06b9b2')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-a9c3b683-1871-4d32-bf2e-5271503cc771">
+   <div class="tweet-text">生理が！生理が始まれば鬱抜けするから！それまで頑張れ私！
+<span class="hashtag" onclick="filterByTag('#PMDD')">#PMDD</span> <span class="hashtag" onclick="filterByTag('#生理')">#生理</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 07:06 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a9c3b683-1871-4d32-bf2e-5271503cc771')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a9c3b683-1871-4d32-bf2e-5271503cc771')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-78cc4281-d02e-4952-906b-8cb741444000">
+   <div class="tweet-text">疲れすぎて絵が描けん
+いつものことよ
+寝れば治る（寝たくない）</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 07:05 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('78cc4281-d02e-4952-906b-8cb741444000')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('78cc4281-d02e-4952-906b-8cb741444000')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-d9630963-ffdb-458a-99d8-eae87720a797">
+   <div class="tweet-text">二次創作、ここに置いても将来的に大丈夫かな……🤔
+と思ったけど、結局このサイトもバイブコーディングなわけで、ファンアート用に別のgithub pages用意しても意味ないんだよな。バイブコーディングとか嫌いな人から逃れるのには……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/02 05:01 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('d9630963-ffdb-458a-99d8-eae87720a797')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('d9630963-ffdb-458a-99d8-eae87720a797')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-891e9540-2515-4921-a3e9-063f64af5930">
+   <div class="tweet-text">寝ながら足広げすぎて股関節バキってなるのやめて〜〜〜😭</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 23:16 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('891e9540-2515-4921-a3e9-063f64af5930')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('891e9540-2515-4921-a3e9-063f64af5930')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f7dceec6-e631-4b41-8c97-6dcebb0bc605">
+   <div class="tweet-text">コーヒー3杯も飲んだから寝れん！疲れてるのに！😭
+疲れの方も取れてくれたらいいのに！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 19:25 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f7dceec6-e631-4b41-8c97-6dcebb0bc605')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f7dceec6-e631-4b41-8c97-6dcebb0bc605')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-ba456cf7-b6a6-45d8-bd96-3a162ab8d84d">
+   <div class="tweet-text">すでに充電が65%！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 11:06 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('ba456cf7-b6a6-45d8-bd96-3a162ab8d84d')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('ba456cf7-b6a6-45d8-bd96-3a162ab8d84d')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-2ec953f4-136c-43dc-82f9-71e37d5a0ad8">
+   <div class="tweet-text">なんとか病院来た
+病院終わったらどこ行こう……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 09:52 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('2ec953f4-136c-43dc-82f9-71e37d5a0ad8')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('2ec953f4-136c-43dc-82f9-71e37d5a0ad8')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-9a3e23f4-be20-4c99-8084-a6ef3a6e74b9">
+   <div class="tweet-text">び、病院に行かなきゃ……病院に行かなきゃ…………🫨🫨🫨😭😭😭
+家帰ってお絵描きもしたいよー</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 09:41 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9a3e23f4-be20-4c99-8084-a6ef3a6e74b9')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9a3e23f4-be20-4c99-8084-a6ef3a6e74b9')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-93c88a7f-a5bb-4efb-965e-0c7653dd1c56">
+   <div class="tweet-text"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="auto-link">https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA</a><div class="link-card" data-url="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" data-hydrated="1"><a href="https://music.youtube.com/watch?v=L2TrIJsTKHk&amp;si=5Att7NgD5bYGJTtA" target="_blank" rel="noopener noreferrer" class="link-card-inner">
+        <div class="link-card-img-wrap"><img class="link-card-img" src="https://img.youtube.com/vi/L2TrIJsTKHk/maxresdefault.jpg" alt="" loading="lazy"></div>
+        <div class="link-card-body">
+          <div class="link-card-title">YouTube Music</div>
+          <div class="link-card-desc">With the YouTube Music app, enjoy over 100 million songs at your fingertips, plus albums, </div>
+          <div class="link-card-site">🔗 YouTube</div>
+        </div></a></div>歌詞に共感した（毎日）</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 08:58 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('93c88a7f-a5bb-4efb-965e-0c7653dd1c56')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('93c88a7f-a5bb-4efb-965e-0c7653dd1c56')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-e0b180bd-f3f8-45c4-97ac-925694590a0f">
+   <div class="tweet-text">スリコのミニカメラ欲しいんだよな〜。かわいい。おしゃれ！
+ヴィネットエフェクトある感じの、ノスタルジックな写真を撮りたい</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:49 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('e0b180bd-f3f8-45c4-97ac-925694590a0f')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('e0b180bd-f3f8-45c4-97ac-925694590a0f')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-d2f22e99-6117-49ff-9186-6519bd4fe43c">
+   <div class="tweet-text">や〜〜〜ん病院行かなきゃ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:44 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('d2f22e99-6117-49ff-9186-6519bd4fe43c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('d2f22e99-6117-49ff-9186-6519bd4fe43c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-03208c8b-d9fb-4a5a-9aaf-71946b58e280">
+   <div class="tweet-text">さ、皿洗いがツラすぎる、なんだこの面倒くささ！🫨🫨🫨</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 07:16 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('03208c8b-d9fb-4a5a-9aaf-71946b58e280')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('03208c8b-d9fb-4a5a-9aaf-71946b58e280')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-65b4ada7-0a47-4cc9-893b-94e6a7b947cc">
+   <div class="tweet-text">眠すぎて何もしてないままあさが来てしまった🫨🫨🫨</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 05:39 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('65b4ada7-0a47-4cc9-893b-94e6a7b947cc')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('65b4ada7-0a47-4cc9-893b-94e6a7b947cc')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-deeb8e87-0240-4fb6-a259-4199bf5aff97">
+   <div class="tweet-text">眠いけど寝たくないこの矛盾心💖</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 04:52 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('deeb8e87-0240-4fb6-a259-4199bf5aff97')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('deeb8e87-0240-4fb6-a259-4199bf5aff97')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-a05619e5-4f46-43bb-abde-398834a42f1c">
+   <div class="tweet-text">ありゃ、リンクカードおかしいな。あとでClaudeさんに直してもらお（また制限））</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 04:30 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('a05619e5-4f46-43bb-abde-398834a42f1c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('a05619e5-4f46-43bb-abde-398834a42f1c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-dbc0944a-5127-491a-a390-269dc850b68a">
+   <div class="tweet-text">・URL自動リンク、リンクカード
+・長文日記とつぶやき日記の切り替えボタンを一番上に
+・キーワード検索・ハッシュタグ機能
+・画像複数枚投稿、拡大表示機能
+・公開する日記、しない日記を選べるようにする</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 04:00 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('dbc0944a-5127-491a-a390-269dc850b68a')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('dbc0944a-5127-491a-a390-269dc850b68a')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-ac68480b-f453-4931-a007-0c8546381948">
+   <div class="tweet-text">管理画面のここ、なんでタコなんだろ</div>
+   <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/62a81c7d-0244-4624-9e12-0aa033b1d049.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('short','ac68480b-f453-4931-a007-0c8546381948',0)">
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 03:42 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('ac68480b-f453-4931-a007-0c8546381948')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('ac68480b-f453-4931-a007-0c8546381948')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-4ac3d93c-dd2c-4abd-b2bb-3d0be54c3c47">
+   <div class="tweet-text">なにかもっとここを楽しくしたい。どうしよっかな</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 03:40 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('4ac3d93c-dd2c-4abd-b2bb-3d0be54c3c47')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('4ac3d93c-dd2c-4abd-b2bb-3d0be54c3c47')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-2cf6323e-077b-45ad-96fb-bd1abdbd5816">
+   <div class="tweet-text">あか〜〜ん！疲れてるのに眠れない</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 02:51 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('2cf6323e-077b-45ad-96fb-bd1abdbd5816')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('2cf6323e-077b-45ad-96fb-bd1abdbd5816')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-1b0c38e1-cc67-495f-9390-bd7632ffaf9d">
+   <div class="tweet-text">ふとんがくしゃい😞</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 02:24 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('1b0c38e1-cc67-495f-9390-bd7632ffaf9d')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('1b0c38e1-cc67-495f-9390-bd7632ffaf9d')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-6ee4baaa-467d-45f1-b4d4-b6675628bf6c">
+   <div class="tweet-text">フリーでできるバルダーズゲート的な古典CRPG、Androidアプリで無いかなあ。フリーは流石に要求高すぎか……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 00:52 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('6ee4baaa-467d-45f1-b4d4-b6675628bf6c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('6ee4baaa-467d-45f1-b4d4-b6675628bf6c')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-f193f349-78b7-4391-b9c2-f4886ffeecd3">
+   <div class="tweet-text">管理画面がみんなに見えちゃうの、混乱させちゃうわね……！🫨🫨🫨🫨ごめんなさい〜〜！！！
+Claudeさんの制限解除されたらなんとかしてもらおう！🫨🫨🫨🫨</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 00:44 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f193f349-78b7-4391-b9c2-f4886ffeecd3')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f193f349-78b7-4391-b9c2-f4886ffeecd3')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-b7797382-10ff-4389-a2cf-0744bcbfb5ca">
+   <div class="tweet-text">Claudeさん早く制限解除されて😡（4:00まで待たなきゃならない）</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 00:30 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('b7797382-10ff-4389-a2cf-0744bcbfb5ca')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b7797382-10ff-4389-a2cf-0744bcbfb5ca')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-257e1c42-d147-48e7-a791-43653b12e1f4">
+   <div class="tweet-text">絵を描く気力が働かん！今は文章練ってたい感じだ</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 00:24 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('257e1c42-d147-48e7-a791-43653b12e1f4')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('257e1c42-d147-48e7-a791-43653b12e1f4')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-7b9f0a87-7159-4ea4-b4c8-aa04eb3fdf96">
+   <div class="tweet-text">今週病院（明日はまたべつの病院）で金が飛ぶ飛ぶぅ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/01 00:23 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('7b9f0a87-7159-4ea4-b4c8-aa04eb3fdf96')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('7b9f0a87-7159-4ea4-b4c8-aa04eb3fdf96')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-9c64faf5-ac66-4bab-a499-e893ed1dcde7">
+   <div class="tweet-text">お腹？？？鼠径部？？？もはやどこが痛いのかも不明だ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 23:18 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9c64faf5-ac66-4bab-a499-e893ed1dcde7')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9c64faf5-ac66-4bab-a499-e893ed1dcde7')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-53ba60b6-94f9-4bad-8fa3-fe4df0886011">
+   <div class="tweet-text">お絵描きしたいよー🥲お腹痛いよー🥲</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 19:10 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('53ba60b6-94f9-4bad-8fa3-fe4df0886011')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('53ba60b6-94f9-4bad-8fa3-fe4df0886011')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-bef0b0e2-d0e6-4b88-9721-86a665384bd3">
+   <div class="tweet-text">こっちにも載せれるかな</div>
+   <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/14bf07de-d483-4786-bc01-b21f30c80f2a.jpg" class="entry-img entry-img-main" onclick="openLightboxFor('short','bef0b0e2-d0e6-4b88-9721-86a665384bd3',0)">
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 18:36 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('bef0b0e2-d0e6-4b88-9721-86a665384bd3')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('bef0b0e2-d0e6-4b88-9721-86a665384bd3')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-c338da9f-e09a-4790-90b5-71739078a81a">
+   <div class="tweet-text">こまったな、下腹部痛いの治ってないや。痛み止めきれたらまたつらくなってきた。なんだろうね？</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 12:34 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('c338da9f-e09a-4790-90b5-71739078a81a')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('c338da9f-e09a-4790-90b5-71739078a81a')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-b44c836f-d568-442b-8f9f-3ed777465c0b">
+   <div class="tweet-text">Buzzlo，メモしとこ。メンタル回復したら登録してみよ</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 12:15 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('b44c836f-d568-442b-8f9f-3ed777465c0b')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b44c836f-d568-442b-8f9f-3ed777465c0b')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-87f722a7-6ce4-4083-bc0c-876a88502999">
+   <div class="tweet-text">過集中でからだがしんどいぜ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/08/31 12:06 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('87f722a7-6ce4-4083-bc0c-876a88502999')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('87f722a7-6ce4-4083-bc0c-876a88502999')">削除</button>
+     </span>
+   </div>
+ </article></div>
   </section>
 
   <section id="mediaMode" style="display:none">
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint"></p>
-      <div id="mediaGrid" class="media-grid"></div>
+      <p class="media-count-hint" id="mediaCountHint">📷 13枚の画像</p>
+      <div id="mediaGrid" class="media-grid">
+    <div class="media-item cushioned" onclick="openLightboxFor('short','d50a7845-a1de-4429-92a3-8cd6398ccd72',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/189c8011-65b2-4c8a-a0d5-9cb11d42782e.jpg" loading="lazy" alt="">
+      <span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span>
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/03 22:46</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('short','2e85142e-3eb6-4e6b-95da-2dbdf3e9b024',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/d5b89d60-7450-4958-9d44-c7280b044f70.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/03 04:55</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('short','2e85142e-3eb6-4e6b-95da-2dbdf3e9b024',1)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/80882fae-9633-4796-a581-ac48d27232f7.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/03 04:55</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','b03a7f8e-ca47-429b-ae19-b7b32aa067da',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6d0ca94c-3868-4ff7-9c3a-83321e80593d.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/02 15:32</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','8b9624cd-a6cf-428a-8994-6b781d711f62',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/dd0f9b97-27df-4024-a8e2-2781aa096188.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 13:36</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','8b9624cd-a6cf-428a-8994-6b781d711f62',1)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/90741da6-8bd0-4f3f-8cf6-26d0859f2558.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 13:36</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','a7eb651b-47d8-41c1-92aa-0e845b33764f',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/76809e29-8d8a-4b4a-bdaa-aa568bc28ae6.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 04:24</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c01fe3bb-e850-4bca-a68e-38e56760947e.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 04:19</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',1)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/5fb29331-82f2-487e-979e-a8f276f7497a.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 04:19</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','f8bec242-2a99-42e6-88aa-fd086f3b9f69',2)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c2c292fa-395d-4f59-9188-e2a7dbbd7f95.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 04:19</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('short','ac68480b-f453-4931-a007-0c8546381948',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/62a81c7d-0244-4624-9e12-0aa033b1d049.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/09/01 03:42</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('short','bef0b0e2-d0e6-4b88-9721-86a665384bd3',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/14bf07de-d483-4786-bc01-b21f30c80f2a.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/08/31 18:36</span>
+    </div>
+  
+    <div class="media-item " onclick="openLightboxFor('long','d93badd4-9568-446f-82c2-0bf6384b205d',0)">
+      <img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/93c5b4b6-4f92-4474-be8a-11ca5d5bfbb0.jpg" loading="lazy" alt="">
+      
+      <span class="media-item-badge admin-only">🌐</span>
+      <span class="media-item-date">2026/08/31 18:36</span>
+    </div>
+  </div>
     </div>
   </section>
 </main>
@@ -662,7 +1558,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -2204,5 +3100,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', startFishSwimming);}else{startFishSwimming();}
 </script>
-</body>
-</html>
+
+</body></html>
