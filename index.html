@@ -2089,6 +2089,19 @@ function htmlForGithub(){
     btn.disabled=false;
     btn.textContent='📤 GitHubへ公開する！';
   }
+  // 日記・つぶやき・メディア一覧の中身は空にしてからアップロードする。
+  // 理由は2つ：
+  // ① 公開ページ（訪問者さん）は初期表示時にjournals.json/tweets.jsonを取得して
+  //    自分で描画し直すので、この時点でindex.htmlに焼き付けても実際には一切使われず、
+  //    日記が増えるほどindex.htmlだけが無駄に重くなってしまう（今回の「軽くしたい」の本題）。
+  // ② それだけでなく、これまでは今この端末で表示していた内容（下書き＝非公開の日記も
+  //    ここでは🔒バッジ付きで一覧に表示している）がそのままGitHubへ書き出されてしまい、
+  //    journals.json側ではきちんと除外されているのに、index.html側には非公開の日記の
+  //    タイトル・本文がそのまま載ってしまっていた。安全のためにも空にしておく。
+  ['longEntries','shortFeed','mediaGrid'].forEach(id=>{
+    const el = clone.querySelector('#'+id);
+    if(el) el.innerHTML='';
+  });
   return '<!doctype html>\n'+clone.outerHTML;
 }
 function utf8Base64(text){const bytes=new TextEncoder().encode(text);let binary='';for(let i=0;i<bytes.length;i+=0x8000)binary+=String.fromCharCode(...bytes.subarray(i,i+0x8000));return btoa(binary)}
