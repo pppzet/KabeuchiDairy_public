@@ -441,7 +441,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 314.344px; top: 28.2699px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 256.731px; top: 23.133px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
         <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
@@ -595,7 +595,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           </div>
           <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
 （URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
@@ -768,7 +768,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">14</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">63</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">64</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -797,7 +797,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
       </div>
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
@@ -811,7 +811,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <button class="btn btn-ghost" onclick="newShort()">新しく書く</button>
       </div>
     </div>
-    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-e548eb51-7320-4751-b150-21493a49c9d9">
+    <div id="shortFeed" class="feed"><article class="tweet-card" id="entry-short-893e8d8c-1008-47c9-a578-60a354c6268b">
+   <div class="tweet-text">日記、ちゃんと軽くなってるかな……？</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/04 10:58 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('893e8d8c-1008-47c9-a578-60a354c6268b')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('893e8d8c-1008-47c9-a578-60a354c6268b')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('893e8d8c-1008-47c9-a578-60a354c6268b')">削除</button>
+     </span>
+   </div>
+ </article><article class="tweet-card" id="entry-short-e548eb51-7320-4751-b150-21493a49c9d9">
    <div class="tweet-text">体調悪い系の話しかしてなくて、もっと見てて楽しい日記にしたいところなのだが、元々SNSの避難所のつもりだったからこのままでいいか</div>
    
    
@@ -926,19 +938,7 @@ A.壁打ち日記最高！✌️
        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('09aa337b-febc-4d54-adff-2c0f1ed810fe')">削除</button>
      </span>
    </div>
- </article><article class="tweet-card" id="entry-short-1377aebf-e93e-40a6-8bf4-419bd311965c">
-   <div class="tweet-text">あたまがスッキリしないわ〜〜ん😭</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/04 01:10 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('1377aebf-e93e-40a6-8bf4-419bd311965c')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('1377aebf-e93e-40a6-8bf4-419bd311965c')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('1377aebf-e93e-40a6-8bf4-419bd311965c')">削除</button>
-     </span>
-   </div>
- </article><div id="shortLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreShort()">💬 もっと読み込む（残り53件）</button></div></div>
+ </article><div id="shortLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreShort()">💬 もっと読み込む（残り54件）</button></div></div>
   </section>
 
   <section id="mediaMode" style="display:none">
@@ -1067,7 +1067,7 @@ A.壁打ち日記最高！✌️
    </div>
  </div>
 </div>
-<div id="toast" class="toast">▓▓ 伏字にしたよ</div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
