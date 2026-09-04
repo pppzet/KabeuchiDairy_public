@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -389,16 +390,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
+        onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app" id="appRoot">
+<div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -407,12 +410,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
           <div class="dropdown-sep"></div>
@@ -420,41 +423,41 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
   <div class="sub admin-only">誰にも見せなくていい。ここでは、全部あなたのもの。</div>
-  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(200.0 45% 55%); --fish-fin: hsl(200.0 56% 72%); --fish-fin-dark: hsl(200.0 43% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
-      <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
+      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 171.394px; top: 21.4134px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
-        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
+        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
       </svg>
       <div class="aquarium-decor"></div>
     </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">3日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">水色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">75回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
     </div>
   </section>
 </div>
@@ -471,19 +474,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList">
-    <div class="profile-link-row">
-      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
-      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
-    </div>
-  
-    <div class="profile-link-row">
-      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
-      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
-    </div>
-  </div>
+      <div id="profileLinksList"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -504,13 +495,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
+      <div id="moodPositiveList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
+      <div id="moodNegativeList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -538,11 +529,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- ネットに公開する枠 -->
   <div class="github-box accordion admin-only">
-    <button type="button" class="accordion-toggle open" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="true">
+    <button type="button" class="accordion-toggle" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="false">
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display: block;">
+    <div class="accordion-body" id="githubAccordionBody" style="display:none">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -575,11 +566,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大6枚）</button>
             <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
@@ -593,15 +584,14 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             </div>
             <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
           </div>
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
-（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked="">
+            <input type="checkbox" id="longPublicToggle" checked>
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -616,8 +606,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">15</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">64</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -629,10 +619,10 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
+      <div class="moods" id="shortMoods"></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大6枚）</button>
         <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
@@ -652,7 +642,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked="">
+        <input type="checkbox" id="shortPublicToggle" checked>
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -667,7 +657,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 15枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint"></p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -2126,15 +2116,21 @@ async function githubFetch(url,options={}){
   catch(e){if(e && e.name==='AbortError')throw new Error('GitHubとの通信が60秒以内に完了しませんでした。通信状態を確認して、もう一度試してね😢');throw e;}
   finally{clearTimeout(timer);}
 }
-async function githubGet(path,owner,repo,branch,token){const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}?ref=${encodeURIComponent(branch)}`;const r=await githubFetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'}});if(r.status===404)return null;if(!r.ok)throw new Error(`GitHub読み込み失敗: HTTP ${r.status}`);return r.json()}
-async function githubPut(path,content,message,owner,repo,branch,token){const current=await githubGet(path,owner,repo,branch,token);const body={message,content:utf8Base64(content),branch};if(current?.sha)body.sha=current.sha;const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;const r=await githubFetch(url,{method:'PUT',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`保存に失敗しちゃいました: HTTP ${r.status} ${d}`)}return r.json()}
 
-/* ===== 画像を個別ファイルとしてGitHubへアップロードする仕組み =====
-   これまでは画像をBase64の文字列のまま journals.json / tweets.json / index.html に
-   直接埋め込んでいたため、日記や写真が増えるほどサイトの容量がどんどん大きくなり、
-   端末のローカル保存容量（localStorage）も圧迫していました。
-   ここからは、画像1枚ごとに images/ フォルダへ別ファイルとしてアップロードし、
-   日記データ側には軽いURL文字列だけを持たせる方式に変更しています。 */
+/* ===== 高速化版の公開処理（Git Data APIによる一括コミット） =====
+   これまでは「ファイルごとにGET（現在のSHA確認）→PUT（保存）」を
+   index.html / tweets.json / journals.json / profile.json / fish.json / theme.json（/pin.json）
+   の6〜7ファイル分、しかも画像も1枚ずつ、すべて順番に（直列に）行っていました。
+   そのため公開1回あたり通信が最大10〜20往復近くになり、1往復ごとの通信時間が
+   そのまま積み重なって体感速度がずっと遅いままになっていました。
+
+   ここからはGitHubの「Git Data API」を使い、
+   ①変更するファイル（画像も含む）をすべて同時並行でアップロード（Blob化）
+   ②それらをまとめて「1つの新しいツリー」にする
+   ③「1回のコミット」を作ってブランチを更新する
+   という方式に変更し、通信回数と待ち時間の合計を大きく減らしています。
+   （おまけに、途中でどれか1つのファイルだけ失敗して公開内容がちぐはぐになる…
+   という事故も起きにくくなります） */
 
 // "data:image/jpeg;base64,xxxx" のような文字列から mimeタイプとBase64本体を取り出す
 function parseDataUri(uri){
@@ -2147,50 +2143,58 @@ function extForMime(mime){
   const map = {'image/jpeg':'jpg','image/jpg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
   return map[mime] || 'jpg';
 }
-// 新規ファイルを1つアップロードする（ファイル名は毎回ユニークなので、
-// 既存ファイルの有無を確認するgithubGetは呼ばずに済ませて通信回数を減らしています）
-async function githubPutNewFile(path,base64Content,message,owner,repo,branch,token){
-  const url = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path}`;
-  const r = await githubFetch(url,{method:'PUT',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify({message,content:base64Content,branch})});
-  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`画像のアップロードに失敗しちゃいました: HTTP ${r.status} ${d}`)}
+
+// 現在のブランチが指しているコミットのSHAを取得（ブランチがまだ無い＝初回公開の場合はnull）
+async function githubGetRef(owner,repo,branch,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/ref/heads/${encodeURIComponent(branch)}`;
+  const r=await githubFetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'}});
+  if(r.status===404)return null;
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`ブランチ情報の取得に失敗しちゃいました: HTTP ${r.status} ${d}`)}
   return r.json();
 }
-// 日記・つぶやきの中にまだBase64のまま残っている画像をGitHubへ個別アップロードし、
-// データ側はraw.githubusercontent.comの完全なURLに置き換える。
-// ・完全なURLにしているのは、ローカルのHTMLファイルを直接開いて編集しているときも
-//   （相対パスと違って）画像プレビューがちゃんと表示されるようにするためです。
-// ・非公開（下書き）の日記の画像はアップロード対象から除外します＝そのままBase64で保持。
-//   journals.json/tweets.jsonにも載らない下書きの画像を、うっかり公開リポジトリに
-//   置いてしまわないようにするためです。
-async function uploadPendingImages(owner,repo,branch,token,onProgress){
-  const targets = [];
-  [data.long, data.short].forEach(list=>{
-    list.forEach(e=>{
-      if(e.public===false) return;
-      if(Array.isArray(e.images)){
-        e.images.forEach((im,i)=>{ if(typeof im==='string' && im.startsWith('data:')) targets.push({arr:e.images, idx:i}); });
-      } else if(typeof e.image==='string' && e.image.startsWith('data:')){
-        targets.push({arr:e, idx:'image'});
-      }
-    });
-  });
-  if(!targets.length) return 0;
-  let done = 0;
-  for(const t of targets){
-    const rawUri = t.arr[t.idx];
-    const parsed = parseDataUri(rawUri);
-    if(!parsed){ done++; continue; }
-    const ext = extForMime(parsed.mime);
-    const relPath = `images/${crypto.randomUUID()}.${ext}`;
-    await githubPutNewFile(relPath, parsed.base64, 'Upload wall journal image', owner, repo, branch, token);
-    t.arr[t.idx] = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${relPath}`;
-    done++;
-    // 1枚アップロードするごとに保存しておくことで、途中で通信エラーが起きても
-    // それまでに変換できた分は失われず、ローカル容量もその場で軽くなっていきます
-    try{ save(); }catch(e){}
-    if(onProgress) onProgress(done, targets.length);
-  }
-  return done;
+async function githubGetCommit(owner,repo,sha,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/commits/${sha}`;
+  const r=await githubFetch(url,{headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10'}});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`コミット情報の取得に失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
+}
+// 1つのファイルの中身を「Blob（保管用の部品）」としてアップロードする。中身はbase64で送る。
+async function githubCreateBlob(owner,repo,base64Content,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/blobs`;
+  const r=await githubFetch(url,{method:'POST',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify({content:base64Content,encoding:'base64'})});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`ファイルの下準備に失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
+}
+// 複数のBlob（変更するファイルたち）をまとめて「1つのツリー」にする
+async function githubCreateTree(owner,repo,baseTreeSha,tree,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/trees`;
+  const body={tree};
+  if(baseTreeSha) body.base_tree=baseTreeSha;
+  const r=await githubFetch(url,{method:'POST',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`更新内容のまとめに失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
+}
+// ツリーから「1回分のコミット」を作る
+async function githubCreateCommit(owner,repo,message,treeSha,parentSha,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/commits`;
+  const body={message,tree:treeSha,parents:parentSha?[parentSha]:[]};
+  const r=await githubFetch(url,{method:'POST',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`コミットの作成に失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
+}
+// 既存のブランチを、新しく作ったコミットに向け直す（＝公開を反映する）
+async function githubUpdateRef(owner,repo,branch,commitSha,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/refs/heads/${encodeURIComponent(branch)}`;
+  const r=await githubFetch(url,{method:'PATCH',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify({sha:commitSha})});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`公開の反映に失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
+}
+// ブランチがまだ存在しない（本当に初めての公開）場合だけ、新しくブランチを作る
+async function githubCreateRef(owner,repo,branch,commitSha,token){
+  const url=`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/git/refs`;
+  const r=await githubFetch(url,{method:'POST',headers:{'Accept':'application/vnd.github+json','Authorization':`Bearer ${token}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},body:JSON.stringify({ref:`refs/heads/${branch}`,sha:commitSha})});
+  if(!r.ok){let d='';try{d=(await r.json()).message||''}catch{}throw new Error(`ブランチの作成に失敗しちゃいました: HTTP ${r.status} ${d}`)}
+  return r.json();
 }
 
 let isPublishingToGitHub=false;
@@ -2205,23 +2209,78 @@ async function publishToGitHub(){
  saveGithubSettings();
  const btn=document.querySelector('.github-box .btn-primary');
  const old=btn ? btn.textContent : '📤 GitHubへ公開する！';
- if(btn){btn.disabled=true;btn.textContent='📤 公開中…'}
+ if(btn){btn.disabled=true;btn.textContent='📤 準備中…'}
  try{
-   await uploadPendingImages(owner,repo,branch,token,(done,total)=>{if(btn)btn.textContent=`📤 画像アップロード中…(${done}/${total})`;});
-   if(btn)btn.textContent='📤 公開中…';
+   // 1) 今のブランチが指すコミット・ツリーを取得（通信1〜2回だけ。初回公開ならnullのまま進む）
+   let baseCommitSha=null, baseTreeSha=null;
+   const refInfo=await githubGetRef(owner,repo,branch,token);
+   if(refInfo){
+     baseCommitSha=refInfo.object.sha;
+     const baseCommit=await githubGetCommit(owner,repo,baseCommitSha,token);
+     baseTreeSha=baseCommit.tree.sha;
+   }
+
+   // 2) まだBase64のまま残っている画像（下書きを除く）を洗い出す
+   const imageTargets=[];
+   [data.long, data.short].forEach(list=>{
+     list.forEach(e=>{
+       if(e.public===false) return;
+       if(Array.isArray(e.images)){
+         e.images.forEach((im,i)=>{ if(typeof im==='string' && im.startsWith('data:')) imageTargets.push({arr:e.images, idx:i}); });
+       } else if(typeof e.image==='string' && e.image.startsWith('data:')){
+         imageTargets.push({arr:e, idx:'image'});
+       }
+     });
+   });
+
+   // 3) 画像をすべて同時並行でBlob化（従来は1枚ずつ順番＝直列だった部分）
+   let imgDone=0;
+   if(btn && imageTargets.length) btn.textContent=`📤 画像アップロード中…(0/${imageTargets.length})`;
+   const imageTreeEntries=(await Promise.all(imageTargets.map(async t=>{
+     const parsed=parseDataUri(t.arr[t.idx]);
+     if(!parsed){ imgDone++; return null; }
+     const ext=extForMime(parsed.mime);
+     const relPath=`images/${crypto.randomUUID()}.${ext}`;
+     const blob=await githubCreateBlob(owner,repo,parsed.base64,token);
+     t.arr[t.idx]=`https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${relPath}`;
+     imgDone++;
+     if(btn) btn.textContent=`📤 画像アップロード中…(${imgDone}/${imageTargets.length})`;
+     return { path:relPath, mode:'100644', type:'blob', sha:blob.sha };
+   }))).filter(Boolean);
+   // 画像のURL置き換え分はここで保存しておく（途中で失敗しても手元のデータは軽いまま残る）
+   try{ save(); }catch(e){}
+
+   // 4) 各種JSON・index.htmlも同時並行でBlob化
+   if(btn) btn.textContent='📤 更新内容をまとめています…';
    renderAll();
-   const safeHtml=htmlForGithub();
-   const publicLong=data.long.filter(e=>e.public!==false);
-   const publicShort=data.short.filter(e=>e.public!==false);
-   await githubPut('index.html',safeHtml,'Update wall journal',owner,repo,branch,token);
-   await githubPut('tweets.json',JSON.stringify(publicShort,null,2),'Update wall journal tweets',owner,repo,branch,token);
-   await githubPut('journals.json',JSON.stringify(publicLong,null,2),'Update wall journal journals',owner,repo,branch,token);
-   await githubPut('profile.json',JSON.stringify(data.profile||{bio:'',links:[]},null,2),'Update wall journal profile',owner,repo,branch,token);
-   await githubPut('fish.json',JSON.stringify(ensureFish(),null,2),'Update wall journal fish',owner,repo,branch,token);
    const currentTheme=localStorage.getItem('wall_journal_theme')||'cream';
-   await githubPut('theme.json',JSON.stringify({theme:currentTheme},null,2),'Update wall journal theme',owner,repo,branch,token);
    const pinHash=localStorage.getItem(PIN_HASH_KEY);
-   if(pinHash)await githubPut('pin.json',JSON.stringify({hash:pinHash},null,2),'Update wall journal pin',owner,repo,branch,token);
+   const textFiles=[
+     { path:'index.html', content: htmlForGithub() },
+     { path:'tweets.json', content: JSON.stringify(data.short.filter(e=>e.public!==false),null,2) },
+     { path:'journals.json', content: JSON.stringify(data.long.filter(e=>e.public!==false),null,2) },
+     { path:'profile.json', content: JSON.stringify(data.profile||{bio:'',links:[]},null,2) },
+     { path:'fish.json', content: JSON.stringify(ensureFish(),null,2) },
+     { path:'theme.json', content: JSON.stringify({theme:currentTheme},null,2) },
+   ];
+   if(pinHash) textFiles.push({ path:'pin.json', content: JSON.stringify({hash:pinHash},null,2) });
+   const textTreeEntries=await Promise.all(textFiles.map(async f=>{
+     const blob=await githubCreateBlob(owner,repo,utf8Base64(f.content),token);
+     return { path:f.path, mode:'100644', type:'blob', sha:blob.sha };
+   }));
+
+   // 5) 画像＋JSON＋HTML、すべてをまとめて「1つの新しいツリー」にする
+   const newTree=await githubCreateTree(owner,repo,baseTreeSha,[...imageTreeEntries,...textTreeEntries],token);
+
+   // 6) 「1回のコミット」を作って、ブランチをそこへ向け直す（＝公開を反映する）
+   if(btn) btn.textContent='📤 公開を反映中…';
+   const newCommit=await githubCreateCommit(owner,repo,'Update wall journal',newTree.sha,baseCommitSha,token);
+   if(baseCommitSha){
+     await githubUpdateRef(owner,repo,branch,newCommit.sha,token);
+   }else{
+     await githubCreateRef(owner,repo,branch,newCommit.sha,token);
+   }
+
    toast('GitHubへ公開したよ！ ✨');
    alert('公開成功しました！✨\n\n数分後に公開ページからチェックしてみてね！');
  }catch(e){
@@ -2451,5 +2510,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', startFishSwimming);}else{startFishSwimming();}
 </script>
-
-</body></html>
+</body>
+</html>
