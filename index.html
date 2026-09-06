@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="ja" style="--bg: #0e1a18; --bg-alt: #122420; --surface: #162e28; --surface-2: #1c3830; --text: #dff5ee; --text-muted: #7ab0a4; --accent-lavender: #6fc9b8; --accent-pink: #8fd8c8; --text-on-primary: #0e1a18; --line: rgba(223,245,238,0.10); --header-bg: rgba(14,26,24,0.78);"><head>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -140,6 +141,22 @@ header{
   0%{transform:translate(-50%,-50%) scale(1);opacity:1}
   75%{opacity:1}
   100%{transform:translate(-50%,28px) scale(.65);opacity:.05}
+}
+/* 投稿した瞬間、選んだ気分の色でキラッとはじける粒（お祝い演出） */
+.mood-spark{
+  position:absolute;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:hsl(var(--spark-hue) 78% 62%);
+  box-shadow:0 0 6px hsl(var(--spark-hue) 78% 62% / .6);
+  pointer-events:none;
+  z-index:4;
+  animation:mood-spark-pop 1.1s ease-out forwards;
+}
+@keyframes mood-spark-pop{
+  0%{transform:translate(-50%,-50%) scale(.4);opacity:0}
+  25%{opacity:1}
+  100%{transform:translate(-50%,-50%) translateY(-22px) scale(1.15);opacity:0}
 }
 
 .feed-pop .betta{transform:translate(-50%,-50%) scale(1.12)}
@@ -400,16 +417,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
+        onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app" id="appRoot">
+<div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -418,12 +437,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="琥珀（ダーク）"><div class="d-bg" style="background:#1f160f"></div><div class="d-ac" style="background:#e0a050"></div></button><button type="button" class="tsw" title="墨（ダーク）"><div class="d-bg" style="background:#16171a"></div><div class="d-ac" style="background:#c7c7cf"></div></button><button type="button" class="tsw" title="蘇芳（ダーク）"><div class="d-bg" style="background:#1c1012"></div><div class="d-ac" style="background:#d97b7b"></div></button><button type="button" class="tsw active" title="翡翠（ダーク）"><div class="d-bg" style="background:#0e1a18"></div><div class="d-ac" style="background:#6fc9b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button><button type="button" class="tsw" title="ミント（ライト）"><div class="d-bg" style="background:#f0f9f6"></div><div class="d-ac" style="background:#4aa88a"></div></button><button type="button" class="tsw" title="ラベンダー（ライト）"><div class="d-bg" style="background:#f6f3fb"></div><div class="d-ac" style="background:#8a6fc0"></div></button><button type="button" class="tsw" title="桃（ライト）"><div class="d-bg" style="background:#fdf3ee"></div><div class="d-ac" style="background:#e0855a"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
           <div class="dropdown-sep"></div>
@@ -431,41 +450,41 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
   <div class="sub admin-only">公開するもしないも、あなたの気分次第。ここは今も全部、あなたの場所だよ。</div>
-  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(90.8 37% 55%); --fish-fin: hsl(90.8 47% 72%); --fish-fin-dark: hsl(90.8 35% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
-      <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
+      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
       <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 116.715px; top: 14.0305px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
-        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
+        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
       </svg>
       <div class="aquarium-decor"></div>
     </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">6日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">黄緑色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">126回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
     </div>
   </section>
 </div>
@@ -482,19 +501,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList">
-    <div class="profile-link-row">
-      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
-      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
-    </div>
-  
-    <div class="profile-link-row">
-      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
-      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
-    </div>
-  </div>
+      <div id="profileLinksList"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -512,16 +519,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐠 気分の判定辞書を編集</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="moodDictAccordionBody" style="display: none;">
+    <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
+      <div id="moodPositiveList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
+      <div id="moodNegativeList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -536,8 +543,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
   </div>
 
@@ -549,11 +556,11 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- ネットに公開する枠 -->
   <div class="github-box accordion admin-only">
-    <button type="button" class="accordion-toggle open" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="true">
+    <button type="button" class="accordion-toggle" id="githubAccordionToggle" onclick="toggleGithubAccordion()" aria-expanded="false">
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display: block;">
+    <div class="accordion-body" id="githubAccordionBody" style="display:none">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -577,7 +584,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="display: none;">
+  <section id="longMode">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -586,13 +593,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
-            <div id="longImagePreviewBox" class="img-preview-box" style="display: none;"></div>
+            <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
           </div>
 
@@ -605,17 +612,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
           </div>
           <div class="compose-wrap">
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
-（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="tape-overlay" id="longTapeOverlay" aria-hidden="true"></div>
         </div>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked="">
+            <input type="checkbox" id="longPublicToggle" checked>
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -630,23 +636,23 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">22</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">89</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="">
+  <section id="shortMode" style="display:none">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
+      <div class="moods" id="shortMoods"></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大10枚）</button>
         <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
@@ -663,13 +669,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
       <div class="tape-overlay" id="shortTapeOverlay" aria-hidden="true"></div>
       </div>
-      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked="">
+        <input type="checkbox" id="shortPublicToggle" checked>
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -684,7 +690,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 37枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint"></p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -701,7 +707,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを更新したよ ✨</div>
+<div id="toast" class="toast"></div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1023,42 +1029,133 @@ function toggleMoodDictAccordion(){
   btn.setAttribute('aria-expanded', String(willOpen));
   btn.classList.toggle('open', willOpen);
 }
-// 直近の「気分がわかる」長文日記・つぶやきから、いちばん優勢な気分を採用する。
-// 長文日記は選ばれた気分アイコンを、つぶやきはキーワード辞書による推定気分を使い、
-// 更新日時順に混ぜて直近4件分の傾向で判定することで、1件だけの気分でコロコロ変わらないようにしている。
-function computeFishMoodFromEntries(){
-  const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
-  // つぶやきは、任意で選んだ気分アイコン（e.mood）があればそれを優先。
-  // 付けていない場合だけ、これまで通りキーワード辞書から推定する。
-  const shortMoods=data.short.map(e=>({mood:e.mood||moodFromShortEntry(e), ts:e.updated||e.created})).filter(x=>x.mood);
-  return longMoods.concat(shortMoods)
-    .sort((a,b)=> new Date(b.ts) - new Date(a.ts))
-    .slice(0,14)
-    .map(x=>x.mood);
+// ===== 「件数」ではなく「日数」ベースで気分の継続傾向を測る仕組み =====
+// 以前は「直近14件」という件数ベースの窓を使っていたが、これだと投稿数の多い日に
+// 色が引っ張られすぎたり、逆に投稿が少ない時期は同じ14件がずっと居座ってしまい、
+// 「何日くらい同じ傾向が続いているか」を正確に反映できなかった。
+// 日付ごとに気分をまとめ、日数に応じて指数的に減衰させながら積み重ねることで、
+// 1日だけの気分では大きく動かず、数日〜1週間くらい同じ方向が続くとしっかり色に出て、
+// 逆にしばらく日記を書かない間は主張がゆっくり弱まっていくようにする。
+function dateKeyOf(ts){
+  const d=new Date(ts);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-// 最近14件の気分を「色の履歴」として平均し、魚の色を少しだけそちらへ動かす。
+function daysBetweenKeys(aKey,bKey){
+  const a=new Date(aKey+'T00:00:00'); const b=new Date(bKey+'T00:00:00');
+  return Math.round((b-a)/86400000);
+}
+// 長文日記の気分アイコン・つぶやきの気分アイコン（またはキーワード推定）を、
+// 「その日1日分」の1本のベクトルにまとめる。同じ日に何件投稿しても、その日は1日として扱う。
+function computeDailyMoodBuckets(){
+  const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
+  const shortMoods=data.short.map(e=>({mood:e.mood||moodFromShortEntry(e), ts:e.updated||e.created})).filter(x=>x.mood);
+  const byDate=new Map();
+  longMoods.concat(shortMoods).forEach(({mood,ts})=>{
+    const hue=moodToFishHue(mood);
+    if(hue===null) return;
+    const key=dateKeyOf(ts);
+    if(!byDate.has(key)) byDate.set(key,{x:0,y:0,n:0});
+    const b=byDate.get(key);
+    const r=hue*Math.PI/180;
+    b.x+=Math.cos(r); b.y+=Math.sin(r); b.n+=1;
+  });
+  const days=[...byDate.entries()].map(([key,b])=>{
+    const mag=b.n>0 ? Math.sqrt(b.x*b.x+b.y*b.y)/b.n : 0;
+    const angle=Math.atan2(b.y,b.x);
+    return {key, x:Math.cos(angle)*mag, y:Math.sin(angle)*mag};
+  });
+  days.sort((a,b)=> a.key<b.key?-1:a.key>b.key?1:0);
+  return days;
+}
+// 1日あたりの減衰率。半減期がだいたい5.4日になる値にしてある
+// （＝同じ傾向が5〜6日続くとその影響がしっかり色に残り、1日だけの気分では大きく動かない）。
+// 色の動きが敏感すぎる／鈍すぎると感じたら、この数値だけ調整すれば体感を変えられる。
+const FISH_MOOD_DAILY_DECAY=0.88;
+function computeFishMoodTrend(){
+  const days=computeDailyMoodBuckets();
+  if(!days.length) return null;
+  let accX=0,accY=0,accW=0,prevKey=null;
+  days.forEach(day=>{
+    if(prevKey){
+      const gap=Math.max(0,daysBetweenKeys(prevKey,day.key));
+      const decay=Math.pow(FISH_MOOD_DAILY_DECAY,gap);
+      accX*=decay; accY*=decay; accW*=decay;
+    }
+    accX+=day.x; accY+=day.y; accW+=1;
+    prevKey=day.key;
+  });
+  // 最後に気分が記録された日から「今日」までの間も日数分だけ減衰させる。
+  // しばらく日記を書いていない間は、色の主張がゆっくり弱まっていくイメージ。
+  const todayKey=dateKeyOf(new Date());
+  if(prevKey){
+    const gap=Math.max(0,daysBetweenKeys(prevKey,todayKey));
+    const decay=Math.pow(FISH_MOOD_DAILY_DECAY,gap);
+    accX*=decay; accY*=decay; accW*=decay;
+  }
+  if(accW<=0) return null;
+  const target=(Math.atan2(accY,accX)*180/Math.PI+360)%360;
+  // ベクトルの長さ（0〜1）＝直近の傾向が「まとまっているか」の指標。
+  // 元気系の日としんどい系の日が入り混じっていると、この値が小さくなる。
+  const magnitude=Math.min(1, Math.sqrt(accX*accX+accY*accY)/accW);
+  return {target, magnitude, todayKey, days};
+}
+// 直近で気分がわかる投稿のうち、いちばん新しいものを1つだけ返す（表示ラベル用）。
+function latestSingleMood(){
+  const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
+  const shortMoods=data.short.map(e=>({mood:e.mood||moodFromShortEntry(e), ts:e.updated||e.created})).filter(x=>x.mood);
+  const merged=longMoods.concat(shortMoods).sort((a,b)=> new Date(b.ts)-new Date(a.ts));
+  return merged[0]?.mood || '';
+}
+// 日付ベースの気分の傾向を使って、魚の色を少しだけそちらへ動かす。
 function refreshFishMood(){
-  const moods=computeFishMoodFromEntries();
-  const hues=moods.map(moodToFishHue).filter(h=>h!==null);
-  if(!hues.length){ renderFish(); return; }
+  const trend=computeFishMoodTrend();
+  if(!trend){ renderFish(); return; }
   const f=ensureFish();
-  const signature=moods.join('||');
-  // 同じ気分履歴でページを開くたびに色が動かないようにする。
+  // 「今日の日付」＋「日ごとの気分ベクトルの中身」が前回と変わっていなければ、
+  // ページを開くたびに色が動かないようにする。逆に、同じ日でも違う気分を追加投稿した
+  // 場合はベクトルの中身が変わるので、ちゃんと変化として検出できる。
+  const signature=trend.todayKey+'|'+trend.days.map(d=>`${d.key}:${d.x.toFixed(4)}:${d.y.toFixed(4)}`).join(',');
   if(f.colorMoodSignature===signature){ renderFish(); return; }
-  let x=0,y=0,wsum=0;
-  hues.forEach((h,i)=>{ const w=1/(i+1); const r=h*Math.PI/180; x+=Math.cos(r)*w; y+=Math.sin(r)*w; wsum+=w; });
-  let target=(Math.atan2(y,x)*180/Math.PI+360)%360;
-  // ベクトルの長さ（0〜1）＝最近の気分が「まとまっているか」の指標。
-  // ポジティブとネガティブが綱引きして打ち消し合うと、この値が小さくなる。
-  const magnitude=wsum>0 ? Math.sqrt(x*x+y*y)/wsum : 0.6;
-  f.colorHue=(f.colorHue + hueDistance(f.colorHue,target)*0.12 + 360)%360;
+  f.colorHue=(f.colorHue + hueDistance(f.colorHue,trend.target)*0.12 + 360)%360;
   // 鮮やかさもゆっくり追従させる（一気に鮮やか⇔淡いに切り替わらないように）。
   const prevConsistency=typeof f.colorConsistency==='number' ? f.colorConsistency : 0.6;
-  f.colorConsistency=prevConsistency + (magnitude-prevConsistency)*0.12;
-  f.mood=moods[0]||'';
+  f.colorConsistency=prevConsistency + (trend.magnitude-prevConsistency)*0.12;
+  f.mood=latestSingleMood();
   f.colorMoodSignature=signature;
   save();
   renderFish();
+}
+// ===== 投稿した瞬間の「反応してくれた！」という手応え =====
+// 上のrefreshFishMood()は日数ベースでゆっくり動く「長期的な傾向」担当。
+// それとは別に、投稿するたびに今回選んだ気分の色へ少しだけ即座に動く「一押し」を用意する。
+// この一押しは保存はされるが、次にrefreshFishMood()が走るたびに長期的な傾向へ
+// じわじわ引き戻されるので、単発の投稿だけで傾向が乱されたままになることはない。
+const FISH_MOOD_PULSE_RATIO=0.18;
+function pulseFishColorForPost(mood){
+  const hue=moodToFishHue(mood);
+  if(hue===null) return;
+  const f=ensureFish();
+  f.colorHue=(f.colorHue + hueDistance(f.colorHue,hue)*FISH_MOOD_PULSE_RATIO + 360)%360;
+  save();
+  renderFish();
+  spawnMoodSpark(hue);
+}
+// 投稿の瞬間、選んだ気分の色でキラッと粒がはじける演出（餌やりの粒と同じ仕組みを流用）。
+function spawnMoodSpark(hue){
+  const tank=document.getElementById('aquariumTank');
+  if(!tank) return;
+  const rect=tank.getBoundingClientRect();
+  const cx=rect.width/2, cy=rect.height*0.54;
+  for(let i=0;i<4;i++){
+    const particle=document.createElement('span');
+    particle.className='mood-spark';
+    particle.style.setProperty('--spark-hue', hue);
+    particle.style.left=(cx + (Math.random()*36-18))+'px';
+    particle.style.top=(cy + (Math.random()*14-7))+'px';
+    particle.style.animationDelay=(i*70)+'ms';
+    tank.appendChild(particle);
+    setTimeout(()=>particle.remove(), 1300);
+  }
 }
 function renderFish(){
   const f=ensureFish(); const hue=((f.colorHue%360)+360)%360;
@@ -1748,6 +1845,7 @@ function saveLong(){
    alert('容量がいっぱいかも！古い日記を少し整理してみてね😢'); 
    return; 
  }
+ pulseFishColorForPost(selectedMood);
  refreshFishMood();
  renderLong();
  toast('日記を保存したよ 📖');
@@ -1910,6 +2008,9 @@ function saveShort(){
  }else{
    data.short.unshift({id:crypto.randomUUID(),body,mood:selectedShortMood,images:[...currentShortImages],public:isPublic,cushion,created:now,updated:now});
  }
+ // このあと selectedShortMood はフォームリセットで空になるので、
+ // 気分アイコン未選択のときのキーワード推定も含めて、先に確定させておく。
+ const postedShortMood = selectedShortMood || moodFromShortEntry({body});
  try { 
    save(); 
  } catch(err) { 
@@ -1926,6 +2027,7 @@ function saveShort(){
  editingShort=null;
  selectedShortMood='';
  renderMoods();
+ pulseFishColorForPost(postedShortMood);
  refreshFishMood();
  renderShort();
  toast(wasEditing ? 'つぶやきを更新したよ ✨' : 'つぶやきを置いたよ 💬')
@@ -2699,32 +2801,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', startFishSwimming);}else{startFishSwimming();}
 </script>
-
-<div class="spoiler-measure-mirror" style="width: 279px; font-family: Inter; font-size: 13.5px; font-weight: 400; font-style: normal; letter-spacing: normal; line-height: 24.3px;">FFCCが楽しすぎる。
-というわけでプレイ日記です。
-[[img:0]]
-キノコの森。
-前回、このステージ名の綴り字がGC版だと筆記体だったと言っちゃったけど、画質向上して読みやすくなっただけでデザイン自体は変わってなかったらしい😮嘘言っちゃった！
-[[img:5]]
-[[img:4]]
-Switch版で画質向上したミルラの木とミルラの雫、美しすぎる〜。
-[[img:1]]
-マール峠、三年ごとに子供が増える家族とかいる。アルティマニアで「なかなかの計画出産」とか書かれてたね……。
-[[img:2]]
-鉄が採れなくなった鉱山。
-実際、鉄アイテムがあんまり手に入らない。
-[[img:3]]
-自爆の溜め時間が普通にボーナスタイムなのでそんなに強いイメージがないぜ（シングルプレイ）（マルチだと体力が増えるので厳しくなりそう）
-[[img:6]]
-自アバター。
-そういえばGC版でも最強装備手に入れたこと無いんだよな……。目指すか！？
-[[img:7]]
-エレキクラゲの痺れデバフが面倒くさい
-[[img:8]]
-割と好きよ、多分メス（FFCCの魔物に雌雄の区別はなさそうだが……！）（今後出てくる魔物夫妻ボスも、人間たちの「夫婦」の<span>||思い出||</span>を真似してるだけと思われるし……！）
-[[img:9]]
-ローラン村長迫真の呪文。
-小説版だと「実はクリスタルの反応に合わせて動いてるだけで魔法を使ってるとかではない」と書かれてた。
-
-書きたいこと有りすぎて画像添付枚数足りねえ！
-#FFCC #ゲーム #プレイ日記</div></body></html>
+</body>
+</html>
