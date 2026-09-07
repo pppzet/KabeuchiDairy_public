@@ -186,6 +186,47 @@ header{
 .aquarium-card.viewer-aquarium{margin-bottom:0}
 @media(max-width:520px){.aquarium-card{height:68px}.betta{width:44px;height:27px}}
 
+/* ===== 水槽デコレーション（自由配置パーツ） =====
+   飾りに特別な意味（成長段階など）は持たせず、あくまで「模様替え」用。
+   魚より奥（DOM順で.bettaより前）に挿入するのが既定で、視認性を守るため
+   デフォルトでは前面レイヤーは使わない設計にしている。 */
+.decor-part{
+  position:absolute;width:30px;height:30px;
+  transform-origin:50% 50%;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.18));
+  pointer-events:none; touch-action:none;
+}
+.decor-part svg{width:100%;height:100%;display:block;overflow:visible}
+.aquarium-tank.decor-edit .decor-part{pointer-events:auto;cursor:grab}
+.aquarium-tank.decor-edit .decor-part:active{cursor:grabbing}
+.aquarium-tank.decor-edit .decor-part.selected{
+  outline:2px dashed rgba(255,255,255,.85);outline-offset:3px;border-radius:8px;
+}
+.aquarium-tank.decor-edit{cursor:default}
+.aquarium-tank.decor-edit::before{
+  content:"パーツをドラッグで移動できるよ";position:absolute;left:50%;bottom:3px;
+  transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,.55);
+  pointer-events:none;z-index:5;white-space:nowrap;
+}
+.decor-palette-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.decor-palette-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  padding:8px 4px;font-size:10px;text-align:center;line-height:1.25;
+}
+.decor-palette-btn .decor-thumb{width:30px;height:30px}
+.decor-placed-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.decor-placed-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--surface-2);border:1px solid var(--line);color:var(--text);
+  border-radius:999px;padding:5px 12px 5px 6px;font-size:12px;cursor:pointer;
+}
+.decor-placed-chip .decor-thumb{width:20px;height:20px}
+.decor-placed-chip.active{border-color:var(--accent-lavender);color:var(--accent-lavender)}
+.decor-thumb svg{width:100%;height:100%;display:block}
+.decor-slider-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.decor-slider-row label{min-width:70px;font-size:12.5px;color:var(--text-muted)}
+.decor-slider-row input[type=range]{flex:1}
+
 main{padding:20px 16px}
 
 /* TABS */
@@ -521,7 +562,6 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <div class="plant p1"></div><div class="plant p2"></div><div class="plant p3"></div>
       <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
@@ -588,6 +628,25 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
         <button class="btn btn-ghost" onclick="copyMoodDictionaryOnly()">📋 辞書だけコピー</button>
         <button class="btn btn-ghost" onclick="resetMoodDictionary()">🔄 初期の辞書に戻す</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 水槽デコレーション編集（管理画面） -->
+  <div class="card accordion admin-only" style="margin-bottom:20px;">
+    <button type="button" class="accordion-toggle" id="decorAccordionToggle" onclick="toggleDecorAccordion()" aria-expanded="false">
+      <span>🪸 水槽をデコレーション</span>
+      <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+    <div class="accordion-body" id="decorAccordionBody" style="display:none">
+      <p class="hint">気分や成長とは関係のない、ただの模様替え機能だよ🐚 下のパーツをタップすると水槽に追加されるので、あとは水槽内で指でドラッグして位置を調整してね。魚より奥に置かれるので、魚の見やすさはそのまま守られます。</p>
+      <label>パーツを追加</label>
+      <div class="decor-palette-grid" id="decorPaletteGrid"></div>
+      <label style="margin-top:6px;display:block">配置したパーツ（タップで選択）</label>
+      <div class="decor-placed-row" id="decorPlacedList"></div>
+      <div id="decorEditorControls"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <button class="btn btn-ghost" onclick="resetAquariumDecor()">🔄 初期配置に戻す</button>
       </div>
     </div>
   </div>
@@ -809,6 +868,7 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
 if(!data.profile) data.profile = {bio:'', links:[]};
 if(!data.fish) data.fish = {bornAt:new Date().toISOString(), colorStage:0, mood:'', feedCount:0, lastFed:null};
 if(!data.moodDictionary) data.moodDictionary = {positive:[...DEFAULT_MOOD_POSITIVE_WORDS], negative:[...DEFAULT_MOOD_NEGATIVE_WORDS]};
+if(!Array.isArray(data.aquariumDecor)) data.aquariumDecor = defaultAquariumDecor();
 let editingLong=null, selectedMood='';
 let editingShort=null, selectedShortMood='';
 let currentLongImages=[];
@@ -1280,6 +1340,194 @@ function renderFish(){
     else label.textContent='最近の気分がゆっくり色に反映中 🫧';
   }
 }
+/* ===== 水槽デコレーション（自由配置・回転・拡大縮小） =====
+   意味を持たせない、あくまで「模様替え」用の機能。
+   data.aquariumDecor = [{id, type, x(0-100%), y(0-100%), rot(度), scale, layer:'back'|'front'}]
+   layer='back'（既定）は魚より奥（DOM順で.bettaより前）に描画され、魚の視認性を守る。 */
+const DECOR_LABELS = {
+  rock1:'🪨 岩（小）', rock2:'🪨 岩（大）', driftwood:'🌿 流木',
+  plant_green:'🍀 水草（グリーン）', plant_teal:'🌊 水草（ターコイズ）', plant_purple:'💜 水草（パープル）',
+  coral_pink:'🌸 サンゴ（ピンク）', coral_orange:'🧡 サンゴ（オレンジ）'
+};
+const DECOR_TYPES = Object.keys(DECOR_LABELS);
+const DECOR_SVG = {
+  rock1:'<svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"/><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"/></svg>',
+  rock2:'<svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"/><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"/><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"/></svg>',
+  driftwood:'<svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"/></svg>',
+  plant_green:'<svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"/></svg>',
+  plant_teal:'<svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"/></svg>',
+  plant_purple:'<svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"/></svg>',
+  coral_pink:'<svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"/><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"/><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"/></svg>',
+  coral_orange:'<svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"/><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"/><circle cx="14" cy="28" r="3.4" fill="#f0b686"/><circle cx="47" cy="24" r="3.4" fill="#f0b686"/><circle cx="32" cy="15" r="3.4" fill="#f0b686"/></svg>'
+};
+function decorSvg(type){ return DECOR_SVG[type] || ''; }
+// 初期配置：以前の固定装飾（水草3株）を踏襲した、控えめで見栄えのする既定レイアウト。
+// これ自体もあとから管理画面で自由に動かしたり消したりできる。
+function defaultAquariumDecor(){
+  return [
+    {id:'d1', type:'plant_green', x:9, y:90, rot:-8, scale:1, layer:'back'},
+    {id:'d2', type:'plant_teal', x:18, y:86, rot:6, scale:0.82, layer:'back'},
+    {id:'d3', type:'rock1', x:50, y:94, rot:0, scale:0.85, layer:'back'},
+    {id:'d4', type:'plant_purple', x:89, y:88, rot:8, scale:0.95, layer:'back'}
+  ];
+}
+function ensureAquariumDecor(){
+  if(!Array.isArray(data.aquariumDecor)) data.aquariumDecor = defaultAquariumDecor();
+  return data.aquariumDecor;
+}
+let selectedDecorId = null;
+let decorDragState = null;
+function buildDecorEl(d){
+  const el=document.createElement('div');
+  el.className='decor-part'+(d.id===selectedDecorId?' selected':'');
+  el.dataset.id=d.id;
+  el.style.left=d.x+'%';
+  el.style.top=d.y+'%';
+  el.style.transform=`translate(-50%,-50%) rotate(${d.rot}deg) scale(${d.scale})`;
+  el.innerHTML=decorSvg(d.type);
+  el.addEventListener('click', e=>e.stopPropagation());
+  el.addEventListener('pointerdown', onDecorPointerDown);
+  return el;
+}
+function renderAquariumDecor(){
+  const tank=document.getElementById('aquariumTank');
+  if(!tank) return;
+  tank.querySelectorAll('.decor-part').forEach(n=>n.remove());
+  const fish=tank.querySelector('.betta');
+  ensureAquariumDecor().forEach(d=>{
+    const el=buildDecorEl(d);
+    if(d.layer==='front' || !fish){ tank.appendChild(el); }
+    else{ tank.insertBefore(el, fish); }
+  });
+}
+// パーツを指でつまんで動かす（回転・拡大縮小は下のスライダーで行う。
+// 高さ70px前後の狭い水槽で二本指ジェスチャーを使うのは操作しづらいため）
+function onDecorPointerDown(e){
+  const tank=document.getElementById('aquariumTank');
+  if(!tank || !tank.classList.contains('decor-edit')) return;
+  e.stopPropagation(); e.preventDefault();
+  const id=e.currentTarget.dataset.id;
+  selectDecor(id);
+  decorDragState={id, tankRect:tank.getBoundingClientRect()};
+  try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(err){}
+  document.addEventListener('pointermove', onDecorPointerMove);
+  document.addEventListener('pointerup', onDecorPointerUp);
+}
+function onDecorPointerMove(e){
+  if(!decorDragState) return;
+  const d=ensureAquariumDecor().find(x=>x.id===decorDragState.id);
+  if(!d) return;
+  const r=decorDragState.tankRect;
+  let xPct=((e.clientX-r.left)/r.width)*100;
+  let yPct=((e.clientY-r.top)/r.height)*100;
+  d.x=Math.max(2,Math.min(98,xPct));
+  d.y=Math.max(2,Math.min(98,yPct));
+  const el=document.querySelector(`.decor-part[data-id="${d.id}"]`);
+  if(el){ el.style.left=d.x+'%'; el.style.top=d.y+'%'; }
+}
+function onDecorPointerUp(){
+  if(!decorDragState) return;
+  decorDragState=null;
+  document.removeEventListener('pointermove', onDecorPointerMove);
+  document.removeEventListener('pointerup', onDecorPointerUp);
+  save();
+}
+function selectDecor(id){
+  selectedDecorId=id;
+  document.querySelectorAll('.decor-part').forEach(el=>el.classList.toggle('selected', el.dataset.id===id));
+  renderDecorEditorControls();
+}
+function renderDecorPalette(){
+  const el=document.getElementById('decorPaletteGrid');
+  if(!el) return;
+  el.innerHTML = DECOR_TYPES.map(t=>`<button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('${t}')"><span class="decor-thumb">${decorSvg(t)}</span><span>${DECOR_LABELS[t]}</span></button>`).join('');
+}
+function renderDecorPlacedList(){
+  const el=document.getElementById('decorPlacedList');
+  if(!el) return;
+  const list=ensureAquariumDecor();
+  if(!list.length){ el.innerHTML='<p class="hint">まだパーツが置かれていないよ。上のボタンから追加してね🪸</p>'; return; }
+  el.innerHTML=list.map(d=>`<button type="button" class="decor-placed-chip${d.id===selectedDecorId?' active':''}" onclick="selectDecor('${d.id}')"><span class="decor-thumb">${decorSvg(d.type)}</span><span>${DECOR_LABELS[d.type]||d.type}</span></button>`).join('');
+}
+function renderDecorEditorControls(){
+  renderDecorPlacedList();
+  const wrap=document.getElementById('decorEditorControls');
+  if(!wrap) return;
+  const d=ensureAquariumDecor().find(x=>x.id===selectedDecorId);
+  if(!d){ wrap.innerHTML='<p class="hint">パーツをタップ（水槽の中、または上の一覧）して選ぶと、回転・大きさ・前後・削除がここでできるよ。</p>'; return; }
+  wrap.innerHTML=`
+    <div class="decor-slider-row">
+      <label>🔄 回転</label>
+      <input type="range" min="0" max="359" value="${Math.round(d.rot)}" oninput="updateSelectedDecor('rot', this.value)">
+    </div>
+    <div class="decor-slider-row">
+      <label>🔍 大きさ</label>
+      <input type="range" min="50" max="200" value="${Math.round(d.scale*100)}" oninput="updateSelectedDecor('scale', this.value/100)">
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
+      <button class="btn btn-ghost" onclick="toggleDecorLayer()">${d.layer==='front'?'⬇️ 魚より奥に戻す':'⬆️ 魚より手前に出す'}</button>
+      <button class="btn btn-ghost" onclick="removeDecorPart('${d.id}')">🗑 このパーツを削除</button>
+    </div>`;
+}
+function addDecorPart(type){
+  const list=ensureAquariumDecor();
+  const id='d'+Date.now()+Math.floor(Math.random()*1000);
+  list.push({id, type, x:50, y:80, rot:0, scale:1, layer:'back'});
+  selectedDecorId=id;
+  save();
+  renderAquariumDecor();
+  renderDecorEditorControls();
+  toast('パーツを追加したよ🪸 水槽内でドラッグして位置を調整してね');
+}
+function removeDecorPart(id){
+  data.aquariumDecor=ensureAquariumDecor().filter(x=>x.id!==id);
+  if(selectedDecorId===id) selectedDecorId=null;
+  save();
+  renderAquariumDecor();
+  renderDecorEditorControls();
+}
+function updateSelectedDecor(field, value){
+  const d=ensureAquariumDecor().find(x=>x.id===selectedDecorId);
+  if(!d) return;
+  d[field]=Number(value);
+  save();
+  renderAquariumDecor();
+}
+function toggleDecorLayer(){
+  const d=ensureAquariumDecor().find(x=>x.id===selectedDecorId);
+  if(!d) return;
+  d.layer = d.layer==='front' ? 'back' : 'front';
+  save();
+  renderAquariumDecor();
+  renderDecorEditorControls();
+}
+function resetAquariumDecor(){
+  if(!confirm('デコレーションを初期状態に戻しますか？現在の配置は消えます。')) return;
+  data.aquariumDecor=defaultAquariumDecor();
+  selectedDecorId=null;
+  save();
+  renderAquariumDecor();
+  renderDecorEditorControls();
+  toast('デコレーションを初期状態に戻したよ🔄');
+}
+function toggleDecorAccordion(){
+  const body=document.getElementById('decorAccordionBody');
+  const btn=document.getElementById('decorAccordionToggle');
+  const tank=document.getElementById('aquariumTank');
+  const willOpen=body.style.display==='none';
+  body.style.display=willOpen?'block':'none';
+  btn.setAttribute('aria-expanded', String(willOpen));
+  btn.classList.toggle('open', willOpen);
+  if(tank) tank.classList.toggle('decor-edit', willOpen);
+  selectedDecorId=null;
+  if(willOpen){
+    renderDecorPalette();
+    document.getElementById('aquariumCard')?.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  renderAquariumDecor();
+  renderDecorEditorControls();
+}
+
 // 訪問者さんご自身の餌やり回数を、訪問者さんの端末のlocalStorageから読み込む。
 // まだ何も保存されていない（初めての訪問者さん）場合は0回から始まる。
 function loadVisitorFeed(){
@@ -2761,6 +3009,7 @@ async function publishToGitHub(){
      {path:'profile.json', content:JSON.stringify(data.profile||{bio:'',links:[]},null,2), encoding:'utf-8'},
      {path:'fish.json', content:JSON.stringify(ensureFish(),null,2), encoding:'utf-8'},
      {path:'theme.json', content:JSON.stringify({theme:currentTheme},null,2), encoding:'utf-8'},
+     {path:'decor.json', content:JSON.stringify(ensureAquariumDecor(),null,2), encoding:'utf-8'},
    ];
    if(pinHash) files.push({path:'pin.json', content:JSON.stringify({hash:pinHash},null,2), encoding:'utf-8'});
    imageUploads.forEach(u=>{ files.push({path:u.relPath, content:u.base64, encoding:'base64'}); });
@@ -2867,7 +3116,7 @@ function swimBettaTo(x, y){
   clearTimeout(fishSwimTimer);
   fishSwimTimer = setTimeout(swimBetta, 2800 + 1100);
 }
-function renderAll(){renderMoods();renderLong();renderShort();renderMedia();renderCalendar();renderCalendarSelectedEntries();renderStats();renderSwatches();renderActiveFilter();renderProfileAdmin();renderProfileView();renderFish();renderMoodDictAdmin()}
+function renderAll(){renderMoods();renderLong();renderShort();renderMedia();renderCalendar();renderCalendarSelectedEntries();renderStats();renderSwatches();renderActiveFilter();renderProfileAdmin();renderProfileView();renderFish();renderMoodDictAdmin();renderAquariumDecor()}
 
 /* ===== PINロック（管理画面ゲート） ===== */
 const PIN_HASH_KEY = 'wall_journal_admin_pin_hash';
@@ -2969,19 +3218,21 @@ async function initApp() {
     if (!isAdmin) {
         let isViewer = false;
         try {
-            const [jRes, tRes, pRes, fRes, thRes] = await Promise.all([
+            const [jRes, tRes, pRes, fRes, thRes, dRes] = await Promise.all([
                 fetch('./journals.json?t=' + Date.now()).catch(()=>null),
                 fetch('./tweets.json?t=' + Date.now()).catch(()=>null),
                 fetch('./profile.json?t=' + Date.now()).catch(()=>null),
                  fetch('./fish.json?t=' + Date.now()).catch(()=>null),
-                 fetch('./theme.json?t=' + Date.now()).catch(()=>null)
+                 fetch('./theme.json?t=' + Date.now()).catch(()=>null),
+                 fetch('./decor.json?t=' + Date.now()).catch(()=>null)
             ]);
-            if ((jRes && jRes.ok) || (tRes && tRes.ok) || (pRes && pRes.ok) || (fRes && fRes.ok) || (thRes && thRes.ok)) {
+            if ((jRes && jRes.ok) || (tRes && tRes.ok) || (pRes && pRes.ok) || (fRes && fRes.ok) || (thRes && thRes.ok) || (dRes && dRes.ok)) {
                 data = {
                     long: (jRes && jRes.ok) ? await jRes.json() : [],
                     short: (tRes && tRes.ok) ? await tRes.json() : [],
                     profile: (pRes && pRes.ok) ? await pRes.json() : {bio:'', links:[]},
-                     fish: (fRes && fRes.ok) ? await fRes.json() : {bornAt:new Date().toISOString(),colorStage:0,mood:'',feedCount:0,lastFed:null}
+                     fish: (fRes && fRes.ok) ? await fRes.json() : {bornAt:new Date().toISOString(),colorStage:0,mood:'',feedCount:0,lastFed:null},
+                     aquariumDecor: (dRes && dRes.ok) ? await dRes.json() : defaultAquariumDecor()
                 };
                 // 餌やり回数・最後に餌をあげた時刻は公開データではなく、
                 // 訪問者さんご自身の端末に保存された値を使う（こちらの公開作業の影響を受けない）
