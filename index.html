@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -295,6 +296,17 @@ input:focus,textarea:focus,select:focus{
 .tweet-foot > span:last-child{flex-shrink:0}
 .empty{text-align:center;color:var(--text-muted);padding:45px 20px;font-size:13px;line-height:2.2}
 
+/* ===== 返信スレッド（自分だけが返信して日記をツリー化する機能） ===== */
+.reply-thread{display:flex;flex-direction:column;gap:12px;margin-top:14px;padding-left:14px;border-left:2px solid var(--line)}
+.reply-thread.reply-thread-flat{padding-left:0;border-left:none}
+.reply-item{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:var(--surface-2)}
+.reply-quote{font-size:12px;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:12px;line-height:1.6}
+.reply-modal-box{max-width:480px}
+.reply-modal-box textarea{min-height:140px}
+.reply-compose-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.reply-modal-actions{display:flex;align-items:center;gap:10px;margin-top:16px}
+.reply-modal-actions span{font-size:11.5px;color:var(--text-muted);margin-right:auto}
+
 .load-sentinel{display:flex;justify-content:center;padding:8px 0 4px}
 .load-more-btn{width:100%;padding:12px;border:1px dashed var(--line);border-radius:var(--radius);background:var(--surface-2);color:var(--text-muted);font-size:12.5px}
 .load-more-btn:hover{background:var(--line);color:var(--text)}
@@ -508,16 +520,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
+        onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app" id="appRoot">
+<div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -526,12 +540,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="琥珀（ダーク）"><div class="d-bg" style="background:#1f160f"></div><div class="d-ac" style="background:#e0a050"></div></button><button type="button" class="tsw" title="墨（ダーク）"><div class="d-bg" style="background:#16171a"></div><div class="d-ac" style="background:#c7c7cf"></div></button><button type="button" class="tsw" title="蘇芳（ダーク）"><div class="d-bg" style="background:#1c1012"></div><div class="d-ac" style="background:#d97b7b"></div></button><button type="button" class="tsw" title="翡翠（ダーク）"><div class="d-bg" style="background:#0e1a18"></div><div class="d-ac" style="background:#6fc9b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button><button type="button" class="tsw" title="ミント（ライト）"><div class="d-bg" style="background:#f0f9f6"></div><div class="d-ac" style="background:#4aa88a"></div></button><button type="button" class="tsw" title="ラベンダー（ライト）"><div class="d-bg" style="background:#f6f3fb"></div><div class="d-ac" style="background:#8a6fc0"></div></button><button type="button" class="tsw" title="桃（ライト）"><div class="d-bg" style="background:#fdf3ee"></div><div class="d-ac" style="background:#e0855a"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
           <div class="dropdown-sep"></div>
@@ -539,40 +553,40 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
   <div class="sub admin-only">公開するもしないも、あなたの気分次第。ここは今も全部、あなたの場所だよ。</div>
-  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(107.6 29% 55%); --fish-fin: hsl(107.6 38% 72%); --fish-fin-dark: hsl(107.6 27% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタ</div>
-      <div class="aquarium-meta" id="fishMoodLabel">いろんな気持ちが混ざってるみたい 🌊</div>
+      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta feed-pop" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 57.7322px; top: 19.6287px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
-        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
+        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
       </svg>
       <div class="aquarium-decor"></div>
-    <div class="decor-part" data-id="d1788821314239317" style="left: 15.7443%; top: 72.3338%; transform: translate(-50%, -50%) rotate(350deg) scale(1.38);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></div><div class="decor-part" data-id="d178882141850636" style="left: 94.1406%; top: 47.1086%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827756550301" style="left: 95.8008%; top: 77.0079%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827800636324" style="left: 85.4248%; top: 83.817%; transform: translate(-50%, -50%) rotate(0deg) scale(1.71);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d178882793287751" style="left: 96.167%; top: 17.2094%; transform: translate(-50%, -50%) rotate(15deg) scale(1.32);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div></div>
+    </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">7日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">若葉色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">187回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
     </div>
   </section>
 </div>
@@ -589,19 +603,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList">
-    <div class="profile-link-row">
-      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
-      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
-    </div>
-  
-    <div class="profile-link-row">
-      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
-      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
-    </div>
-  </div>
+      <div id="profileLinksList"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -622,13 +624,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
+      <div id="moodPositiveList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
+      <div id="moodNegativeList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -647,13 +649,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🪸 水槽をデコレーション</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="decorAccordionBody" style="display: none;">
+    <div class="accordion-body" id="decorAccordionBody" style="display:none">
       <p class="hint">気分や成長とは関係のない、ただの模様替え機能だよ🐚 下のパーツをタップすると水槽に追加されるので、あとは水槽内で指でドラッグして位置を調整してね。魚より奥に置かれるので、魚の見やすさはそのまま守られます。</p>
       <label>パーツを追加</label>
-      <div class="decor-palette-grid" id="decorPaletteGrid"><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock1')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock2')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('driftwood')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_green')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_teal')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_purple')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_pink')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_orange')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button></div>
+      <div class="decor-palette-grid" id="decorPaletteGrid"></div>
       <label style="margin-top:6px;display:block">配置したパーツ（タップで選択）</label>
-      <div class="decor-placed-row" id="decorPlacedList"><button type="button" class="decor-placed-chip" onclick="selectDecor('d3')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d4')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821314239317')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882140939439')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882141850636')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882148041934')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821541788757')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821550747564')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882252628272')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827756550301')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827800636324')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882793287751')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button></div>
-      <div id="decorEditorControls"><p class="hint">パーツをタップ（水槽の中、または上の一覧）して選ぶと、回転・大きさ・前後・削除がここでできるよ。</p></div>
+      <div class="decor-placed-row" id="decorPlacedList"></div>
+      <div id="decorEditorControls"></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
         <button class="btn btn-ghost" onclick="resetAquariumDecor()">🔄 初期配置に戻す</button>
       </div>
@@ -662,8 +664,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <!-- 長文日記／つぶやき日記の切り替え（GitHub公開設定より上に配置） -->
   <div class="tab-nav">
-    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
     <button id="tabCalendar" class="tab-btn" onclick="switchMode('calendar')">📅 カレンダー</button>
   </div>
@@ -680,7 +682,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display: none;">
+    <div class="accordion-body" id="githubAccordionBody" style="display:none">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -704,7 +706,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="display: none;">
+  <section id="longMode">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -713,13 +715,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
-            <div id="longImagePreviewBox" class="img-preview-box" style="display: none;"></div>
+            <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
           </div>
 
@@ -732,17 +734,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
           </div>
           <div class="compose-wrap">
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
-（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="tape-overlay" id="longTapeOverlay" aria-hidden="true"></div>
         </div>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked="">
+            <input type="checkbox" id="longPublicToggle" checked>
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -757,23 +758,23 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">25</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">106</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="">
+  <section id="shortMode" style="display:none">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
+      <div class="moods" id="shortMoods"></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大10枚）</button>
         <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
@@ -790,13 +791,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
       <div class="tape-overlay" id="shortTapeOverlay" aria-hidden="true"></div>
       </div>
-      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked="">
+        <input type="checkbox" id="shortPublicToggle" checked>
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -811,7 +812,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 48枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint"></p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -820,132 +821,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:20px;">
       <div class="calendar-head">
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="前の月">◀</button>
-        <h2 id="calendarMonthLabel">2026年9月</h2>
+        <h2 id="calendarMonthLabel"></h2>
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="次の月">▶</button>
       </div>
       <p class="hint" style="margin-bottom:14px">日付をタップすると、その日に書いた日記・つぶやきがまとめて見られるよ📖　印がついている日は、何か書いた日だよ。</p>
       <div class="calendar-weekdays"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-      <div id="calendarGrid" class="calendar-grid"><div class="calendar-day other-month"><span>30</span></div><div class="calendar-day other-month"><span>31</span></div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-01')">
-      <span>1</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">29</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-02')">
-      <span>2</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">12</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-03')">
-      <span>3</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">17</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-04')">
-      <span>4</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">18</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-05')">
-      <span>5</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">14</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-06')">
-      <span>6</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">11</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-07')">
-      <span>7</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">8</span>
-    </div><div class="calendar-day is-today has-entry" onclick="selectCalendarDate('2026-09-08')">
-      <span>8</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">14</span>
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-09')">
-      <span>9</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-10')">
-      <span>10</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-11')">
-      <span>11</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-12')">
-      <span>12</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-13')">
-      <span>13</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-14')">
-      <span>14</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-15')">
-      <span>15</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-16')">
-      <span>16</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-17')">
-      <span>17</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-18')">
-      <span>18</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-19')">
-      <span>19</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-20')">
-      <span>20</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-21')">
-      <span>21</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-22')">
-      <span>22</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-23')">
-      <span>23</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-24')">
-      <span>24</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-25')">
-      <span>25</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-26')">
-      <span>26</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-27')">
-      <span>27</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-28')">
-      <span>28</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-29')">
-      <span>29</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-30')">
-      <span>30</span>
-      
-      
-    </div><div class="calendar-day other-month"><span>1</span></div><div class="calendar-day other-month"><span>2</span></div><div class="calendar-day other-month"><span>3</span></div></div>
+      <div id="calendarGrid" class="calendar-grid"></div>
       <div class="row" style="margin-top:14px;justify-content:center">
         <button type="button" class="btn btn-ghost" onclick="jumpCalendarToToday()">📍 今日に戻る</button>
       </div>
@@ -971,7 +852,43 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast" style="--toast-hue: 350;">バックアップを書き出したよ 💾</div>
+<div id="replyModal" class="modal">
+ <div class="modalbox reply-modal-box">
+   <h2 id="replyModalTitle">続きを書く</h2>
+   <div id="replyModalTarget"></div>
+   <label>気分（任意）</label>
+   <div class="moods" id="replyMoods"></div>
+   <label>画像</label>
+   <div style="margin-bottom:12px">
+     <input type="file" id="replyImageInput" accept="image/*" multiple onchange="handleReplyImage(event)" style="display:none">
+     <button class="btn btn-ghost" onclick="document.getElementById('replyImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
+     <div id="replyImagePreviewBox" class="img-preview-box" style="display:none;"></div>
+   </div>
+   <label>本文</label>
+   <div class="reply-compose-tools">
+     <button type="button" class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px;border:1px dashed var(--line);" onclick="spoilerFromSelection('reply')">|| 選択範囲を伏字にする</button>
+     <button type="button" id="replySpoilerMarkBtn" class="btn btn-ghost" style="padding:5px 10px;font-size:11.5px;border:1px dashed var(--line);" onclick="toggleSpoilerMark('reply')">⏺ ここから伏字ここまで</button>
+   </div>
+   <div class="compose-wrap" style="margin-top:8px">
+     <textarea id="replyBody" placeholder="この投稿に続けて書いてみよう……"></textarea>
+     <div class="tape-overlay" id="replyTapeOverlay" aria-hidden="true"></div>
+   </div>
+   <label class="public-toggle-row" style="margin-top:12px">
+     <input type="checkbox" id="replyCushionToggle">
+     <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
+   </label>
+   <label class="public-toggle-row" style="margin-top:8px">
+     <input type="checkbox" id="replyPublicToggle" checked>
+     <span>🌐 この返信をネットに公開する（オフで下書き）</span>
+   </label>
+   <div class="reply-modal-actions">
+     <span id="replyCount">0</span>
+     <button class="btn btn-ghost" onclick="closeReplyModal()">キャンセル</button>
+     <button class="btn btn-primary" onclick="saveReply()">🧵 返信を投稿</button>
+   </div>
+ </div>
+</div>
+<div id="toast" class="toast"></div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1004,6 +921,16 @@ let editingShort=null, selectedShortMood='';
 let currentLongImages=[];
 let currentShortImages=[];
 const MAX_IMAGES=10;
+
+/* ===== 返信スレッド（自分だけが返信して、日記の内容をテーマに投稿を重ねていく機能） =====
+   返信は各日記（long/short）オブジェクトの replies 配列にフラットに保存する。
+   各返信は parentReplyId を持ち、null なら元の日記への直接の返信、
+   他の返信のidが入っていればその返信へのさらなる返信（ツリー化）を表す。
+   返信の内容は公開ページにもそのまま載る（journals.json/tweets.jsonの一部として書き出される）。 */
+let replyTarget=null; // {kind:'long'|'short', rootId, parentReplyId, editingReplyId}
+let currentReplyImages=[];
+let selectedReplyMood='';
+let replyBodyCursor=null;
 
 // 検索・ハッシュタグ絞り込み
 let searchQuery='';
@@ -1316,8 +1243,10 @@ function daysBetweenKeys(aKey,bKey){
 function computeDailyMoodBuckets(){
   const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
   const shortMoods=data.short.map(e=>({mood:e.mood||moodFromShortEntry(e), ts:e.updated||e.created})).filter(x=>x.mood);
+  // 返信につけた気分アイコンも（明示的に選ばれているものだけ）気分の傾向に加える
+  const replyMoods=data.long.concat(data.short).flatMap(e=>(e.replies||[]).filter(r=>r.mood).map(r=>({mood:r.mood, ts:r.updated||r.created})));
   const byDate=new Map();
-  longMoods.concat(shortMoods).forEach(({mood,ts})=>{
+  longMoods.concat(shortMoods).concat(replyMoods).forEach(({mood,ts})=>{
     const hue=moodToFishHue(mood);
     if(hue===null) return;
     const key=dateKeyOf(ts);
@@ -1370,7 +1299,8 @@ function computeFishMoodTrend(){
 function latestSingleMood(){
   const longMoods=data.long.filter(e=>e.mood).map(e=>({mood:e.mood, ts:e.updated||e.created}));
   const shortMoods=data.short.map(e=>({mood:e.mood||moodFromShortEntry(e), ts:e.updated||e.created})).filter(x=>x.mood);
-  const merged=longMoods.concat(shortMoods).sort((a,b)=> new Date(b.ts)-new Date(a.ts));
+  const replyMoods=data.long.concat(data.short).flatMap(e=>(e.replies||[]).filter(r=>r.mood).map(r=>({mood:r.mood, ts:r.updated||r.created})));
+  const merged=longMoods.concat(shortMoods).concat(replyMoods).sort((a,b)=> new Date(b.ts)-new Date(a.ts));
   return merged[0]?.mood || '';
 }
 // 日付ベースの気分の傾向を使って、魚の色を少しだけそちらへ動かす。
@@ -1916,8 +1846,7 @@ async function hydrateLinkCards(){
 
 /* ===== ライトボックス（画像拡大表示） ===== */
 function openLightboxFor(kind, entryId, idx){
-  const list = kind==='long' ? data.long : data.short;
-  const e = list.find(x=>x.id===entryId); if(!e) return;
+  const e = findEntryOrReplyById(kind, entryId); if(!e) return;
   const imgs = getImages(e); if(!imgs.length) return;
   lightboxImages = imgs; lightboxIndex = idx;
   lightboxKind = kind; lightboxEntryId = entryId;
@@ -1927,7 +1856,9 @@ function openLightboxFor(kind, entryId, idx){
 // メディア欄などから飛んだ先の日記が、まだ画面に読み込まれていない（ページングでまだ表示していない）
 // 場合に備えて、その日記が見える件数まで表示件数を増やしてから再描画する
 function ensureLongEntryRevealed(id){
-  const idx = longFilteredList.findIndex(x=>x.id===id);
+  let idx = longFilteredList.findIndex(x=>x.id===id);
+  // idが返信のものだった場合は、その返信を含む元の日記のほうを表示対象として探す
+  if(idx===-1) idx = longFilteredList.findIndex(x=>(x.replies||[]).some(r=>r.id===id));
   if(idx===-1) return;
   if(idx >= longRevealCount){
     longRevealCount = Math.min(longFilteredList.length, idx + REVEAL_STEP);
@@ -1935,7 +1866,8 @@ function ensureLongEntryRevealed(id){
   }
 }
 function ensureShortEntryRevealed(id){
-  const idx = shortFilteredList.findIndex(x=>x.id===id);
+  let idx = shortFilteredList.findIndex(x=>x.id===id);
+  if(idx===-1) idx = shortFilteredList.findIndex(x=>(x.replies||[]).some(r=>r.id===id));
   if(idx===-1) return;
   if(idx >= shortRevealCount){
     shortRevealCount = Math.min(shortFilteredList.length, idx + REVEAL_STEP);
@@ -1949,7 +1881,7 @@ function gotoEntryFromLightbox(){
   switchMode(kind);
   if(kind==='long') ensureLongEntryRevealed(id); else ensureShortEntryRevealed(id);
   setTimeout(()=>{
-    const el = document.getElementById('entry-'+kind+'-'+id);
+    const el = document.getElementById('entry-'+kind+'-'+id) || document.getElementById('reply-'+kind+'-'+id);
     if(el){
       el.scrollIntoView({behavior:'smooth', block:'center'});
       el.classList.add('entry-flash');
@@ -1998,6 +1930,14 @@ function renderMoods(){
 function selectMood(x){selectedMood=(selectedMood===x?'':x);renderMoods()}
 function selectShortMood(x){selectedShortMood=(selectedShortMood===x?'':x);renderMoods()}
 
+// 返信モーダル用の気分アイコン（任意）
+function renderReplyMood(){
+  const el = document.getElementById('replyMoods');
+  if(!el) return;
+  el.innerHTML = moods.map(x=>`<button type="button" class="mood ${selectedReplyMood===x?'selected':''}" onclick="selectReplyMood('${x.replaceAll("'","&#39;")}')">${x}</button>`).join('');
+}
+function selectReplyMood(x){ selectedReplyMood=(selectedReplyMood===x?'':x); renderReplyMood(); }
+
 function processImage(file, callback) {
     if (!file) return;
     const reader = new FileReader();
@@ -2034,32 +1974,47 @@ function getImages(e){
    目印を入れなかった画像は、今までどおり本文の下にギャラリーとして表示されます。 */
 let longBodyCursor = null;  // 長文日記の本文で最後にカーソルがあった位置
 let shortBodyCursor = null; // つぶやきの本文で最後にカーソルがあった位置
+// replyBodyCursor（返信の本文で最後にカーソルがあった位置）は上のほうでまとめて宣言済み
+
+// kind（'long'|'short'|'reply'）から、対応するDOM要素idや状態変数を引くための小さな仕組み。
+// 要素idは「kind+役割名」という命名で統一してあるので（例：longBody, shortBody, replyBody）、
+// 素直に文字列結合すれば3種類とも同じロジックで扱える。
+function taIdOf(kind){ return kind+'Body'; }
+function countIdOf(kind){ return kind+'Count'; }
+function getBodyCursor(kind){
+    if(kind==='long') return longBodyCursor;
+    if(kind==='short') return shortBodyCursor;
+    return replyBodyCursor;
+}
+function setBodyCursor(kind, pos){
+    if(kind==='long') longBodyCursor = pos;
+    else if(kind==='short') shortBodyCursor = pos;
+    else replyBodyCursor = pos;
+}
 
 function trackCursor(taId, kind){
     const ta = document.getElementById(taId);
     if(!ta) return;
-    const update = ()=>{
-        if(kind==='long') longBodyCursor = ta.selectionStart;
-        else shortBodyCursor = ta.selectionStart;
-    };
+    const update = ()=>{ setBodyCursor(kind, ta.selectionStart); };
     ['click','keyup','select','input','focus'].forEach(evt=>ta.addEventListener(evt, update));
 }
 trackCursor('longBody','long');
 trackCursor('shortBody','short');
+trackCursor('replyBody','reply');
 
 // カーソル位置が分かればそこ、まだ触れていなければ文末を挿入位置として使う
 function getCursorPos(kind){
-    const ta = document.getElementById(kind==='long' ? 'longBody' : 'shortBody');
+    const ta = document.getElementById(taIdOf(kind));
     if(!ta) return 0;
-    const tracked = kind==='long' ? longBodyCursor : shortBodyCursor;
+    const tracked = getBodyCursor(kind);
     if(tracked===null || tracked===undefined) return ta.value.length;
     return Math.min(tracked, ta.value.length);
 }
 
 // idx番目の画像のプレースホルダーを、本文のカーソル位置に差し込む
 function insertImageToken(kind, idx, announce){
-    const taId = kind==='long' ? 'longBody' : 'shortBody';
-    const countId = kind==='long' ? 'longCount' : 'shortCount';
+    const taId = taIdOf(kind);
+    const countId = countIdOf(kind);
     const ta = document.getElementById(taId);
     if(!ta) return;
     const pos = getCursorPos(kind);
@@ -2073,7 +2028,7 @@ function insertImageToken(kind, idx, announce){
     ta.focus();
     const newPos = before.length + insertText.length;
     ta.selectionStart = ta.selectionEnd = newPos;
-    if(kind==='long') longBodyCursor = newPos; else shortBodyCursor = newPos;
+    setBodyCursor(kind, newPos);
     const countEl = document.getElementById(countId);
     if(countEl) countEl.textContent = kind==='long' ? ta.value.length+'文字' : String(ta.value.length);
     if(announce) toast('📍 本文に写真を挿入したよ');
@@ -2093,8 +2048,8 @@ function getSpoilerMirror(){
   return spoilerMirrorEl;
 }
 function renderSpoilerTape(kind){
-  const taId = kind==='long' ? 'longBody' : 'shortBody';
-  const overlayId = kind==='long' ? 'longTapeOverlay' : 'shortTapeOverlay';
+  const taId = taIdOf(kind);
+  const overlayId = kind+'TapeOverlay';
   const ta = document.getElementById(taId);
   const overlay = document.getElementById(overlayId);
   if(!ta || !overlay) return;
@@ -2146,19 +2101,18 @@ function renderSpoilerTape(kind){
   overlay.appendChild(frag);
 }
 // テキストが変わるたび／スクロールするたびにテープを引き直す
-['longBody','shortBody'].forEach(id=>{
+[['longBody','long'],['shortBody','short'],['replyBody','reply']].forEach(([id,kind])=>{
   const ta = document.getElementById(id);
-  const kind = id==='longBody' ? 'long' : 'short';
   if(!ta) return;
   ta.addEventListener('input', ()=>renderSpoilerTape(kind));
   ta.addEventListener('scroll', ()=>renderSpoilerTape(kind));
 });
-window.addEventListener('resize', ()=>{ renderSpoilerTape('long'); renderSpoilerTape('short'); });
+window.addEventListener('resize', ()=>{ renderSpoilerTape('long'); renderSpoilerTape('short'); renderSpoilerTape('reply'); });
 
 // ||で囲んで、文章の一部を伏字（タップで表示）にする共通処理（Discordの||伏字||と同じ書き方）
 function wrapRangeAsSpoiler(kind, start, end){
-    const taId = kind==='long' ? 'longBody' : 'shortBody';
-    const countId = kind==='long' ? 'longCount' : 'shortCount';
+    const taId = taIdOf(kind);
+    const countId = countIdOf(kind);
     const ta = document.getElementById(taId);
     if(!ta) return;
     if(end < start) [start, end] = [end, start];
@@ -2171,7 +2125,7 @@ function wrapRangeAsSpoiler(kind, start, end){
     ta.focus();
     ta.selectionStart = innerStart;
     ta.selectionEnd = innerEnd;
-    if(kind==='long') longBodyCursor = innerEnd; else shortBodyCursor = innerEnd;
+    setBodyCursor(kind, innerEnd);
     const countEl = document.getElementById(countId);
     if(countEl) countEl.textContent = kind==='long' ? ta.value.length+'文字' : String(ta.value.length);
     renderSpoilerTape(kind);
@@ -2180,7 +2134,7 @@ function wrapRangeAsSpoiler(kind, start, end){
 
 // モード①：選んでいる文章をそのまま伏字にする
 function spoilerFromSelection(kind){
-    const ta = document.getElementById(kind==='long' ? 'longBody' : 'shortBody');
+    const ta = document.getElementById(taIdOf(kind));
     if(!ta) return;
     const start = ta.selectionStart, end = ta.selectionEnd;
     if(end <= start){ toast('先に伏字にしたい文章を選んでね ✍️'); return; }
@@ -2188,10 +2142,10 @@ function spoilerFromSelection(kind){
 }
 
 // モード②：ボタンを押した位置を覚えておき、もう一度押した位置までを伏字にする
-const spoilerMark = {long:null, short:null};
+const spoilerMark = {long:null, short:null, reply:null};
 function toggleSpoilerMark(kind){
-    const ta = document.getElementById(kind==='long' ? 'longBody' : 'shortBody');
-    const btn = document.getElementById(kind==='long' ? 'longSpoilerMarkBtn' : 'shortSpoilerMarkBtn');
+    const ta = document.getElementById(taIdOf(kind));
+    const btn = document.getElementById(kind+'SpoilerMarkBtn');
     if(!ta) return;
     if(spoilerMark[kind]===null){
         spoilerMark[kind] = ta.selectionStart;
@@ -2208,7 +2162,7 @@ function toggleSpoilerMark(kind){
 }
 function resetSpoilerMark(kind){
     spoilerMark[kind] = null;
-    const btn = document.getElementById(kind==='long' ? 'longSpoilerMarkBtn' : 'shortSpoilerMarkBtn');
+    const btn = document.getElementById(kind+'SpoilerMarkBtn');
     if(btn){ btn.classList.remove('is-recording'); btn.textContent = '⏺ ここから伏字ここまで'; }
 }
 
@@ -2261,10 +2215,39 @@ function clearShortImage() {
     shortBodyCursor = null;
     renderImagePreviews('short');
 }
+function handleReplyImage(ev){
+    const files = Array.from(ev.target.files || []);
+    if(!files.length){ ev.target.value=''; return; }
+    const remaining = MAX_IMAGES - currentReplyImages.length;
+    if(remaining <= 0){ toast(`画像は${MAX_IMAGES}枚までだよ 🙏`); ev.target.value=''; return; }
+    const toProcess = files.slice(0, remaining);
+    const startIndex = currentReplyImages.length;
+    toProcess.forEach(()=>currentReplyImages.push(null));
+    toProcess.forEach((f,i)=>{
+        const idx = startIndex + i;
+        insertImageToken('reply', idx);
+        processImage(f, (base64) => {
+            currentReplyImages[idx] = base64;
+            renderImagePreviews('reply');
+        });
+    });
+    if(files.length > remaining) toast(`画像は${MAX_IMAGES}枚までだよ 🙏`);
+    ev.target.value = '';
+}
+function clearReplyImage(){
+    currentReplyImages = [];
+    replyBodyCursor = null;
+    renderImagePreviews('reply');
+}
+function imagesArrOf(kind){
+    if(kind==='long') return currentLongImages;
+    if(kind==='short') return currentShortImages;
+    return currentReplyImages;
+}
 function removeImageAt(kind, idx){
-    const taId = kind==='long' ? 'longBody' : 'shortBody';
-    const countId = kind==='long' ? 'longCount' : 'shortCount';
-    const arr = kind==='long' ? currentLongImages : currentShortImages;
+    const taId = taIdOf(kind);
+    const countId = countIdOf(kind);
+    const arr = imagesArrOf(kind);
     arr.splice(idx,1);
     const ta = document.getElementById(taId);
     if(ta){
@@ -2278,12 +2261,12 @@ function removeImageAt(kind, idx){
         const countEl = document.getElementById(countId);
         if(countEl) countEl.textContent = kind==='long' ? ta.value.length+'文字' : String(ta.value.length);
     }
-    if(kind==='long') longBodyCursor = null; else shortBodyCursor = null;
+    setBodyCursor(kind, null);
     renderImagePreviews(kind);
 }
 function renderImagePreviews(kind){
-    const arr = kind==='long' ? currentLongImages : currentShortImages;
-    const box = document.getElementById(kind==='long' ? 'longImagePreviewBox' : 'shortImagePreviewBox');
+    const arr = imagesArrOf(kind);
+    const box = document.getElementById(kind+'ImagePreviewBox');
     if(!box) return;
     if(!arr.length){ box.style.display='none'; box.innerHTML=''; return; }
     box.style.display='flex';
@@ -2295,6 +2278,176 @@ function renderImagePreviews(kind){
         </div>` : `
         <div class="img-preview-item"><div class="img-preview-loading">読込中…</div></div>`
     ).join('');
+}
+
+/* ===== 返信スレッド：データを探す・組み立てるための小さな関数たち ===== */
+function findRootEntry(kind, id){
+  const list = kind==='long' ? data.long : data.short;
+  return list.find(x=>x.id===id);
+}
+function findReplyInEntry(entry, replyId){
+  return (entry.replies||[]).find(r=>r.id===replyId);
+}
+// ライトボックスなど、画像の持ち主を探すときに使う（元の日記か、その中の返信のどちらか）
+function findEntryOrReplyById(kind, id){
+  const list = kind==='long' ? data.long : data.short;
+  for(const e of list){
+    if(e.id===id) return e;
+    const r = findReplyInEntry(e, id);
+    if(r) return r;
+  }
+  return null;
+}
+// 返信を削除するとき、その返信へのさらなる返信（子孫）も一緒に集める
+function collectReplyDescendantIds(entry, replyId){
+  const ids = [replyId];
+  let changed = true;
+  while(changed){
+    changed = false;
+    (entry.replies||[]).forEach(r=>{
+      if(r.parentReplyId && ids.includes(r.parentReplyId) && !ids.includes(r.id)){
+        ids.push(r.id); changed = true;
+      }
+    });
+  }
+  return ids;
+}
+
+/* ===== 返信スレッド：返信モーダルの開閉・投稿・編集・削除 ===== */
+function openReplyComposer(kind, rootId, parentReplyId){
+  const entry = findRootEntry(kind, rootId); if(!entry) return;
+  const targetObj = parentReplyId ? findReplyInEntry(entry, parentReplyId) : entry;
+  if(!targetObj) return;
+  replyTarget = {kind, rootId, parentReplyId: parentReplyId||null, editingReplyId:null};
+  currentReplyImages = [];
+  selectedReplyMood = '';
+  replyBodyCursor = null;
+  document.getElementById('replyBody').value = '';
+  document.getElementById('replyCount').textContent = '0';
+  document.getElementById('replyCushionToggle').checked = false;
+  document.getElementById('replyPublicToggle').checked = true;
+  resetSpoilerMark('reply');
+  renderReplyMood();
+  renderImagePreviews('reply');
+  const titlePart = (kind==='long' && !parentReplyId && entry.title) ? esc(entry.title)+'：' : '';
+  const quoteSourceText = (targetObj.body||'').replace(/\[\[img:\d+\]\]/g,'').trim();
+  document.getElementById('replyModalTarget').innerHTML = `<div class="reply-quote">${titlePart}${esc(quoteSourceText.slice(0,80))}${quoteSourceText.length>80?'…':''}</div>`;
+  document.getElementById('replyModalTitle').textContent = parentReplyId ? '返信に返信する' : '続きを書く';
+  document.getElementById('replyModal').classList.add('open');
+  renderSpoilerTape('reply');
+  setTimeout(()=>{ const ta=document.getElementById('replyBody'); if(ta) ta.focus(); }, 30);
+}
+function closeReplyModal(){
+  document.getElementById('replyModal').classList.remove('open');
+  replyTarget = null;
+  clearReplyImage();
+}
+function editReply(kind, rootId, replyId){
+  const entry = findRootEntry(kind, rootId); if(!entry) return;
+  const r = findReplyInEntry(entry, replyId); if(!r) return;
+  replyTarget = {kind, rootId, parentReplyId: r.parentReplyId||null, editingReplyId: replyId};
+  currentReplyImages = getImages(r).slice();
+  selectedReplyMood = r.mood || '';
+  replyBodyCursor = null;
+  document.getElementById('replyBody').value = r.body||'';
+  document.getElementById('replyCount').textContent = (r.body||'').length;
+  document.getElementById('replyCushionToggle').checked = !!r.cushion;
+  document.getElementById('replyPublicToggle').checked = (r.public!==false);
+  resetSpoilerMark('reply');
+  renderReplyMood();
+  renderImagePreviews('reply');
+  document.getElementById('replyModalTarget').innerHTML = `<div class="reply-quote">✏️ この返信を編集中だよ</div>`;
+  document.getElementById('replyModalTitle').textContent = '返信を編集';
+  document.getElementById('replyModal').classList.add('open');
+  renderSpoilerTape('reply');
+  setTimeout(()=>{ const ta=document.getElementById('replyBody'); if(ta) ta.focus(); }, 30);
+}
+function saveReply(){
+  if(!replyTarget) return;
+  const { kind, rootId, parentReplyId, editingReplyId } = replyTarget;
+  const entry = findRootEntry(kind, rootId); if(!entry) return;
+  const body = document.getElementById('replyBody').value.trim();
+  if(!body && !currentReplyImages.length){ toast('本文か画像を書いてみよう ✍️'); return; }
+  if(currentReplyImages.includes(null)){ toast('画像を読み込み中だよ、少し待ってね ⏳'); return; }
+  const now = new Date().toISOString();
+  const isPublic = document.getElementById('replyPublicToggle').checked;
+  const cushion = document.getElementById('replyCushionToggle').checked;
+  if(!Array.isArray(entry.replies)) entry.replies = [];
+  let targetId = editingReplyId;
+  if(editingReplyId){
+    const r = entry.replies.find(x=>x.id===editingReplyId);
+    if(r) Object.assign(r, {body, mood:selectedReplyMood, images:[...currentReplyImages], public:isPublic, cushion, updated:now});
+  }else{
+    targetId = crypto.randomUUID();
+    entry.replies.push({id:targetId, parentReplyId: parentReplyId||null, body, mood:selectedReplyMood, images:[...currentReplyImages], public:isPublic, cushion, created:now, updated:now});
+  }
+  try{ save(); }catch(err){ alert('容量がいっぱいかも！古い日記や返信を少し整理してみてね😢'); return; }
+  const postedMood = selectedReplyMood;
+  pulseFishColorForPost(postedMood);
+  refreshFishMood();
+  const wasEditing = !!editingReplyId;
+  closeReplyModal();
+  if(kind==='long') renderLong(false); else renderShort(false);
+  toast(wasEditing ? '返信を更新したよ ✨' : '返信を投稿したよ 🧵', moodToFishHue(postedMood));
+  setTimeout(()=>{
+    const el = document.getElementById('reply-'+kind+'-'+targetId);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'center'}); el.classList.add('entry-flash'); setTimeout(()=>el.classList.remove('entry-flash'),1600); }
+  }, 60);
+}
+function togglePublicReply(kind, rootId, replyId){
+  const entry = findRootEntry(kind, rootId); if(!entry) return;
+  const r = findReplyInEntry(entry, replyId); if(!r) return;
+  r.public = (r.public===false) ? true : false;
+  save();
+  if(kind==='long') renderLong(false); else renderShort(false);
+  toast(r.public ? '返信を公開に設定したよ 🌐' : '返信を下書き（非公開）にしたよ 🔒');
+}
+function deleteReply(kind, rootId, replyId){
+  const entry = findRootEntry(kind, rootId); if(!entry) return;
+  if(!confirm('この返信を削除する？（この返信へのさらなる返信も一緒に削除されるよ）')) return;
+  const ids = collectReplyDescendantIds(entry, replyId);
+  entry.replies = (entry.replies||[]).filter(r=>!ids.includes(r.id));
+  save();
+  refreshFishMood();
+  if(kind==='long') renderLong(false); else renderShort(false);
+  toast('返信を削除したよ');
+}
+
+/* ===== 返信スレッド：表示（ツイッターのスレッドのように、返信へさらに返信できるツリー構造） ===== */
+function buildReplyNodeHtml(kind, rootEntry, reply, depth){
+  const imgs = getImages(reply);
+  const isPublic = reply.public!==false;
+  const cushion = !!reply.cushion;
+  const usedSet = new Set();
+  const bodyHtml = linkifyText(reply.body, {imgs, kind, entryId:reply.id, usedSet, cushion});
+  const rest = imgs.map((im,i)=>({im,i})).filter(o=>!usedSet.has(o.i));
+  const mainImg = rest.length ? `<img src="${rest[0].im}" class="entry-img entry-img-main" onclick="openLightboxFor('${kind}','${reply.id}',${rest[0].i})">` : '';
+  const stripImgs = rest.length>1 ? rest.slice(1).map(o=>{
+    const tag = `<img src="${o.im}" class="entry-img-thumb" onclick="openLightboxFor('${kind}','${reply.id}',${o.i})">`;
+    return cushion ? wrapCushion(tag,'thumb') : tag;
+  }).join('') : '';
+  const childHtml = buildRepliesListHtml(kind, rootEntry, reply.id, depth+1);
+  return `<article class="entry reply-item" id="reply-${kind}-${reply.id}">
+  <div class="entry-head"><span class="date">${formatDate(reply.updated||reply.created)}</span><span>${esc(reply.mood||'')}</span></div>
+  <div class="preview">${bodyHtml}</div>
+  ${mainImg ? (cushion ? wrapCushion(mainImg,'main') : mainImg) : ''}
+  ${stripImgs ? `<div class="entry-img-strip">${stripImgs}</div>` : ''}
+  <span class="pub-badge ${isPublic?'is-public':'is-private'}">${isPublic?'🌐 公開中':'🔒 下書き'}</span>
+  <div class="entry-actions">
+    <button onclick="openReplyComposer('${kind}','${rootEntry.id}','${reply.id}')">🧵 返信する</button>
+    <button onclick="editReply('${kind}','${rootEntry.id}','${reply.id}')">編集</button>
+    <button onclick="togglePublicReply('${kind}','${rootEntry.id}','${reply.id}')">${isPublic?'🔒 非公開にする':'🌐 公開する'}</button>
+    <button onclick="deleteReply('${kind}','${rootEntry.id}','${reply.id}')">削除</button>
+  </div>
+  ${childHtml}
+ </article>`;
+}
+// depthが深くなりすぎたら（4階層目以降）見た目のインデントは増やさず、データ上のツリーだけ保つ
+function buildRepliesListHtml(kind, rootEntry, parentReplyId, depth){
+  const children = (rootEntry.replies||[]).filter(r=>(r.parentReplyId||null)===parentReplyId);
+  if(!children.length) return '';
+  const flat = depth>3;
+  return `<div class="reply-thread${flat?' reply-thread-flat':''}">${children.map(r=>buildReplyNodeHtml(kind, rootEntry, r, depth)).join('')}</div>`;
 }
 
 function newLong(){
@@ -2404,10 +2557,12 @@ function buildLongEntryHtml(e){
   ${stripImgs ? `<div class="entry-img-strip">${stripImgs}</div>` : ''}
   <span class="pub-badge ${isPublic?'is-public':'is-private'}">${isPublic?'🌐 公開中':'🔒 下書き'}</span>
   <div class="entry-actions">
+    <button onclick="openReplyComposer('long','${e.id}',null)">🧵 返信する</button>
     <button onclick="editLong('${e.id}')">編集</button>
     <button onclick="togglePublicLong('${e.id}')">${isPublic?'🔒 非公開にする':'🌐 公開する'}</button>
     <button onclick="delLong('${e.id}')">削除</button>
   </div>
+  ${buildRepliesListHtml('long', e, null, 1)}
  </article>`;
 }
 
@@ -2416,7 +2571,7 @@ function renderLong(resetPaging){
  if(resetPaging===undefined) resetPaging = true;
  const el=document.getElementById('longEntries');
  let list = data.long;
- if(searchQuery||tagFilter) list = list.filter(e=>matchesFilter((e.title||'')+' '+(e.body||'')));
+ if(searchQuery||tagFilter) list = list.filter(e=>matchesFilter((e.title||'')+' '+(e.body||'')+' '+(e.replies||[]).map(r=>r.body||'').join(' ')));
  longFilteredList = list;
  if(resetPaging) longRevealCount = REVEAL_STEP;
  if(longLoadObserver){ longLoadObserver.disconnect(); longLoadObserver=null; }
@@ -2579,11 +2734,13 @@ function buildShortEntryHtml(e){
    <div class="tweet-foot">
      <span>${e.mood?esc(e.mood)+'　':''}${formatDate(e.created)} <span class="pub-badge ${isPublic?'is-public':'is-private'}" style="margin-top:0">${isPublic?'🌐':'🔒'}</span></span>
      <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','${e.id}',null)">🧵 返信</button>
        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('${e.id}')">編集</button>
        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('${e.id}')">${isPublic?'🔒':'🌐'}</button>
        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('${e.id}')">削除</button>
      </span>
    </div>
+   ${buildRepliesListHtml('short', e, null, 1)}
  </article>`;
 }
 
@@ -2592,7 +2749,7 @@ function renderShort(resetPaging){
  if(resetPaging===undefined) resetPaging = true;
  const el=document.getElementById('shortFeed');
  let list = data.short;
- if(searchQuery||tagFilter) list = list.filter(e=>matchesFilter(e.body||''));
+ if(searchQuery||tagFilter) list = list.filter(e=>matchesFilter((e.body||'')+' '+(e.replies||[]).map(r=>r.body||'').join(' ')));
  shortFilteredList = list;
  if(resetPaging) shortRevealCount = REVEAL_STEP;
  if(shortLoadObserver){ shortLoadObserver.disconnect(); shortLoadObserver=null; }
@@ -2760,11 +2917,23 @@ function getAllMediaItems(){
       if(!src) return;
       items.push({src, kind:'long', entryId:e.id, idx:i, text:(e.title||'')+' '+(e.body||''), date:e.updated||e.created, isPublic:e.public!==false, cushion:!!e.cushion});
     });
+    (e.replies||[]).forEach(r=>{
+      getImages(r).forEach((src,i)=>{
+        if(!src) return;
+        items.push({src, kind:'long', entryId:r.id, idx:i, text:r.body||'', date:r.updated||r.created, isPublic:r.public!==false, cushion:!!r.cushion});
+      });
+    });
   });
   data.short.forEach(e=>{
     getImages(e).forEach((src,i)=>{
       if(!src) return;
       items.push({src, kind:'short', entryId:e.id, idx:i, text:e.body||'', date:e.created, isPublic:e.public!==false, cushion:!!e.cushion});
+    });
+    (e.replies||[]).forEach(r=>{
+      getImages(r).forEach((src,i)=>{
+        if(!src) return;
+        items.push({src, kind:'short', entryId:r.id, idx:i, text:r.body||'', date:r.updated||r.created, isPublic:r.public!==false, cushion:!!r.cushion});
+      });
     });
   });
   items.sort((a,b)=> new Date(b.date) - new Date(a.date));
@@ -3073,25 +3242,30 @@ function extForMime(mime){
 //   「URLに差し替えたのに実際にはアップロードされていない」という状態を防ぐためです。
 function collectPendingImageUploads(owner,repo,branch){
   const uploads = [];
-  [data.long, data.short].forEach(list=>{
-    list.forEach(e=>{
-      if(e.public===false) return;
-      if(Array.isArray(e.images)){
-        e.images.forEach((im,i)=>{
-          if(typeof im!=='string' || !im.startsWith('data:')) return;
-          const parsed = parseDataUri(im);
-          if(!parsed) return;
-          const relPath = `images/${crypto.randomUUID()}.${extForMime(parsed.mime)}`;
-          const finalUrl = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${relPath}`;
-          uploads.push({ entry:e, field:'images', idx:i, relPath, finalUrl, base64:parsed.base64 });
-        });
-      } else if(typeof e.image==='string' && e.image.startsWith('data:')){
-        const parsed = parseDataUri(e.image);
+  const collectFrom = (e) => {
+    if(e.public===false) return;
+    if(Array.isArray(e.images)){
+      e.images.forEach((im,i)=>{
+        if(typeof im!=='string' || !im.startsWith('data:')) return;
+        const parsed = parseDataUri(im);
         if(!parsed) return;
         const relPath = `images/${crypto.randomUUID()}.${extForMime(parsed.mime)}`;
         const finalUrl = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${relPath}`;
-        uploads.push({ entry:e, field:'image', idx:null, relPath, finalUrl, base64:parsed.base64 });
-      }
+        uploads.push({ entry:e, field:'images', idx:i, relPath, finalUrl, base64:parsed.base64 });
+      });
+    } else if(typeof e.image==='string' && e.image.startsWith('data:')){
+      const parsed = parseDataUri(e.image);
+      if(!parsed) return;
+      const relPath = `images/${crypto.randomUUID()}.${extForMime(parsed.mime)}`;
+      const finalUrl = `https://raw.githubusercontent.com/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/${encodeURIComponent(branch)}/${relPath}`;
+      uploads.push({ entry:e, field:'image', idx:null, relPath, finalUrl, base64:parsed.base64 });
+    }
+  };
+  [data.long, data.short].forEach(list=>{
+    list.forEach(e=>{
+      collectFrom(e);
+      // 返信（自分だけが返信して積み重ねるスレッド）の画像も同じ仕組みでアップロード対象にする
+      (e.replies||[]).forEach(r=>collectFrom(r));
     });
   });
   return uploads;
@@ -3102,7 +3276,6 @@ function collectPendingImageUploads(owner,repo,branch){
 function withResolvedImages(list, uploads){
   return list.map(e=>{
     const mine = uploads.filter(u=>u.entry===e);
-    if(!mine.length) return e;
     const clone = {...e};
     if(Array.isArray(clone.images)){
       clone.images = clone.images.map((im,i)=>{
@@ -3112,6 +3285,20 @@ function withResolvedImages(list, uploads){
     }
     const imgU = mine.find(u=>u.field==='image');
     if(imgU) clone.image = imgU.finalUrl;
+    // 返信も同じ仕組みで画像URLを差し替える。非公開の返信は公開データから除外する
+    // （親の日記自体は公開でも、個々の返信だけ下書きにしておける）。
+    clone.replies = (e.replies||[]).filter(r=>r.public!==false).map(r=>{
+      const rMine = uploads.filter(u=>u.entry===r);
+      if(!rMine.length) return r;
+      const rc = {...r};
+      if(Array.isArray(rc.images)){
+        rc.images = rc.images.map((im,i)=>{
+          const u = rMine.find(u=>u.field==='images' && u.idx===i);
+          return u ? u.finalUrl : im;
+        });
+      }
+      return rc;
+    });
     return clone;
   });
 }
@@ -3431,5 +3618,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', startFishSwimming);}else{startFishSwimming();}
 </script>
-
-</body></html>
+</body>
+</html>
