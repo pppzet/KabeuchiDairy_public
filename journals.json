@@ -10,7 +10,20 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-07T22:57:34.362Z",
-    "updated": "2026-09-08T00:07:46.243Z"
+    "updated": "2026-09-08T00:07:46.243Z",
+    "replies": [
+      {
+        "id": "1dbc468d-24dc-4b0b-ac19-0d81ba430082",
+        "parentReplyId": null,
+        "body": "自分だけが返信できる機能もつけた。\n唯我独尊独壇場日記サイトすぎる。",
+        "mood": "",
+        "images": [],
+        "public": true,
+        "cushion": false,
+        "created": "2026-09-08T11:23:48.799Z",
+        "updated": "2026-09-08T11:23:48.799Z"
+      }
+    ]
   },
   {
     "id": "05798f77-f2bf-4a27-96cc-2fd42a29f677",
@@ -32,7 +45,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-07T11:48:41.649Z",
-    "updated": "2026-09-07T12:35:25.659Z"
+    "updated": "2026-09-07T12:35:25.659Z",
+    "replies": []
   },
   {
     "id": "74c57610-378a-4dfa-91c8-85c34cbf28a0",
@@ -43,7 +57,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-07T09:51:25.870Z",
-    "updated": "2026-09-07T09:51:25.870Z"
+    "updated": "2026-09-07T09:51:25.870Z",
+    "replies": []
   },
   {
     "id": "e1d574e3-79e8-4730-88ed-da3fa6f4d83d",
@@ -65,7 +80,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-06T14:48:54.426Z",
-    "updated": "2026-09-06T14:50:35.136Z"
+    "updated": "2026-09-06T14:50:35.136Z",
+    "replies": []
   },
   {
     "id": "79f03776-8197-4cae-94bc-8af6f531bc28",
@@ -83,7 +99,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-05T16:16:49.035Z",
-    "updated": "2026-09-05T16:20:19.864Z"
+    "updated": "2026-09-05T16:20:19.864Z",
+    "replies": []
   },
   {
     "id": "e1e26aea-3283-48cd-93e7-d3d54d980050",
@@ -98,7 +115,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-05T10:48:01.623Z",
-    "updated": "2026-09-05T18:52:39.192Z"
+    "updated": "2026-09-05T18:52:39.192Z",
+    "replies": []
   },
   {
     "id": "e1a50c3b-d9c5-430b-b61a-409d825fe7ac",
@@ -109,7 +127,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-05T01:13:56.758Z",
-    "updated": "2026-09-05T01:14:18.693Z"
+    "updated": "2026-09-05T01:14:18.693Z",
+    "replies": []
   },
   {
     "id": "b28b6d75-a36e-42aa-b099-0de24fc69fc8",
@@ -120,7 +139,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-04T15:42:40.299Z",
-    "updated": "2026-09-04T15:44:02.202Z"
+    "updated": "2026-09-04T15:44:02.202Z",
+    "replies": []
   },
   {
     "id": "93df2738-2f4f-4512-884c-15d99c1dd52b",
@@ -131,7 +151,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-04T14:20:39.892Z",
-    "updated": "2026-09-04T14:20:39.892Z"
+    "updated": "2026-09-04T14:20:39.892Z",
+    "replies": []
   },
   {
     "id": "73709291-3971-4d6f-9226-656628314ee5",
@@ -144,7 +165,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-04T10:28:22.097Z",
-    "updated": "2026-09-04T10:28:45.342Z"
+    "updated": "2026-09-04T10:28:45.342Z",
+    "replies": []
   },
   {
     "id": "b61d8891-e4bf-4bf5-a4a1-e5d0b4ca1943",
@@ -155,7 +177,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-04T07:46:06.795Z",
-    "updated": "2026-09-04T07:46:27.652Z"
+    "updated": "2026-09-04T07:46:27.652Z",
+    "replies": []
   },
   {
     "id": "413131ff-6aea-4c29-b1cb-15e2c556e9b8",
@@ -166,7 +189,8 @@
     "public": true,
     "cushion": false,
     "created": "2026-09-04T01:56:37.701Z",
-    "updated": "2026-09-04T01:56:37.701Z"
+    "updated": "2026-09-04T01:56:37.701Z",
+    "replies": []
   },
   {
     "id": "08cf602c-8be7-43b9-bfb7-3bd897521219",
@@ -180,7 +204,8 @@
     "public": true,
     "cushion": true,
     "created": "2026-09-03T14:04:53.965Z",
-    "updated": "2026-09-03T14:05:12.501Z"
+    "updated": "2026-09-03T14:05:12.501Z",
+    "replies": []
   },
   {
     "id": "6cea6a03-a754-4cf5-9f70-fd6223944772",
@@ -190,7 +215,8 @@
     "images": [],
     "public": true,
     "created": "2026-09-02T18:34:25.032Z",
-    "updated": "2026-09-02T18:34:25.032Z"
+    "updated": "2026-09-02T18:34:25.032Z",
+    "replies": []
   },
   {
     "id": "ddc61c60-4d64-4dcd-b0cb-1b6467e14b69",
@@ -200,7 +226,8 @@
     "images": [],
     "public": true,
     "created": "2026-09-02T15:48:37.922Z",
-    "updated": "2026-09-02T15:48:37.922Z"
+    "updated": "2026-09-02T15:48:37.922Z",
+    "replies": []
   },
   {
     "id": "b03a7f8e-ca47-429b-ae19-b7b32aa067da",
@@ -212,7 +239,8 @@
     ],
     "public": true,
     "created": "2026-09-02T06:32:57.072Z",
-    "updated": "2026-09-02T06:32:57.072Z"
+    "updated": "2026-09-02T06:32:57.072Z",
+    "replies": []
   },
   {
     "id": "8b9624cd-a6cf-428a-8994-6b781d711f62",
@@ -225,7 +253,8 @@
     ],
     "public": true,
     "created": "2026-09-01T04:16:12.720Z",
-    "updated": "2026-09-01T04:36:47.177Z"
+    "updated": "2026-09-01T04:36:47.177Z",
+    "replies": []
   },
   {
     "id": "99a2068a-6ddd-49d8-8245-04ae82d4bb27",
@@ -235,7 +264,8 @@
     "images": [],
     "public": true,
     "created": "2026-09-01T00:35:48.670Z",
-    "updated": "2026-09-01T00:38:09.613Z"
+    "updated": "2026-09-01T00:38:09.613Z",
+    "replies": []
   },
   {
     "id": "a7eb651b-47d8-41c1-92aa-0e845b33764f",
@@ -247,7 +277,8 @@
     ],
     "public": true,
     "created": "2026-08-31T19:24:18.645Z",
-    "updated": "2026-08-31T19:24:18.645Z"
+    "updated": "2026-08-31T19:24:18.645Z",
+    "replies": []
   },
   {
     "id": "f8bec242-2a99-42e6-88aa-fd086f3b9f69",
@@ -261,7 +292,8 @@
     ],
     "public": true,
     "created": "2026-08-31T19:19:41.701Z",
-    "updated": "2026-08-31T19:19:41.701Z"
+    "updated": "2026-08-31T19:19:41.701Z",
+    "replies": []
   },
   {
     "id": "0027a745-e02a-4b65-96df-5396b9f03231",
@@ -271,7 +303,8 @@
     "images": [],
     "public": true,
     "created": "2026-08-31T19:18:18.019Z",
-    "updated": "2026-08-31T19:18:18.019Z"
+    "updated": "2026-08-31T19:18:18.019Z",
+    "replies": []
   },
   {
     "id": "23f2388b-55fc-4655-b622-abe564cce28b",
@@ -280,7 +313,8 @@
     "mood": "🙂 まあまあ",
     "image": "",
     "created": "2026-08-31T17:22:20.452Z",
-    "updated": "2026-08-31T17:22:20.452Z"
+    "updated": "2026-08-31T17:22:20.452Z",
+    "replies": []
   },
   {
     "id": "9e30a15c-cf6a-4d18-bc15-0760ce8c35db",
@@ -289,7 +323,8 @@
     "mood": "😌 穏やか",
     "image": "",
     "created": "2026-08-31T15:26:48.488Z",
-    "updated": "2026-08-31T15:27:09.488Z"
+    "updated": "2026-08-31T15:27:09.488Z",
+    "replies": []
   },
   {
     "id": "d93badd4-9568-446f-82c2-0bf6384b205d",
@@ -298,7 +333,8 @@
     "mood": "😌 穏やか",
     "image": "https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/93c5b4b6-4f92-4474-be8a-11ca5d5bfbb0.jpg",
     "created": "2026-08-31T09:36:11.101Z",
-    "updated": "2026-08-31T09:36:11.101Z"
+    "updated": "2026-08-31T09:36:11.101Z",
+    "replies": []
   },
   {
     "id": "c0374fab-a500-4d0e-88a1-9b483bad7845",
@@ -307,6 +343,7 @@
     "mood": "😭 しんどい",
     "image": "",
     "created": "2026-08-31T09:28:55.556Z",
-    "updated": "2026-08-31T09:28:55.556Z"
+    "updated": "2026-08-31T09:28:55.556Z",
+    "replies": []
   }
 ]
