@@ -297,14 +297,13 @@ input:focus,textarea:focus,select:focus{
 .empty{text-align:center;color:var(--text-muted);padding:45px 20px;font-size:13px;line-height:2.2}
 
 /* ===== 返信スレッド（自分だけが返信して日記をツリー化する機能） ===== */
-.reply-thread{display:flex;flex-direction:column;gap:12px;margin-top:14px;padding-left:14px;border-left:2px solid var(--line)}
-.reply-thread.reply-thread-flat{padding-left:0;border-left:none}
+.reply-thread{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .reply-item{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:var(--surface-2)}
 .reply-quote{font-size:12px;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:12px;line-height:1.6}
 .reply-modal-box{max-width:480px}
 .reply-modal-box textarea{min-height:140px}
 .reply-compose-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.reply-modal-actions{display:flex;align-items:center;gap:10px;margin-top:16px}
+.reply-modal-actions{display:flex;align-items:center;gap:10px;margin-top:16px;position:sticky;bottom:0;background:var(--surface);padding-top:12px;z-index:2}
 .reply-modal-actions span{font-size:11.5px;color:var(--text-muted);margin-right:auto}
 
 .load-sentinel{display:flex;justify-content:center;padding:8px 0 4px}
@@ -470,7 +469,7 @@ body.viewer-mode .pub-badge{display:none}
 /* MODAL & TOAST */
 .modal{position:fixed;inset:0;background:rgba(12,10,16,.65);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;z-index:100}
 .modal.open{display:flex}
-.modalbox{background:var(--surface);border:1px solid var(--line);max-width:540px;width:100%;border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modalbox{background:var(--surface);border:1px solid var(--line);max-width:540px;width:100%;border-radius:16px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow-y:auto;-webkit-overflow-scrolling:touch}
 .modalbox h2{font-family:'Fraunces',serif;font-weight:500;margin-bottom:8px}
 
 .toast{
@@ -2426,7 +2425,6 @@ function buildReplyNodeHtml(kind, rootEntry, reply, depth){
     const tag = `<img src="${o.im}" class="entry-img-thumb" onclick="openLightboxFor('${kind}','${reply.id}',${o.i})">`;
     return cushion ? wrapCushion(tag,'thumb') : tag;
   }).join('') : '';
-  const childHtml = buildRepliesListHtml(kind, rootEntry, reply.id, depth+1);
   return `<article class="entry reply-item" id="reply-${kind}-${reply.id}">
   <div class="entry-head"><span class="date">${formatDate(reply.updated||reply.created)}</span><span>${esc(reply.mood||'')}</span></div>
   <div class="preview">${bodyHtml}</div>
@@ -2439,15 +2437,15 @@ function buildReplyNodeHtml(kind, rootEntry, reply, depth){
     <button onclick="togglePublicReply('${kind}','${rootEntry.id}','${reply.id}')">${isPublic?'🔒 非公開にする':'🌐 公開する'}</button>
     <button onclick="deleteReply('${kind}','${rootEntry.id}','${reply.id}')">削除</button>
   </div>
-  ${childHtml}
  </article>`;
 }
-// depthが深くなりすぎたら（4階層目以降）見た目のインデントは増やさず、データ上のツリーだけ保つ
-function buildRepliesListHtml(kind, rootEntry, parentReplyId, depth){
-  const children = (rootEntry.replies||[]).filter(r=>(r.parentReplyId||null)===parentReplyId);
-  if(!children.length) return '';
-  const flat = depth>3;
-  return `<div class="reply-thread${flat?' reply-thread-flat':''}">${children.map(r=>buildReplyNodeHtml(kind, rootEntry, r, depth)).join('')}</div>`;
+// フラット表示：入れ子（インデント）にはせず、元の日記と同じ横幅のまま、
+// 返信した順（時系列）にどんどん下へ積み重ねていく形にする。
+// どの返信に返信したか（parentReplyId）というデータ自体は残しておくが、見た目には反映しない。
+function buildRepliesListHtml(kind, rootEntry){
+  const replies = [...(rootEntry.replies||[])].sort((a,b)=> new Date(a.created)-new Date(b.created));
+  if(!replies.length) return '';
+  return `<div class="reply-thread">${replies.map(r=>buildReplyNodeHtml(kind, rootEntry, r)).join('')}</div>`;
 }
 
 function newLong(){
@@ -2562,7 +2560,7 @@ function buildLongEntryHtml(e){
     <button onclick="togglePublicLong('${e.id}')">${isPublic?'🔒 非公開にする':'🌐 公開する'}</button>
     <button onclick="delLong('${e.id}')">削除</button>
   </div>
-  ${buildRepliesListHtml('long', e, null, 1)}
+  ${buildRepliesListHtml('long', e)}
  </article>`;
 }
 
@@ -2740,7 +2738,7 @@ function buildShortEntryHtml(e){
        <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('${e.id}')">削除</button>
      </span>
    </div>
-   ${buildRepliesListHtml('short', e, null, 1)}
+   ${buildRepliesListHtml('short', e)}
  </article>`;
 }
 
