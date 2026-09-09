@@ -584,12 +584,14 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
         <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
       </svg>
-      <svg class="betta betta2" viewBox="0 0 180 95" aria-hidden="true">
-        <!-- 直近の気分をそのまま映す子。長期の子より横長・大きめ／尾びれは逆向きのハート型 -->
-        <path class="tail2" d="M57 31 C83 8 116 5 133 21 C145 31 151 38 151 45 C151 52 145 59 133 69 C116 85 83 82 57 59 C65 53 69 49 73 45 C69 41 65 37 57 31 Z"/>
-        <path class="tail2-curl" d="M151 45 C161 39 171 43 167 51 C164 57 155 55 157 49"/>
-        <ellipse class="body2" cx="31" cy="45" rx="26" ry="13"/>
-        <circle class="eye" cx="15" cy="41" r="3"/>
+      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true">
+        <!-- 直近の気分をそのまま映す子。逆向きハート型の尾びれ（コンパクト版）＋背ビレ・腹ビレ付き -->
+        <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"/>
+        <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"/>
+        <path class="tail2" d="M38 28 C42 12 50 10 52 24 C48 32 42 33 38 28 Z"/>
+        <path class="tail2" d="M20 60 C16 74 24 78 30 68 C28 60 24 58 20 60 Z"/>
+        <path class="body2" d="M5 45 C16 26 48 23 60 45 C48 67 16 64 5 45 Z"/>
+        <circle class="eye" cx="16" cy="40" r="3"/>
       </svg>
       <div class="aquarium-decor"></div>
     </div>
@@ -1672,8 +1674,10 @@ function feedBetta(event){
     particle.style.top = y + 'px';
     tank.appendChild(particle);
     setTimeout(() => particle.remove(), 1600);
-    swimBettaTo(x, y);
-    swimBetta2To(x, y);
+    // 2匹とも餌の落下地点そのものへ向かうと重なってしまうので、
+    // 少しだけ互い違いの位置を目的地にする（クランプ処理は各関数側で行われる）
+    swimBettaTo(x - 14, y - 6);
+    swimBetta2To(x + 14, y + 6);
   }
 
   const fish = document.querySelector('.betta');
