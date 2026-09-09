@@ -1,5 +1,16 @@
 [
   {
+    "id": "adf123c6-36bb-46c7-b37e-0f4c9f006e92",
+    "body": "意外とここ、絵を投稿してなかった🤔",
+    "mood": "🤔 考え中",
+    "images": [],
+    "public": true,
+    "cushion": false,
+    "created": "2026-09-09T18:27:27.524Z",
+    "updated": "2026-09-09T18:27:27.524Z",
+    "replies": []
+  },
+  {
     "id": "938a7fdc-4c94-4740-acd6-5d52b1c7ae0f",
     "body": "美味しいパンが食べたいよー🥲",
     "mood": "🙂 まあまあ",
@@ -618,9 +629,9 @@
       "https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/a9bd6593-5126-4a5f-b256-0d6f383c558d.jpg"
     ],
     "public": true,
-    "cushion": true,
+    "cushion": false,
     "created": "2026-09-03T22:24:58.207Z",
-    "updated": "2026-09-09T18:23:32.631Z",
+    "updated": "2026-09-09T18:28:01.737Z",
     "replies": []
   },
   {
