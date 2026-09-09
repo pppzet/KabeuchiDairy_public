@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -125,6 +126,8 @@ header{
 .aquarium-bubble{position:absolute;border:1px solid rgba(255,255,255,.28);border-radius:50%;opacity:.55;animation:bubbleRise 5s linear infinite}.b1{width:4px;height:4px;left:12%;bottom:8px}.b2{width:3px;height:3px;left:28%;bottom:18px;animation-delay:1.7s}.b3{width:5px;height:5px;right:18%;bottom:9px;animation-delay:3s}.b4{width:3px;height:3px;right:34%;bottom:22px;animation-delay:2.4s}
 @keyframes bubbleRise{0%{transform:translateY(8px);opacity:0}20%{opacity:.5}100%{transform:translateY(-65px);opacity:0}}
 .betta{position:absolute;width:48px;height:29px;left:50%;top:54%;transform:translate(-50%,-50%);transition:left 2.8s ease-in-out,top 2.8s ease-in-out,filter .35s,transform .25s;filter:drop-shadow(0 3px 4px rgba(0,0,0,.18));pointer-events:none}
+/* 直近の気分をそのまま映す、もう1匹の子。長期の子より少し横長・大きめにしてある */
+.betta2{width:60px;height:32px}
 .aquarium-tank
 .food-particle{
   position:absolute;
@@ -178,12 +181,15 @@ header{
 
 .feed-pop .betta{transform:translate(-50%,-50%) scale(1.12)}
 .betta .body{fill:var(--fish-body,#8f79c5);transition:fill 2.4s ease-in-out}.betta .fin{fill:var(--fish-fin,#dba9cd);transition:fill 2.6s ease-in-out}.betta .fin-dark{fill:var(--fish-fin-dark,#62508e);transition:fill 2.6s ease-in-out}.betta .eye{fill:#17151c}.betta .shine{fill:rgba(255,255,255,.72)}
+/* 直近の気分の子：投稿された瞬間にキュッと弾む演出 */
+.betta2.pop{transform:translate(-50%,-50%) scale(1.18)}
+.betta2 .body2{fill:var(--fish2-body,#cf6a42);transition:fill 2.4s ease-in-out}.betta2 .tail2{fill:var(--fish2-tail,#e8946a);transition:fill 2.6s ease-in-out}.betta2 .tail2-curl{fill:none;stroke:var(--fish2-tail,#e8946a);stroke-width:3;stroke-linecap:round;transition:stroke 2.6s ease-in-out}
 .aquarium-decor{position:absolute;bottom:0;left:0;right:0;height:18px;background:linear-gradient(transparent,rgba(20,75,60,.16));pointer-events:none}.plant{position:absolute;bottom:-1px;width:7px;height:22px;border-radius:100% 0 100% 0;background:rgba(83,145,105,.30);transform:rotate(-13deg)}.plant.p1{left:9%}.plant.p2{left:15%;height:18px;transform:rotate(15deg)}.plant.p3{right:11%;height:25px;transform:rotate(10deg)}
 .aquarium-hint{position:absolute;right:10px;top:8px;font-size:8.5px;color:rgba(255,255,255,.52);z-index:3;pointer-events:none}
 .aquarium-info{position:absolute;right:10px;bottom:7px;display:flex;gap:6px;margin:0;z-index:3;pointer-events:none}
 .fish-stat{min-width:auto;padding:2px 6px;border:1px solid rgba(255,255,255,.12);border-radius:6px;background:rgba(0,0,0,.08);font-size:8px;color:var(--text-muted);line-height:1.15}.fish-stat b{display:inline;color:var(--text);font-size:9px;margin-left:3px}
 .aquarium-card.viewer-aquarium{margin-bottom:0}
-@media(max-width:520px){.aquarium-card{height:68px}.betta{width:44px;height:27px}}
+@media(max-width:520px){.aquarium-card{height:68px}.betta{width:44px;height:27px}.betta2{width:52px;height:29px}}
 
 /* ===== 水槽デコレーション（自由配置パーツ） =====
    飾りに特別な意味（成長段階など）は持たせず、あくまで「模様替え」用。
@@ -518,16 +524,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
+        onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app" id="appRoot">
+<div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -536,12 +544,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="琥珀（ダーク）"><div class="d-bg" style="background:#1f160f"></div><div class="d-ac" style="background:#e0a050"></div></button><button type="button" class="tsw" title="墨（ダーク）"><div class="d-bg" style="background:#16171a"></div><div class="d-ac" style="background:#c7c7cf"></div></button><button type="button" class="tsw" title="蘇芳（ダーク）"><div class="d-bg" style="background:#1c1012"></div><div class="d-ac" style="background:#d97b7b"></div></button><button type="button" class="tsw" title="翡翠（ダーク）"><div class="d-bg" style="background:#0e1a18"></div><div class="d-ac" style="background:#6fc9b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button><button type="button" class="tsw" title="ミント（ライト）"><div class="d-bg" style="background:#f0f9f6"></div><div class="d-ac" style="background:#4aa88a"></div></button><button type="button" class="tsw" title="ラベンダー（ライト）"><div class="d-bg" style="background:#f6f3fb"></div><div class="d-ac" style="background:#8a6fc0"></div></button><button type="button" class="tsw" title="桃（ライト）"><div class="d-bg" style="background:#fdf3ee"></div><div class="d-ac" style="background:#e0855a"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
           <div class="dropdown-sep"></div>
@@ -549,40 +557,47 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
   <div class="sub admin-only">公開するもしないも、あなたの気分次第。ここは今も全部、あなたの場所だよ。</div>
-  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish-body: hsl(298.9 30% 55%); --fish-fin: hsl(298.9 38% 72%); --fish-fin-dark: hsl(298.9 28% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
     <div class="aquarium-head">
-      <div class="aquarium-title">🐟 うちのベタ</div>
-      <div class="aquarium-meta" id="fishMoodLabel">いろんな気持ちが混ざってるみたい 🌊</div>
+      <div class="aquarium-title">🐟 うちのベタたち</div>
+      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta feed-pop" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 78.0322px; top: 42.5814px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
-        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
+        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
+      </svg>
+      <svg class="betta betta2" viewBox="0 0 180 95" aria-hidden="true">
+        <!-- 直近の気分をそのまま映す子。長期の子より横長・大きめ／尾びれは逆向きのハート型 -->
+        <path class="tail2" d="M57 31 C83 8 116 5 133 21 C145 31 151 38 151 45 C151 52 145 59 133 69 C116 85 83 82 57 59 C65 53 69 49 73 45 C69 41 65 37 57 31 Z"/>
+        <path class="tail2-curl" d="M151 45 C161 39 171 43 167 51 C164 57 155 55 157 49"/>
+        <ellipse class="body2" cx="31" cy="45" rx="26" ry="13"/>
+        <circle class="eye" cx="15" cy="41" r="3"/>
       </svg>
       <div class="aquarium-decor"></div>
-    <div class="decor-part" data-id="d1788821314239317" style="left: 15.7443%; top: 72.3338%; transform: translate(-50%, -50%) rotate(350deg) scale(1.38);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></div><div class="decor-part" data-id="d178882141850636" style="left: 94.1406%; top: 47.1086%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827756550301" style="left: 95.8008%; top: 77.0079%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827800636324" style="left: 85.4248%; top: 83.817%; transform: translate(-50%, -50%) rotate(0deg) scale(1.71);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d178882793287751" style="left: 96.167%; top: 17.2094%; transform: translate(-50%, -50%) rotate(15deg) scale(1.32);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div></div>
+    </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">8日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">紫桜色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">191回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
     </div>
   </section>
 </div>
@@ -599,19 +614,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList">
-    <div class="profile-link-row">
-      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
-      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
-    </div>
-  
-    <div class="profile-link-row">
-      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
-      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
-    </div>
-  </div>
+      <div id="profileLinksList"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -629,16 +632,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐠 気分の判定辞書を編集</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="moodDictAccordionBody" style="display: none;">
+    <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
+      <div id="moodPositiveList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
+      <div id="moodNegativeList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -657,13 +660,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🪸 水槽をデコレーション</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="decorAccordionBody" style="display: none;">
+    <div class="accordion-body" id="decorAccordionBody" style="display:none">
       <p class="hint">気分や成長とは関係のない、ただの模様替え機能だよ🐚 下のパーツをタップすると水槽に追加されるので、あとは水槽内で指でドラッグして位置を調整してね。魚より奥に置かれるので、魚の見やすさはそのまま守られます。</p>
       <label>パーツを追加</label>
-      <div class="decor-palette-grid" id="decorPaletteGrid"><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock1')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock2')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('driftwood')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_green')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_teal')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_purple')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_pink')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_orange')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button></div>
+      <div class="decor-palette-grid" id="decorPaletteGrid"></div>
       <label style="margin-top:6px;display:block">配置したパーツ（タップで選択）</label>
-      <div class="decor-placed-row" id="decorPlacedList"><button type="button" class="decor-placed-chip" onclick="selectDecor('d3')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d4')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821314239317')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882140939439')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882141850636')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882148041934')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821541788757')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821550747564')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882252628272')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827756550301')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827800636324')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882793287751')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button></div>
-      <div id="decorEditorControls"><p class="hint">パーツをタップ（水槽の中、または上の一覧）して選ぶと、回転・大きさ・前後・削除がここでできるよ。</p></div>
+      <div class="decor-placed-row" id="decorPlacedList"></div>
+      <div id="decorEditorControls"></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
         <button class="btn btn-ghost" onclick="resetAquariumDecor()">🔄 初期配置に戻す</button>
       </div>
@@ -690,7 +693,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display: none;">
+    <div class="accordion-body" id="githubAccordionBody" style="display:none">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -714,7 +717,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div>
   </div>
 
-  <section id="longMode" style="">
+  <section id="longMode">
     <div class="grid">
       <div>
         <div class="card admin-only">
@@ -723,13 +726,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
-            <div id="longImagePreviewBox" class="img-preview-box" style="display: none;"></div>
+            <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
           </div>
 
@@ -742,17 +745,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
           </div>
           <div class="compose-wrap">
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
-（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="tape-overlay" id="longTapeOverlay" aria-hidden="true"></div>
         </div>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked="">
+            <input type="checkbox" id="longPublicToggle" checked>
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -767,25 +769,25 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">28</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">112</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display: none;">
+  <section id="shortMode" style="display:none">
     <div class="card tweet admin-only" style="margin-bottom:20px;">
       <h1>💬 つぶやき日記</h1>
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
+      <div class="moods" id="shortMoods"></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大10枚）</button>
-        <div id="shortImagePreviewBox" class="img-preview-box" style="display: none;"></div>
+        <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
       </div>
       
@@ -797,16 +799,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="img-count-hint">💡 文章を選んでから左のボタンを押すか、伏字にしたい場所の前で右のボタンを押して続きを書き、終わったらもう一度押してね。</p>
       </div>
       <div class="compose-wrap">
-      <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height: 160px; height: 112px;"></textarea>
+      <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
       <div class="tape-overlay" id="shortTapeOverlay" aria-hidden="true"></div>
       </div>
-      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked="">
+        <input type="checkbox" id="shortPublicToggle" checked>
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -821,7 +823,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 60枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint"></p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -830,132 +832,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:20px;">
       <div class="calendar-head">
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="前の月">◀</button>
-        <h2 id="calendarMonthLabel">2026年9月</h2>
+        <h2 id="calendarMonthLabel"></h2>
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="次の月">▶</button>
       </div>
       <p class="hint" style="margin-bottom:14px">日付をタップすると、その日に書いた日記・つぶやきがまとめて見られるよ📖　印がついている日は、何か書いた日だよ。</p>
       <div class="calendar-weekdays"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-      <div id="calendarGrid" class="calendar-grid"><div class="calendar-day other-month"><span>30</span></div><div class="calendar-day other-month"><span>31</span></div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-01')">
-      <span>1</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">29</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-02')">
-      <span>2</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">12</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-03')">
-      <span>3</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">17</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-04')">
-      <span>4</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">18</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-05')">
-      <span>5</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">14</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-06')">
-      <span>6</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">11</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-07')">
-      <span>7</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">8</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-08')">
-      <span>8</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">15</span>
-    </div><div class="calendar-day is-today has-entry" onclick="selectCalendarDate('2026-09-09')">
-      <span>9</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">8</span>
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-10')">
-      <span>10</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-11')">
-      <span>11</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-12')">
-      <span>12</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-13')">
-      <span>13</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-14')">
-      <span>14</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-15')">
-      <span>15</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-16')">
-      <span>16</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-17')">
-      <span>17</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-18')">
-      <span>18</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-19')">
-      <span>19</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-20')">
-      <span>20</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-21')">
-      <span>21</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-22')">
-      <span>22</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-23')">
-      <span>23</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-24')">
-      <span>24</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-25')">
-      <span>25</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-26')">
-      <span>26</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-27')">
-      <span>27</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-28')">
-      <span>28</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-29')">
-      <span>29</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-30')">
-      <span>30</span>
-      
-      
-    </div><div class="calendar-day other-month"><span>1</span></div><div class="calendar-day other-month"><span>2</span></div><div class="calendar-day other-month"><span>3</span></div></div>
+      <div id="calendarGrid" class="calendar-grid"></div>
       <div class="row" style="margin-top:14px;justify-content:center">
         <button type="button" class="btn btn-ghost" onclick="jumpCalendarToToday()">📍 今日に戻る</button>
       </div>
@@ -984,13 +866,12 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 <div id="replyModal" class="modal">
  <div class="modalbox reply-modal-box">
    <h2 id="replyModalTitle">続きを書く</h2>
-   <div id="replyModalTarget"><div class="reply-quote">水槽デコ🐠：水槽デコレーション機能つけたので（管理者権限です、スミマセン）、なんか定期的に模様替えしてるかも知れません。
-どんどん自分だけが楽しい世界と化していく！🐠</div></div>
+   <div id="replyModalTarget"></div>
    <label>気分（任意）</label>
-   <div class="moods" id="replyMoods"><button type="button" class="mood " onclick="selectReplyMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectReplyMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectReplyMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectReplyMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectReplyMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectReplyMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectReplyMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectReplyMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectReplyMood('🎨 創作')">🎨 創作</button></div>
+   <div class="moods" id="replyMoods"></div>
    <label>画像</label>
    <div style="margin-bottom:12px">
-     <input type="file" id="replyImageInput" accept="image/*" multiple="" onchange="handleReplyImage(event)" style="display:none">
+     <input type="file" id="replyImageInput" accept="image/*" multiple onchange="handleReplyImage(event)" style="display:none">
      <button class="btn btn-ghost" onclick="document.getElementById('replyImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
      <div id="replyImagePreviewBox" class="img-preview-box" style="display:none;"></div>
    </div>
@@ -1008,7 +889,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
      <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
    </label>
    <label class="public-toggle-row" style="margin-top:8px">
-     <input type="checkbox" id="replyPublicToggle" checked="">
+     <input type="checkbox" id="replyPublicToggle" checked>
      <span>🌐 この返信をネットに公開する（オフで下書き）</span>
    </label>
    <div class="reply-modal-actions">
@@ -1018,7 +899,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast has-mood" style="--toast-hue: 230;">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast"></div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1435,6 +1316,7 @@ function latestSingleMood(){
 }
 // 日付ベースの気分の傾向を使って、魚の色を少しだけそちらへ動かす。
 function refreshFishMood(){
+  refreshFish2Mood(); // 直近の気分をそのまま映す子は、呼ばれるたびに毎回チェックする
   const trend=computeFishMoodTrend();
   if(!trend){ renderFish(); return; }
   const f=ensureFish();
@@ -1453,20 +1335,21 @@ function refreshFishMood(){
   renderFish();
 }
 // ===== 投稿した瞬間の「反応してくれた！」という手応え =====
-// 上のrefreshFishMood()は日数ベースでゆっくり動く「長期的な傾向」担当。
-// それとは別に、投稿するたびに今回選んだ気分の色へ少しだけ即座に動く「一押し」を用意する。
-// この一押しは保存はされるが、次にrefreshFishMood()が走るたびに長期的な傾向へ
-// じわじわ引き戻されるので、単発の投稿だけで傾向が乱されたままになることはない。
-const FISH_MOOD_PULSE_RATIO=0.18;
-function pulseFishColorForPost(mood){
+// 以前は長期の子に一時的な色の一押しを与えていたが、いまは役割を分担し、
+// この演出（キラッと光る＆キュッと弾む）は「直近の気分の子」専用にした。
+// 色そのものはrefreshFishMood()内のrefreshFish2Mood()で確定するので、
+// ここでは演出（パーティクルと弾む動き）だけを担当する。
+function reactFish2ToPost(mood){
   const hue=moodToFishHue(mood);
   if(hue===null) return;
-  const f=ensureFish();
-  f.colorHue=(f.colorHue + hueDistance(f.colorHue,hue)*FISH_MOOD_PULSE_RATIO + 360)%360;
-  save();
-  renderFish();
   spawnMoodSpark(hue);
   spawnScreenSplash(hue);
+  const fish2=document.querySelector('.betta2');
+  if(fish2){
+    fish2.classList.remove('pop');
+    void fish2.offsetWidth;
+    fish2.classList.add('pop');
+  }
 }
 // 投稿の瞬間、選んだ気分の色でキラッと粒がはじける演出（餌やりの粒と同じ仕組みを流用）。
 function spawnMoodSpark(hue){
@@ -1529,6 +1412,33 @@ function renderFish(){
     else if(consistency<0.35) label.textContent='いろんな気持ちが混ざってるみたい 🌊';
     else label.textContent='最近の気分がゆっくり色に反映中 🫧';
   }
+}
+/* ===== もう1匹のお魚：直近の気分だけをそのまま映す =====
+   上のベタは日数ベースでじわじわ動く「長期的な傾向」担当。
+   こちらは、長文日記・つぶやき・返信のうちいちばん新しい気分（latestSingleMood）を
+   じわじわではなく、はっきりそのまま色にする。投稿がなくデータが変わらない限りは
+   同じ色のまま。気分が判定できない投稿が続いた場合は、それまでの色を保つ。 */
+function ensureFish2(){
+  if(!data.fish2) data.fish2={colorHue:270, mood:''};
+  if(typeof data.fish2.colorHue!=='number') data.fish2.colorHue=270;
+  return data.fish2;
+}
+function refreshFish2Mood(){
+  const f2=ensureFish2();
+  const mood=latestSingleMood();
+  f2.mood=mood;
+  const hue=moodToFishHue(mood);
+  if(hue!==null) f2.colorHue=hue;
+  save();
+  renderFish2();
+}
+function renderFish2(){
+  const f2=ensureFish2();
+  const hue=((f2.colorHue%360)+360)%360;
+  const body=`hsl(${hue.toFixed(1)} 52% 55%)`;
+  const tail=`hsl(${hue.toFixed(1)} 60% 70%)`;
+  const root=document.getElementById('aquariumCard'); if(!root) return;
+  root.style.setProperty('--fish2-body',body); root.style.setProperty('--fish2-tail',tail);
 }
 /* ===== 水槽デコレーション（自由配置・回転・拡大縮小） =====
    意味を持たせない、あくまで「模様替え」用の機能。
@@ -1763,6 +1673,7 @@ function feedBetta(event){
     tank.appendChild(particle);
     setTimeout(() => particle.remove(), 1600);
     swimBettaTo(x, y);
+    swimBetta2To(x, y);
   }
 
   const fish = document.querySelector('.betta');
@@ -2513,7 +2424,7 @@ function saveReply(){
   }
   try{ save(); }catch(err){ alert('容量がいっぱいかも！古い日記や返信を少し整理してみてね😢'); return; }
   const postedMood = selectedReplyMood;
-  pulseFishColorForPost(postedMood);
+  reactFish2ToPost(postedMood);
   refreshFishMood();
   const wasEditing = !!editingReplyId;
   closeReplyModal();
@@ -2615,7 +2526,7 @@ function saveLong(){
    alert('容量がいっぱいかも！古い日記を少し整理してみてね😢'); 
    return; 
  }
- pulseFishColorForPost(selectedMood);
+ reactFish2ToPost(selectedMood);
  refreshFishMood();
  renderLong();
  toast('日記を保存したよ 📖', moodToFishHue(selectedMood));
@@ -2799,7 +2710,7 @@ function saveShort(){
  editingShort=null;
  selectedShortMood='';
  renderMoods();
- pulseFishColorForPost(postedShortMood);
+ reactFish2ToPost(postedShortMood);
  refreshFishMood();
  renderShort();
  toast(wasEditing ? 'つぶやきを更新したよ ✨' : 'つぶやきを置いたよ 💬', moodToFishHue(postedShortMood))
@@ -3463,6 +3374,7 @@ async function publishToGitHub(){
      {path:'journals.json', content:JSON.stringify(publicLong,null,2), encoding:'utf-8'},
      {path:'profile.json', content:JSON.stringify(data.profile||{bio:'',links:[]},null,2), encoding:'utf-8'},
      {path:'fish.json', content:JSON.stringify(ensureFish(),null,2), encoding:'utf-8'},
+     {path:'fish2.json', content:JSON.stringify(ensureFish2(),null,2), encoding:'utf-8'},
      {path:'theme.json', content:JSON.stringify({theme:currentTheme},null,2), encoding:'utf-8'},
      {path:'decor.json', content:JSON.stringify(ensureAquariumDecor(),null,2), encoding:'utf-8'},
    ];
@@ -3501,6 +3413,7 @@ function openPublicPage(){
 
 
 let fishSwimTimer = null;
+let fish2SwimTimer = null;
 
 // 魚の「今、実際に画面のどこに見えているか」を、想定値ではなく実測で求める。
 // （以前はfishLastXという変数に前回の移動先を覚えさせておく方式だったが、
@@ -3542,6 +3455,58 @@ function startFishSwimming(){
   clearTimeout(fishSwimTimer);
   setTimeout(swimBetta, 500);
 }
+// もう1匹の子（直近の気分の子）も、同じ水槽の中を独立したタイマーで泳ぐ。
+function swimBetta2(){
+  const tank = document.getElementById('aquariumTank');
+  const fish = document.querySelector('.betta2');
+  if(!tank || !fish) return;
+
+  const tankW = tank.clientWidth;
+  const tankH = tank.clientHeight;
+  const fishW = fish.getBoundingClientRect().width || 60;
+  const fishH = fish.getBoundingClientRect().height || 32;
+  const marginX = Math.max(6, fishW * 0.5);
+  const marginY = Math.max(6, fishH * 0.5);
+
+  const x = marginX + Math.random() * Math.max(1, tankW - marginX * 2);
+  const y = marginY + Math.random() * Math.max(1, tankH - marginY * 2 - 8);
+
+  const prevX = getCurrentFishX(tank, fish);
+  fish.style.transform = x < prevX ? 'translate(-50%,-50%) scaleX(1)' : 'translate(-50%,-50%) scaleX(-1)';
+
+  fish.style.left = `${x}px`;
+  fish.style.top = `${y}px`;
+
+  clearTimeout(fish2SwimTimer);
+  fish2SwimTimer = setTimeout(swimBetta2, 2600 + Math.random() * 3400);
+}
+function startFish2Swimming(){
+  clearTimeout(fish2SwimTimer);
+  setTimeout(swimBetta2, 900);
+}
+function swimBetta2To(x, y){
+  const tank = document.getElementById('aquariumTank');
+  const fish = document.querySelector('.betta2');
+  if(!tank || !fish) return;
+
+  const tankW = tank.clientWidth;
+  const tankH = tank.clientHeight;
+  const fishW = fish.getBoundingClientRect().width || 60;
+  const fishH = fish.getBoundingClientRect().height || 32;
+  const marginX = Math.max(6, fishW * 0.5);
+  const marginY = Math.max(6, fishH * 0.5);
+
+  const targetX = Math.min(Math.max(x, marginX), Math.max(marginX, tankW - marginX));
+  const targetY = Math.min(Math.max(y, marginY), Math.max(marginY, tankH - marginY - 8));
+
+  const prevX = getCurrentFishX(tank, fish);
+  fish.style.transform = targetX < prevX ? 'translate(-50%,-50%) scaleX(1)' : 'translate(-50%,-50%) scaleX(-1)';
+  fish.style.left = `${targetX}px`;
+  fish.style.top = `${targetY}px`;
+
+  clearTimeout(fish2SwimTimer);
+  fish2SwimTimer = setTimeout(swimBetta2, 2600 + 1100);
+}
 // 餌を落とした場所へ、魚がちゃんと反応して泳いでいく。
 // 連続で餌をあげたときは、そのたびにここでタイマーを仕切り直すので、
 // 最後に餌をあげてからしばらく経ってはじめて、いつものランダム遊泳に自然に戻る。
@@ -3571,7 +3536,7 @@ function swimBettaTo(x, y){
   clearTimeout(fishSwimTimer);
   fishSwimTimer = setTimeout(swimBetta, 2800 + 1100);
 }
-function renderAll(){renderMoods();renderLong();renderShort();renderMedia();renderCalendar();renderCalendarSelectedEntries();renderStats();renderSwatches();renderActiveFilter();renderProfileAdmin();renderProfileView();renderFish();renderMoodDictAdmin();renderAquariumDecor()}
+function renderAll(){renderMoods();renderLong();renderShort();renderMedia();renderCalendar();renderCalendarSelectedEntries();renderStats();renderSwatches();renderActiveFilter();renderProfileAdmin();renderProfileView();renderFish();renderFish2();renderMoodDictAdmin();renderAquariumDecor()}
 
 /* ===== PINロック（管理画面ゲート） ===== */
 const PIN_HASH_KEY = 'wall_journal_admin_pin_hash';
@@ -3673,11 +3638,12 @@ async function initApp() {
     if (!isAdmin) {
         let isViewer = false;
         try {
-            const [jRes, tRes, pRes, fRes, thRes, dRes] = await Promise.all([
+            const [jRes, tRes, pRes, fRes, f2Res, thRes, dRes] = await Promise.all([
                 fetch('./journals.json?t=' + Date.now()).catch(()=>null),
                 fetch('./tweets.json?t=' + Date.now()).catch(()=>null),
                 fetch('./profile.json?t=' + Date.now()).catch(()=>null),
                  fetch('./fish.json?t=' + Date.now()).catch(()=>null),
+                 fetch('./fish2.json?t=' + Date.now()).catch(()=>null),
                  fetch('./theme.json?t=' + Date.now()).catch(()=>null),
                  fetch('./decor.json?t=' + Date.now()).catch(()=>null)
             ]);
@@ -3687,6 +3653,7 @@ async function initApp() {
                     short: (tRes && tRes.ok) ? await tRes.json() : [],
                     profile: (pRes && pRes.ok) ? await pRes.json() : {bio:'', links:[]},
                      fish: (fRes && fRes.ok) ? await fRes.json() : {bornAt:new Date().toISOString(),colorStage:0,mood:'',feedCount:0,lastFed:null},
+                     fish2: (f2Res && f2Res.ok) ? await f2Res.json() : {colorHue:270, mood:''},
                      aquariumDecor: (dRes && dRes.ok) ? await dRes.json() : defaultAquariumDecor()
                 };
                 // 餌やり回数・最後に餌をあげた時刻は公開データではなく、
@@ -3745,46 +3712,7 @@ async function initApp() {
 
 initApp();
 
-if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', startFishSwimming);}else{startFishSwimming();}
+if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', ()=>{startFishSwimming();startFish2Swimming();});}else{startFishSwimming();startFish2Swimming();}
 </script>
-
-<div class="spoiler-measure-mirror" style="width: 279px; font-family: Inter; font-size: 13.5px; font-weight: 400; font-style: normal; letter-spacing: normal; line-height: 24.3px;">[[img:0]]
-旅も3年目となり、智の民ユークの目指す地、シェラの里へ向かいます。
-シェラのクリスタルは周囲の空気に反応して黄緑に見えるんだとか。綺麗ね〜。
-[[img:1]]
-シェラの里に入るには、何故か「シェラのあかし」というアイテムが必須です。そういう決まりだそうです。ダンジョンに行かないと手に入りません。
-
-表向きは不審者から里を守るためという名目ですが、キャラバンにダンジョンの魔物を一掃させて水門を管理しやすくするためという裏の意図もあるんだとか。
-こういうところがリルティに嫌われるゆえんなのでしょう。
-[[img:2]]
-水門の門番、ゴーレム。元々はクリスタルケージを識別して安全にキャラバンをミルラの木に案内する役目があったそうですが、故障して「クリスタルケージを持つ者はハイジョする」と逆転してます。しかも古代技術で作られてるから今のユークには直せないとか。ポンコツぅ！
-[[img:3]]
-このおじいさんこそシェラの里の門番です。
-シェラのあかしを見せないと虹の橋を掛けてくれません。
-長老自ら里に入ってきた人を監視してるわけですね。水門にシェラのあかしをばら撒いた張本人でもある。
-[[img:4]]
-虹が綺麗ね〜。
-[[img:5]]
-伝道師ハーディくん。
-
-伝道師は瘴気に閉ざされ外部の話が届きにくいこの世界において、外の話を持ってきてくれる博識で貴重な存在のようです。
-
-この世界、集落の外の話はキャラバンとモーグリと商人と伝道師からしか得られず、大半の人は一生を生まれた土地で終えるのでしょう。
-[[img:7]]
-セルキーの民の学者。<span>||みんなのトラウマ。||</span>
-シェラの里の子供いわく、「セルキーというだけで馬鹿にする人がいる」「ユークが長年かけて解けなかった謎をセルキーが解明できるはずがない」と言われているそう。
-
-なんというか、こういうジトッとした嫌なところもFFCCの魅力ですね。
-アルフィタリア（リルティの街）とシェラ（ユークの里）の対比も魅力であります。
-[[img:6]]
-メ・ガジじいさんのこの台詞、<span>||既プレイ者には趣き深いものです。||</span>
-[[img:8]]
-今後めっちゃお世話になることを考えると、川を渡るの50ギルは安いのでは！？
-[[img:9]]
-ファム大農場。世界食料供給の要。なんとクリスタルが3つに分かれてるので、ここのキャラバンの労力は他の集落に比べて3倍なのではないかと思われる。
-
-一旦ここまで。
-写真添付最大枚数が足りな過ぎる！
-#FFCC #プレイ日記 #ゲーム</div><div class="spoiler-measure-mirror" style="width: 279px; font-family: Inter; font-size: 13.5px; font-weight: 400; font-style: normal; letter-spacing: normal; line-height: 24.3px;">※婦人科疾患
-<span>||うわあ！左の卵巣が痛すぎる！
-明日こそ絶対病院行く！||</span></div></body></html>
+</body>
+</html>
