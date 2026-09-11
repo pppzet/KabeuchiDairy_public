@@ -1,3 +1,6 @@
 {
-  "theme": "chronicle"
+  "theme": "sky",
+  "customBg": "https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/492c1656-2de0-4269-a00b-25ae8756762e.jpg",
+  "customHeader": null,
+  "customTank": "https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/433accf1-f8a1-46b6-967e-e33e7bb5506c.jpg"
 }
