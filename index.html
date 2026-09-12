@@ -1,13 +1,12 @@
 <!doctype html>
-<html lang="ja">
-<head>
+<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Shippori+Mincho:wght@500;600;700&family=Yuji+Syuku&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Shippori+Mincho:wght@500;600;700&amp;family=Yuji+Syuku&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -571,8 +570,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   box-shadow:0 1px 0 rgba(255,255,255,.55) inset, 0 10px 26px rgba(59,42,20,.16);
 }
 </style>
-</head>
-<body>
+<style id="customAssetsStyle">:root{--custom-tank-image:url("https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c565673f-bdb2-46ec-8c5f-7cb55f374698.jpg");}</style></head>
+<body class="admin-mode">
 <!-- PINロック画面（管理画面に入る前のゲート） -->
 <div class="pin-lock" id="pinLockScreen">
   <div class="pin-lock-card">
@@ -580,18 +579,16 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
-      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
-        onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app is-loading" id="appRoot">
+<div class="app" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -600,32 +597,32 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="琥珀（ダーク）"><div class="d-bg" style="background:#1f160f"></div><div class="d-ac" style="background:#e0a050"></div></button><button type="button" class="tsw" title="墨（ダーク）"><div class="d-bg" style="background:#16171a"></div><div class="d-ac" style="background:#c7c7cf"></div></button><button type="button" class="tsw" title="蘇芳（ダーク）"><div class="d-bg" style="background:#1c1012"></div><div class="d-ac" style="background:#d97b7b"></div></button><button type="button" class="tsw" title="翡翠（ダーク）"><div class="d-bg" style="background:#0e1a18"></div><div class="d-ac" style="background:#6fc9b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button><button type="button" class="tsw" title="ミント（ライト）"><div class="d-bg" style="background:#f0f9f6"></div><div class="d-ac" style="background:#4aa88a"></div></button><button type="button" class="tsw" title="ラベンダー（ライト）"><div class="d-bg" style="background:#f6f3fb"></div><div class="d-ac" style="background:#8a6fc0"></div></button><button type="button" class="tsw" title="桃（ライト）"><div class="d-bg" style="background:#fdf3ee"></div><div class="d-ac" style="background:#e0855a"></div></button><button type="button" class="tsw" title="年代記（クロニクル）"><div class="d-bg" style="background:#ecdcb3"></div><div class="d-ac" style="background:#8a5a2b"></div></button></div>
           </div>
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🖼 カスタム画像（テーマに関係なく反映されます）</div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_bg"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_bg" style="background-image: none;"></div>
               <div class="custom-asset-label">背景</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('bg', this.files[0]); this.value=''"></label>
               <button type="button" id="customAssetReset_bg" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('bg')" style="display:none">戻す</button>
             </div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_header"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_header" style="background-image: none;"></div>
               <div class="custom-asset-label">ヘッダー</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('header', this.files[0]); this.value=''"></label>
               <button type="button" id="customAssetReset_header" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('header')" style="display:none">戻す</button>
             </div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_tank"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_tank" style="background-image: url(&quot;https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c565673f-bdb2-46ec-8c5f-7cb55f374698.jpg&quot;);"></div>
               <div class="custom-asset-label">水槽</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('tank', this.files[0]); this.value=''"></label>
-              <button type="button" id="customAssetReset_tank" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('tank')" style="display:none">戻す</button>
+              <button type="button" id="customAssetReset_tank" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('tank')" style="">戻す</button>
             </div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
@@ -634,48 +631,48 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
-  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨">バイブコーディング好きのイラストレーター🎨</div>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish2-body: hsl(210.0 52% 55%); --fish2-tail: hsl(210.0 60% 70%); --fish-body: hsl(255.0 29% 55%); --fish-fin: hsl(255.0 38% 72%); --fish-fin-dark: hsl(255.0 27% 38%);">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタたち</div>
-      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
+      <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
+      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 276.14px; top: 23.1172px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
-        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
+        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
       </svg>
-      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true">
+      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 170.69px; top: 38.2117px;">
         <!-- 直近の気分をそのまま映す子。逆向きハート型の尾びれ（コンパクト版）＋背ビレ・腹ビレ付き -->
-        <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"/>
-        <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"/>
-        <path class="tail2" d="M38 28 C42 12 50 10 52 24 C48 32 42 33 38 28 Z"/>
-        <path class="tail2" d="M20 60 C16 74 24 78 30 68 C28 60 24 58 20 60 Z"/>
-        <path class="body2" d="M5 45 C16 26 48 23 60 45 C48 67 16 64 5 45 Z"/>
-        <circle class="eye" cx="16" cy="40" r="3"/>
+        <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"></path>
+        <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"></path>
+        <path class="tail2" d="M38 28 C42 12 50 10 52 24 C48 32 42 33 38 28 Z"></path>
+        <path class="tail2" d="M20 60 C16 74 24 78 30 68 C28 60 24 58 20 60 Z"></path>
+        <path class="body2" d="M5 45 C16 26 48 23 60 45 C48 67 16 64 5 45 Z"></path>
+        <circle class="eye" cx="16" cy="40" r="3"></circle>
       </svg>
       <div class="aquarium-decor"></div>
-    </div>
+    <div class="decor-part" data-id="d1788821314239317" style="left: 15.7443%; top: 72.3338%; transform: translate(-50%, -50%) rotate(350deg) scale(1.38);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></div><div class="decor-part" data-id="d178882141850636" style="left: 94.1406%; top: 47.1086%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827756550301" style="left: 95.8008%; top: 77.0079%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827800636324" style="left: 85.4248%; top: 83.817%; transform: translate(-50%, -50%) rotate(0deg) scale(1.71);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d178882793287751" style="left: 96.167%; top: 17.2094%; transform: translate(-50%, -50%) rotate(15deg) scale(1.32);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div></div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">12日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">夜空色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">221回</b></div>
     </div>
   </section>
 </div>
@@ -692,7 +689,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <label>紹介文（任意）</label>
       <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
       <label>リンク一覧</label>
-      <div id="profileLinksList"></div>
+      <div id="profileLinksList">
+    <div class="profile-link-row">
+      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
+      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
+      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
+    </div>
+  
+    <div class="profile-link-row">
+      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
+      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
+      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
+    </div>
+  </div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -713,13 +722,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"></div>
+      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"></div>
+      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -757,7 +766,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display:none">
+    <div class="accordion-body" id="githubAccordionBody" style="display: none;">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -784,8 +793,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   <!-- 長文日記／つぶやき日記の切り替え -->
   <div class="tab-nav">
     <button id="tabTL" class="tab-btn" onclick="switchMode('tl')">🕒 TL</button>
-    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
     <button id="tabCalendar" class="tab-btn" onclick="switchMode('calendar')">📅 カレンダー</button>
   </div>
@@ -798,27 +807,241 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <section id="tlMode" style="display:none">
     <div class="tl-label">🕒 TL</div>
-    <div id="tlEntries" class="entries"></div>
+    <div id="tlEntries" class="entries"><article class="tweet-card" id="entry-short-61e1b7e2-9b16-4f5f-b583-e02c641cdb18">
+   <div class="tweet-text"><img src="data:image/jpeg;base64,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HSEn7rRmIHaQEvQ737LNnXYBsZAZ2NFXWu95mI39YDKD3C3qpsqWMbGxrGCzWgAAcAqlzIEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAXN/a1sbPj2GQ4thsPSYhQtIfGDYywnUgcyDqO8810hFMuux8cNc2aNxYRrorcp+0gkGgeQCfDRSDbTBY9nttcSo4WmOASkxstpld1m27gbeC0EjbUszAfgJNvVdE7gvR6QMt+EDRe264N9GjcrULy+Npaes3Qjme1Xtcp5u1tfdzUim5Mbb/eN7HzRzwJD/AANuf14FVPGhI4AqnKC54ve9ipHrQQ1gOpG+yoo5ZYaz3qGR8csLwY3sNi0g3uPFV3IdroCqbZSQBpvtz/WqjQ7Ls57aGNiZT7Q0ry9oA96pxfN2uZwPd5BdMwfaPB8ehEmGYhBUAi5a11nt72nUeIXycT1czb3G+w1KuwVL4Zo54JHxyMIcySNxa5p5ghZ3jn0PsBFwfZn2v4phhZTYy04jTX/e6CZg79zvHXtXVcP272exSn6ekrHyMBs60D7tPIiyyyxuPsSNFpv+K8Gt/wCpkPdTyf8AxT/inCP+vL//AFpP/iq7g3KK1TVEVXTx1EDs0UjczTa2iuqQREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERBxP264QW1GHYvEz94wwPeB95pzNHiC7yXJA4dIDwkbbvI/RX077RsIOM7D4hCxmeaFvvEYAuSWakDvFx4r5euWwObvMbxbThfRb8d6AtBiY9hyvbZpd6a89VdbOWuDJWhjx5HuVp4BZKw6Zm3Gv65K40smaA5oIewOVxdBBPYdxCqhidNLDG2SNjnPDC+VxDRc2uTqsciSnuReSMf9w/NXI3NkbmBzNOhRCVyez3G2tL2voXgC5b0rgbcd7bLCdsTtJGTfDHPA4tmjOn/AHKf4FXftrY7ruvPEzo33OpLdx8QtJGJXvbFC1znOIa1rTa5WHHlyZb3Z0bRUbK44es3DZj2ixHoVb/4VxsOJGGVLQd7ej481PP2Virf8CcE/hf+RXseHYwHXaath5mYj5lT+pP/ADn/AN/2trL8Ofv2cxloyvwyua4a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AiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIsDFsWgwmna+QGSaQ5YYG/FK7kPqeCC7X1goqZzwwySkWZGPvH6DtXy/tNiVZi20ddVV8ueYyuZodGtBIDW9gXdJJpqenq8UxCQGo6MueG/DGxoJDB2DXXiuJ4DgNXtRjVmtc2J7zJNKdzQSTv58FHFyy22+o08NNHHDJNK1kUb5HHc1jSSfAKTUns92iq4hIaVkDTr9u/KR4aldUwvAcH2WozIxkcZAHSVMlrnx4Bc62z29lxN0mH4ZIY6LVr5G6Ol/JvzUTnz5MtccT4STtDMTo30Ne6kZU08+TR8sDi5oPEAkC/esVsbIrlvxEauJuSjpBHYXu47gF5lc8XddreXE95XVP7UUl5c4hozOHkO9etjsczjmdz5K41hJayNpJcQ1rWjUk7gAuh7MeyPGcZyz4qThlJf4XtvM8djfu+PklsntCC4dhtbi9dHRUFNJUVEhs1jBc955DtK+ivZ1sfUbIYJLDV1DZampeJZGM+GM2tYHj3rc7P7L4RsxR+74XSNjv8cp1kkPNzuPyW4WWWe0CIioCIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiDXYzjEOD0T5ntMktvs4WnV5/LtUViqHdNJV1rukqWxZ6iUjqxaXyNHAdnibkqI+0jbCuwvbKWipYwGRMhe50rb5jqRl/h187rTQe0p7MN6CooBLM6UOkLXWDhmBOvpayy5OPky9Tprh4xNscjq67Do8MjzGqxAkyaWbFGLX8rgdtythR0eG7L4ORnjggibeSV9hc8z9Fz+p9qkhrhPT4SMrYixokm+8SDfQbtFE9odpsU2klb75UFlO03bBFo0fmqY/Hzy6vUXucbDbPbiTaKX3anzQYax12td8UxH3iOXIKIDpHHN8De3Uq61jW6gDXjxUn2Y2Exzamz6SAQUeaxqp9Gf0je7w07V3Y444Y6jG3ftFWsZHc8eJKmGy3s4xraktnaz3OgOvvUzT1h/A3e7v3dq6/s57LtncBa2SanGIVYN+mqWggH+Fm4ep7VNgLCw3Kt5PwjaMbMbBYHsswPpafp6v71VOA5/hwb4KToiz3tAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiCFbe7ARbYRxVMFQKbEIGFrHubdsjd+V3HfuPC5XCcX2axvAH5cVw2enF7CW2aN3c4afVfVa8c0OBDgCDvBVplYPkC7eYW3wTZfGtongYXh800ZOUzZbRDvedPqvpSr2YwGvN6vBcOnPOSmY4+ZCzqOipcOpWUtFTxU9Oz4YomBrRx0AVryJ25rst7HaOhc2q2glZXTAXFMwHoWntvq70HYunxxsijbHGxrGNFmtaLADkFUipbb7QIiKAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQf/9k=" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','61e1b7e2-9b16-4f5f-b583-e02c641cdb18',0)">必死こいてここまで描いたけど眠いわ頭痛いわ腹痛いわで絵の進みが鈍行過ぎる、たすけてくれ
+<span class="hashtag" onclick="filterByTag('#落書き')">#落書き</span></div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/13 06:27 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','61e1b7e2-9b16-4f5f-b583-e02c641cdb18',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('61e1b7e2-9b16-4f5f-b583-e02c641cdb18')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('61e1b7e2-9b16-4f5f-b583-e02c641cdb18')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','61e1b7e2-9b16-4f5f-b583-e02c641cdb18')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('61e1b7e2-9b16-4f5f-b583-e02c641cdb18')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="entry" id="entry-long-96032654-72b5-46ba-a69b-c422815e0dea">
+  <div class="entry-head"><span class="date">2026/09/13 03:14</span><span></span></div>
+  <div class="entry-title">【第8回】FFCCプレイ日記：この年異様に重たい</div>
+  <div class="preview">クリスタルキャラバンの旅路も6年目に突入。
+この年は結構キッツい話が立て続けに起こります。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/7ef5875f-15fd-4bc6-a1b2-dcafd765d3e1.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',0)">まず初っ端がら、多分6歳くらいの子供が殺人を犯します。
+記憶を失ったバーサーカー、黒騎士を父の敵として討ちますが、実際は<span class="spoiler-text" onclick="this.classList.toggle('revealed')">彼こそがこの子どもの父親その人です。惨すぎる。</span><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/fe24f387-2a3e-4bb8-a492-88b33b082dbf.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',1)">ティダの村では朽ち果てた手紙を見つけます。この手紙を主人公はとあるご老人二人に見せることになります。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/e1dbb2b5-1b21-48ce-8bd4-193b64dcded0.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',2)">事前にクリスタルケージの属性を「？」に変えていたおかげでシェラの里まで赴けるようになりました。ポンプフラワーをようやく復活させられます。
+
+しかし、ジェゴン川が枯れた状態をどうしてシェラのキャラバンは放置してたんですかね……🤔川の水が世界の食料供給の要になってるので、水が干上がっていたこの数年は世界的に危うかったのではないでしょうか。
+
+でも水門整備を楽にするために他所のキャラバンが魔物清掃するように仕向ける里だからなシェラ……。川が干上がった状態を放置するのも「世界経済を回すため」とか言ってそうだ。アルフィタリアの蓄財を放出させるとか……。
+
+私はそんなシェラの里がアルフィタリアについで大好きなわけですが！早くシェラの里の住民になれるくらい頭良くなりたい。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/13f28448-9d11-4a67-b0f7-63b135ddb6ef.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',3)"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/8f3f31a2-f83a-4463-9b05-be236b3ec066.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',4)">一方、セルキーの民の歴史は地獄のよう。
+リルティとユークが戦争していた時期も和平が締結された後も、この世界に居場所はなく、次第に盗賊行為を働くようになります。そしてリルティ、ユーク、クラヴァットの連合軍に制圧されました。
+
+そんな彼らは新天地を求めて西へ旅立ちましたが、西の果てはただただ過酷な土地でしか無く、みんな死んでしまいました。惨すぎる。
+
+一番残酷なのは、リルティの世界征服に真っ先に立ち向かった智の民ユークも、彼らの戦争を締結させた温の民クラヴァットも、どの種族もセルキーを味方しなかったことです。
+
+それだけセルキーの蛮行が目に余るものだったのかも知れませんが、そもそもの原因はリルティの世界支配とそれに反発したユークの戦争にあります。元々なかなか定住地を見つけられてなかったセルキー達の住める場所を更に奪いながら、最後は死の世界である西の果てへ追いやったわけです。
+
+こうした「4種族みんなで仲良くしよう」では済まされない重みが、FFCCの魅力でもあるわけです。
+
+そしてこれらの出来事はゲーム開始時点ではみんな過去の出来事で、4種族は現在「ちょうどいい距離感」を見つけて生きています。この生ぬるさのそこはかとない居心地の悪さと安心感の手触り、とても良い。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6fda73e4-237e-4465-acc1-9260c26dab31.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',5)"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/e21e4e27-ec03-4906-80df-ebeb4be156ba.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',6)"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/8dce340e-d2f8-45f8-836d-e5f1eea4a230.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',7)">この子が自身の殺人という行為の重さと真実を知った時、どうなるのか考えたくないですね。誰にも自分の悲しみを打ち明けられないこの子の母親の気持ちを考えるとツライものがあります。
+
+<span class="spoiler-text" onclick="this.classList.toggle('revealed')">まあ、この世界では近々悲しい記憶は「ラモエ」に喰われてツラさを糧に成長などができないわけですが……。</span>
+<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/e464c24b-4792-4645-90ae-f2ed8fd22dc2.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','96032654-72b5-46ba-a69b-c422815e0dea',8)">この年を表すにふさわしい言葉をくれるソール=ラクトさん、とても好き💖
+
+きょうはここまで。熱く語ったわね……！</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="openReplyComposer('long','96032654-72b5-46ba-a69b-c422815e0dea',null)">🧵 返信する</button>
+    <button onclick="editLong('96032654-72b5-46ba-a69b-c422815e0dea')">編集</button>
+    <button onclick="togglePublicLong('96032654-72b5-46ba-a69b-c422815e0dea')">🔒 非公開にする</button>
+    <button onclick="shareEntry('long','96032654-72b5-46ba-a69b-c422815e0dea')">🔗 シェア</button>
+    <button onclick="delLong('96032654-72b5-46ba-a69b-c422815e0dea')">削除</button>
+  </div>
+  
+ </article><article class="tweet-card" id="entry-short-de314bfe-9b46-40d8-bfc5-c5f8294db529">
+   <div class="tweet-text">頭痛いよう🥲</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/13 02:40 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','de314bfe-9b46-40d8-bfc5-c5f8294db529',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','de314bfe-9b46-40d8-bfc5-c5f8294db529')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-9a6b0217-801f-4008-9694-bfd6223f2951">
+   <div class="tweet-text">FFCC，うかうかプレイ日記更新しないでいたらレベナ・テ・ラまで進んでしまった
+死ぬかと思った、マジで苦手ステージ（謎解きと移動の面倒さ的な意味で）</div>
+   
+   
+   <div class="tweet-foot">
+     <span>😵 疲れた　2026/09/13 02:40 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','9a6b0217-801f-4008-9694-bfd6223f2951',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('9a6b0217-801f-4008-9694-bfd6223f2951')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9a6b0217-801f-4008-9694-bfd6223f2951')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','9a6b0217-801f-4008-9694-bfd6223f2951')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9a6b0217-801f-4008-9694-bfd6223f2951')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a">
+   <div class="tweet-text">母の付き添い行ったり寝てたり風呂洗ったり寝てたりしてあんまりネットやってなかった</div>
+   
+   
+   <div class="tweet-foot">
+     <span>🤔 考え中　2026/09/12 23:25 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9c2a7ee9-9198-4ae8-b31b-a15c40ba2b7a')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-b38b24ed-afb6-4f77-be14-061ecfec34bf">
+   <div class="tweet-text">風呂掃除　つら😵</div>
+   
+   
+   <div class="tweet-foot">
+     <span>😭 しんどい　2026/09/12 16:02 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','b38b24ed-afb6-4f77-be14-061ecfec34bf',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('b38b24ed-afb6-4f77-be14-061ecfec34bf')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('b38b24ed-afb6-4f77-be14-061ecfec34bf')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','b38b24ed-afb6-4f77-be14-061ecfec34bf')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('b38b24ed-afb6-4f77-be14-061ecfec34bf')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-57c8a8bd-3151-4c4b-be19-c3461e799098">
+   <div class="tweet-text">母の付き添いで病院へ。私は私で調子悪いけど、母も母で体調悪いんだよな……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/12 10:03 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','57c8a8bd-3151-4c4b-be19-c3461e799098',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('57c8a8bd-3151-4c4b-be19-c3461e799098')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('57c8a8bd-3151-4c4b-be19-c3461e799098')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','57c8a8bd-3151-4c4b-be19-c3461e799098')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('57c8a8bd-3151-4c4b-be19-c3461e799098')">削除</button>
+     </span>
+   </div>
+   <div class="reply-thread"><article class="entry reply-item" id="reply-short-f0ecf896-b094-4af9-8499-5e7698305e37">
+  <div class="entry-head"><span class="date">2026/09/12 10:04</span></div>
+  <div class="preview">病院で掛かってる音楽怖え！暗いぞ！西洋のオバケが出る洋館ステージみたいな曲だ</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="openReplyComposer('short','57c8a8bd-3151-4c4b-be19-c3461e799098','f0ecf896-b094-4af9-8499-5e7698305e37')">🧵 返信</button>
+    <button onclick="editReply('short','57c8a8bd-3151-4c4b-be19-c3461e799098','f0ecf896-b094-4af9-8499-5e7698305e37')">編集</button>
+    <button onclick="togglePublicReply('short','57c8a8bd-3151-4c4b-be19-c3461e799098','f0ecf896-b094-4af9-8499-5e7698305e37')">🔒 非公開</button>
+    <button onclick="deleteReply('short','57c8a8bd-3151-4c4b-be19-c3461e799098','f0ecf896-b094-4af9-8499-5e7698305e37')">削除</button>
+  </div>
+ </article></div>
+ </article><article class="tweet-card" id="entry-short-19e59ea3-550d-4306-bf0f-299eade8aa34">
+   <div class="tweet-text">最近、眠過ぎで絵が描けん
+落書きはするけど集中できん</div>
+   
+   
+   <div class="tweet-foot">
+     <span>😭 しんどい　2026/09/12 07:08 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','19e59ea3-550d-4306-bf0f-299eade8aa34',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('19e59ea3-550d-4306-bf0f-299eade8aa34')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('19e59ea3-550d-4306-bf0f-299eade8aa34')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','19e59ea3-550d-4306-bf0f-299eade8aa34')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('19e59ea3-550d-4306-bf0f-299eade8aa34')">削除</button>
+     </span>
+   </div>
+   <div class="reply-thread"><article class="entry reply-item" id="reply-short-c7b889bb-49f4-4492-bbde-e959e459c94c">
+  <div class="entry-head"><span class="date">2026/09/12 07:09</span></div>
+  <div class="preview">眠いときの謎の動悸なにー😭</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="openReplyComposer('short','19e59ea3-550d-4306-bf0f-299eade8aa34','c7b889bb-49f4-4492-bbde-e959e459c94c')">🧵 返信</button>
+    <button onclick="editReply('short','19e59ea3-550d-4306-bf0f-299eade8aa34','c7b889bb-49f4-4492-bbde-e959e459c94c')">編集</button>
+    <button onclick="togglePublicReply('short','19e59ea3-550d-4306-bf0f-299eade8aa34','c7b889bb-49f4-4492-bbde-e959e459c94c')">🔒 非公開</button>
+    <button onclick="deleteReply('short','19e59ea3-550d-4306-bf0f-299eade8aa34','c7b889bb-49f4-4492-bbde-e959e459c94c')">削除</button>
+  </div>
+ </article></div>
+ </article><article class="tweet-card" id="entry-short-83789142-8e77-4574-a0f3-98542320bb09">
+   <div class="tweet-text">夢で見たユークとリルティの関係があまりにも良すぎて小説書きたい。てか書いてる。
+公開場所が無え！……と思いながらpixiv見たけど、FFCC（クリスタルクロニクル）の小説意外と無くてびっくりした。もっとオリキャラ（自キャラ）小説で溢れてるものかと……😮</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/12 02:58 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','83789142-8e77-4574-a0f3-98542320bb09',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('83789142-8e77-4574-a0f3-98542320bb09')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('83789142-8e77-4574-a0f3-98542320bb09')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','83789142-8e77-4574-a0f3-98542320bb09')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('83789142-8e77-4574-a0f3-98542320bb09')">削除</button>
+     </span>
+   </div>
+   <div class="reply-thread"><article class="entry reply-item" id="reply-short-7fcac774-a654-482d-bfc9-899932383eab">
+  <div class="entry-head"><span class="date">2026/09/12 03:00</span></div>
+  <div class="preview">ユークのヴィオバーンとリルティのヴィオ=バーンという同名キャラ作ってユーク×リルティな話が書きたい。通信技術関係ねえ！</div>
+  
+  
+  <span class="pub-badge is-public">🌐 公開中</span>
+  <div class="entry-actions">
+    <button onclick="openReplyComposer('short','83789142-8e77-4574-a0f3-98542320bb09','7fcac774-a654-482d-bfc9-899932383eab')">🧵 返信</button>
+    <button onclick="editReply('short','83789142-8e77-4574-a0f3-98542320bb09','7fcac774-a654-482d-bfc9-899932383eab')">編集</button>
+    <button onclick="togglePublicReply('short','83789142-8e77-4574-a0f3-98542320bb09','7fcac774-a654-482d-bfc9-899932383eab')">🔒 非公開</button>
+    <button onclick="deleteReply('short','83789142-8e77-4574-a0f3-98542320bb09','7fcac774-a654-482d-bfc9-899932383eab')">削除</button>
+  </div>
+ </article></div>
+ </article><article class="tweet-card" id="entry-short-478ae9de-4dd9-42a2-aefe-c874d34ac0a6">
+   <div class="tweet-text">とあるシェラのユークとアルフィタリアのリルティの二人が瘴気の晴れた世界で遠隔通信技術を確立させる、というとても素敵な夢を見た。小説にしてえ！</div>
+   
+   
+   <div class="tweet-foot">
+     <span>🥳 楽しい　2026/09/11 23:46 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','478ae9de-4dd9-42a2-aefe-c874d34ac0a6',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('478ae9de-4dd9-42a2-aefe-c874d34ac0a6')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('478ae9de-4dd9-42a2-aefe-c874d34ac0a6')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','478ae9de-4dd9-42a2-aefe-c874d34ac0a6')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('478ae9de-4dd9-42a2-aefe-c874d34ac0a6')">削除</button>
+     </span>
+   </div>
+   
+ </article><div id="tlLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreTL()">🕒 もっと読み込む（残り167件）</button></div></div>
   </section>
 
-  <section id="longMode">
+  <section id="longMode" style="display: none;">
     <div class="grid">
       <div>
         <div class="card accordion admin-only" id="longFormAccordion">
-          <button type="button" class="accordion-toggle open" id="longFormAccordionToggle" onclick="toggleLongFormAccordion()" aria-expanded="true">
+          <button type="button" class="accordion-toggle" id="longFormAccordionToggle" onclick="toggleLongFormAccordion()" aria-expanded="false">
             <span>✍️ 今日のことを、長く書く</span>
             <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="accordion-body" id="longFormAccordionBody" style="display:block">
+          <div class="accordion-body" id="longFormAccordionBody" style="display: none;">
           <p class="hint">まとまってなくても大丈夫。思いついたことを自由に書いてみてね。</p>
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"></div>
+          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
             <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
@@ -835,7 +1058,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <p class="img-count-hint">💡 小説など長い本文は、畳みたい位置にカーソルを置いて「🔽 ここから折りたたむ」を押すと、そこから先が「続きを読む」で開く形になるよ。押さないときは今まで通り全文そのまま表示されるよ。もう一度押すと畳む位置を動かせるよ。</p>
           </div>
           <div class="compose-wrap">
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
+（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="tape-overlay" id="longTapeOverlay" aria-hidden="true"></div>
         </div>
           <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
@@ -844,7 +1068,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked>
+            <input type="checkbox" id="longPublicToggle" checked="">
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -860,29 +1084,29 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">39</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">138</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="display:none">
+  <section id="shortMode" style="">
     <div class="card tweet accordion admin-only" style="margin-bottom:20px;" id="shortFormAccordion">
-      <button type="button" class="accordion-toggle open" id="shortFormAccordionToggle" onclick="toggleShortFormAccordion()" aria-expanded="true">
+      <button type="button" class="accordion-toggle" id="shortFormAccordionToggle" onclick="toggleShortFormAccordion()" aria-expanded="false">
         <span>💬 つぶやき日記を書く</span>
         <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
-      <div class="accordion-body" id="shortFormAccordionBody" style="display:block">
+      <div class="accordion-body" id="shortFormAccordionBody" style="display: none;">
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"></div>
+      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大10枚）</button>
-        <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
+        <div id="shortImagePreviewBox" class="img-preview-box" style="display: none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
       </div>
       
@@ -897,13 +1121,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
       <div class="tape-overlay" id="shortTapeOverlay" aria-hidden="true"></div>
       </div>
-      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked>
+        <input type="checkbox" id="shortPublicToggle" checked="">
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -919,7 +1143,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint"></p>
+      <p class="media-count-hint" id="mediaCountHint">📷 115枚の画像</p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -928,12 +1152,132 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="card" style="margin-bottom:20px;">
       <div class="calendar-head">
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="前の月">◀</button>
-        <h2 id="calendarMonthLabel"></h2>
+        <h2 id="calendarMonthLabel">2026年9月</h2>
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="次の月">▶</button>
       </div>
       <p class="hint" style="margin-bottom:14px">日付をタップすると、その日に書いた日記・つぶやきがまとめて見られるよ📖　印がついている日は、何か書いた日だよ。</p>
       <div class="calendar-weekdays"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-      <div id="calendarGrid" class="calendar-grid"></div>
+      <div id="calendarGrid" class="calendar-grid"><div class="calendar-day other-month"><span>30</span></div><div class="calendar-day other-month"><span>31</span></div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-01')">
+      <span>1</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">29</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-02')">
+      <span>2</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">12</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-03')">
+      <span>3</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">17</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-04')">
+      <span>4</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">18</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-05')">
+      <span>5</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">14</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-06')">
+      <span>6</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">11</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-07')">
+      <span>7</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">8</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-08')">
+      <span>8</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">15</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-09')">
+      <span>9</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">12</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-10')">
+      <span>10</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">15</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-11')">
+      <span>11</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">9</span>
+    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-12')">
+      <span>12</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">5</span>
+    </div><div class="calendar-day is-today has-entry" onclick="selectCalendarDate('2026-09-13')">
+      <span>13</span>
+      <span class="calendar-dot"></span>
+      <span class="calendar-day-count">4</span>
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-14')">
+      <span>14</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-15')">
+      <span>15</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-16')">
+      <span>16</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-17')">
+      <span>17</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-18')">
+      <span>18</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-19')">
+      <span>19</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-20')">
+      <span>20</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-21')">
+      <span>21</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-22')">
+      <span>22</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-23')">
+      <span>23</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-24')">
+      <span>24</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-25')">
+      <span>25</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-26')">
+      <span>26</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-27')">
+      <span>27</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-28')">
+      <span>28</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-29')">
+      <span>29</span>
+      
+      
+    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-30')">
+      <span>30</span>
+      
+      
+    </div><div class="calendar-day other-month"><span>1</span></div><div class="calendar-day other-month"><span>2</span></div><div class="calendar-day other-month"><span>3</span></div></div>
       <div class="row" style="margin-top:14px;justify-content:center">
         <button type="button" class="btn btn-ghost" onclick="jumpCalendarToToday()">📍 今日に戻る</button>
       </div>
@@ -970,7 +1314,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    <div class="moods" id="replyMoods"></div>
    <label>画像</label>
    <div style="margin-bottom:12px">
-     <input type="file" id="replyImageInput" accept="image/*" multiple onchange="handleReplyImage(event)" style="display:none">
+     <input type="file" id="replyImageInput" accept="image/*" multiple="" onchange="handleReplyImage(event)" style="display:none">
      <button class="btn btn-ghost" onclick="document.getElementById('replyImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
      <div id="replyImagePreviewBox" class="img-preview-box" style="display:none;"></div>
    </div>
@@ -988,7 +1332,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
      <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
    </label>
    <label class="public-toggle-row" style="margin-top:8px">
-     <input type="checkbox" id="replyPublicToggle" checked>
+     <input type="checkbox" id="replyPublicToggle" checked="">
      <span>🌐 この返信をネットに公開する（オフで下書き）</span>
    </label>
    <div class="reply-modal-actions">
@@ -998,7 +1342,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast"></div>
+<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -4239,5 +4583,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', ()=>{startFishSwimming();startFish2Swimming();});}else{startFishSwimming();startFish2Swimming();}
 </script>
-</body>
-</html>
+
+</body></html>
