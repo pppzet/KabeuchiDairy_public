@@ -10,7 +10,19 @@
     "cushion": false,
     "created": "2026-09-12T21:27:08.327Z",
     "updated": "2026-09-12T21:27:08.327Z",
-    "replies": []
+    "replies": [
+      {
+        "id": "e54a3d83-3552-4faa-a2b9-60cd47c42cf0",
+        "parentReplyId": null,
+        "body": "最近は「脳内で単純な図形を思い浮かべながら描く」を心掛けているけど、輪郭に表れない立体部分を掴むのが本気で難しすぎる",
+        "mood": "",
+        "images": [],
+        "public": true,
+        "cushion": false,
+        "created": "2026-09-12T21:29:46.005Z",
+        "updated": "2026-09-12T21:29:46.005Z"
+      }
+    ]
   },
   {
     "id": "de314bfe-9b46-40d8-bfc5-c5f8294db529",
