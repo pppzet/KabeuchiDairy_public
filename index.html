@@ -570,7 +570,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   box-shadow:0 1px 0 rgba(255,255,255,.55) inset, 0 10px 26px rgba(59,42,20,.16);
 }
 </style>
-<style id="customAssetsStyle">:root{--custom-tank-image:url("https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c565673f-bdb2-46ec-8c5f-7cb55f374698.jpg");}</style></head>
+<style id="customAssetsStyle">:root{}</style></head>
 <body class="admin-mode">
 <!-- PINロック画面（管理画面に入る前のゲート） -->
 <div class="pin-lock" id="pinLockScreen">
@@ -619,10 +619,10 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
               <button type="button" id="customAssetReset_header" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('header')" style="display:none">戻す</button>
             </div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_tank" style="background-image: url(&quot;https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/c565673f-bdb2-46ec-8c5f-7cb55f374698.jpg&quot;);"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_tank" style="background-image: none;"></div>
               <div class="custom-asset-label">水槽</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('tank', this.files[0]); this.value=''"></label>
-              <button type="button" id="customAssetReset_tank" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('tank')" style="">戻す</button>
+              <button type="button" id="customAssetReset_tank" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('tank')" style="display: none;">戻す</button>
             </div>
           </div>
           <button onclick="clearAll();closeDropdown()">データ管理・全削除</button>
@@ -642,7 +642,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish2-body: hsl(305.0 52% 55%); --fish2-tail: hsl(305.0 60% 70%); --fish-body: hsl(249.5 30% 55%); --fish-fin: hsl(249.5 39% 72%); --fish-fin-dark: hsl(249.5 28% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish2-body: hsl(50.0 52% 55%); --fish2-tail: hsl(50.0 60% 70%); --fish-body: hsl(247.0 31% 55%); --fish-fin: hsl(247.0 39% 72%); --fish-fin-dark: hsl(247.0 29% 38%);">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタたち</div>
       <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
@@ -650,14 +650,14 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(-1); left: 278.256px; top: 14.5174px;">
+      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 278.54px; top: 38.1436px;">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
         <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
         <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
         <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
         <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
       </svg>
-      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 100.452px; top: 32.2084px;">
+      <svg class="betta betta2 pop" viewBox="0 0 150 90" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 121.926px; top: 37.646px;">
         <!-- 直近の気分をそのまま映す子。逆向きハート型の尾びれ（コンパクト版）＋背ビレ・腹ビレ付き -->
         <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"></path>
         <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"></path>
@@ -672,7 +672,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="aquarium-info">
       <div class="fish-stat">飼育 <b id="fishDays">12日目</b></div>
       <div class="fish-stat">色 <b id="fishColorName">深海色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">222回</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">216回</b></div>
     </div>
   </section>
 </div>
@@ -807,7 +807,37 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <section id="tlMode" style="display:none">
     <div class="tl-label">🕒 TL</div>
-    <div id="tlEntries" class="entries"><article class="tweet-card" id="entry-short-0bd35716-b07b-458b-bb48-57fac16f2b6e">
+    <div id="tlEntries" class="entries"><article class="tweet-card" id="entry-short-84a45448-5932-4078-8c7d-51450bb57c7c">
+   <div class="tweet-text">二次創作オリキャラ妄想楽しいが、ネット公開するのは恥ずかしくなってきたな、これは歳だな……</div>
+   
+   
+   <div class="tweet-foot">
+     <span>2026/09/13 23:27 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','84a45448-5932-4078-8c7d-51450bb57c7c',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('84a45448-5932-4078-8c7d-51450bb57c7c')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('84a45448-5932-4078-8c7d-51450bb57c7c')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','84a45448-5932-4078-8c7d-51450bb57c7c')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('84a45448-5932-4078-8c7d-51450bb57c7c')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-f4220dda-8e03-4ce8-a933-efaed1072517">
+   <div class="tweet-text">FFCCの世界に浸っていたい、だが飯は食わねばならない</div>
+   
+   
+   <div class="tweet-foot">
+     <span>😌 穏やか　2026/09/13 23:26 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
+     <span style="display:flex;gap:6px">
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','f4220dda-8e03-4ce8-a933-efaed1072517',null)">🧵 返信</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('f4220dda-8e03-4ce8-a933-efaed1072517')">編集</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f4220dda-8e03-4ce8-a933-efaed1072517')">🔒</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','f4220dda-8e03-4ce8-a933-efaed1072517')">🔗</button>
+       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f4220dda-8e03-4ce8-a933-efaed1072517')">削除</button>
+     </span>
+   </div>
+   
+ </article><article class="tweet-card" id="entry-short-0bd35716-b07b-458b-bb48-57fac16f2b6e">
    <div class="tweet-text">※FFCCオリキャラ<span class="img-cushion cushioned cushion-inline"><span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6de75133-f0b2-4a76-a562-fa3686d7180c.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','0bd35716-b07b-458b-bb48-57fac16f2b6e',0)"></span>世界の通信網の拡大に携わるユークのラズリバード。シェラの里の見習い魔術師。いつかレベナ・テ・ラのリッチと話をしたいと思っている。<span class="img-cushion cushioned cushion-inline"><span class="cushion-shield" onclick="revealCushion(event)">👁<br><small>タップして表示</small></span><span class="cushion-toggle" onclick="toggleCushion(event)" title="もう一度ぼかす">👁</span><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6e126cd9-d624-4f33-ac0f-6e13a877c433.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','0bd35716-b07b-458b-bb48-57fac16f2b6e',1)"></span>リルティのラズリ=バード。アルフィタリア衛兵。クリスタルキャラバン補欠として選ばれていたが、実際に旅に参加する前に瘴気が世界から消え失せた。ラズリバード（ユーク）の通信網整備補助に携わる。
 
 この二人が仲良くやってる小説くださ〜〜〜〜い！！！！！！😁😁😁😁😁😁😁
@@ -979,38 +1009,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <button onclick="delLong('96032654-72b5-46ba-a69b-c422815e0dea')">削除</button>
   </div>
   
- </article><article class="tweet-card" id="entry-short-de314bfe-9b46-40d8-bfc5-c5f8294db529">
-   <div class="tweet-text">頭痛いよう🥲</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/13 02:40 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','de314bfe-9b46-40d8-bfc5-c5f8294db529',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','de314bfe-9b46-40d8-bfc5-c5f8294db529')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('de314bfe-9b46-40d8-bfc5-c5f8294db529')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="tweet-card" id="entry-short-9a6b0217-801f-4008-9694-bfd6223f2951">
-   <div class="tweet-text">FFCC，うかうかプレイ日記更新しないでいたらレベナ・テ・ラまで進んでしまった
-死ぬかと思った、マジで苦手ステージ（謎解きと移動の面倒さ的な意味で）</div>
-   
-   
-   <div class="tweet-foot">
-     <span>😵 疲れた　2026/09/13 02:40 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','9a6b0217-801f-4008-9694-bfd6223f2951',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('9a6b0217-801f-4008-9694-bfd6223f2951')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('9a6b0217-801f-4008-9694-bfd6223f2951')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','9a6b0217-801f-4008-9694-bfd6223f2951')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('9a6b0217-801f-4008-9694-bfd6223f2951')">削除</button>
-     </span>
-   </div>
-   
- </article><div id="tlLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreTL()">🕒 もっと読み込む（残り173件）</button></div></div>
+ </article><div id="tlLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreTL()">🕒 もっと読み込む（残り175件）</button></div></div>
   </section>
 
   <section id="longMode" style="display: none;">
@@ -1074,7 +1073,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
         <div class="stat"><span>長文日記</span><b id="longStat">40</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">143</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">145</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
@@ -1197,7 +1196,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     </div><div class="calendar-day is-today has-entry" onclick="selectCalendarDate('2026-09-13')">
       <span>13</span>
       <span class="calendar-dot"></span>
-      <span class="calendar-day-count">10</span>
+      <span class="calendar-day-count">12</span>
     </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-14')">
       <span>14</span>
       
@@ -1331,7 +1330,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
    </div>
  </div>
 </div>
-<div id="toast" class="toast">つぶやきを置いたよ 💬</div>
+<div id="toast" class="toast" style="--toast-hue: 50;">何かひとこと置いてみよう 💬</div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
