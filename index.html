@@ -1,12 +1,13 @@
 <!doctype html>
-<html lang="ja" style="--bg: #101820; --bg-alt: #14222c; --surface: #1a2c3a; --surface-2: #1e3244; --text: #e0eef8; --text-muted: #7a9db8; --accent-lavender: #7ab8e0; --accent-pink: #a0c8e8; --text-on-primary: #101820; --line: rgba(224,238,248,0.10); --header-bg: rgba(16,24,32,0.78);"><head>
+<html lang="ja">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1a1620">
 <title>壁打ち日記 — 自分だけの場所</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&amp;family=Shippori+Mincho:wght@500;600;700&amp;family=Yuji+Syuku&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,440;9..144,560&family=Shippori+Mincho:wght@500;600;700&family=Yuji+Syuku&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#1a1620; --bg-alt:#211c2a;
@@ -80,6 +81,16 @@ html[data-has-custom-header] header::before{
 }
 .logo span{color:var(--accent-pink)}
 .sub{font-size:12px;color:var(--text-muted);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;margin-top:6px}
+/* ヘッダーの紹介文：入力した改行をそのまま反映し、長い行は自動で折り返す。
+   ヘッダーは画面上部に固定表示されるため、長すぎると日記が読みづらくなる。
+   そこで通常は3行までで折りたたみ、「続きを読む」をタップすると全文が開く。
+   （折りたたむ行数は -webkit-line-clamp と line-clamp の「3」を変えれば調整できます） */
+#headerSub{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;text-overflow:clip;line-height:1.7}
+body.viewer-mode #headerSub.is-clamped{display:-webkit-box !important;-webkit-box-orient:vertical;-webkit-line-clamp:3;line-clamp:3;overflow:hidden}
+.header-sub-toggle{width:fit-content;background:none;border:none;padding:2px 0 0;margin-top:2px;font-family:inherit;font-size:11px;color:var(--text-muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.header-sub-toggle:hover{color:var(--text)}
+/* 権利表記（ページの一番下に小さく表示。管理画面の「プロフィール・リンク・権利表記を編集」で入力） */
+.site-credit{margin:8px 16px 0;padding:16px 4px 0;border-top:1px solid var(--line);text-align:center;font-size:10.5px;line-height:1.8;letter-spacing:.02em;color:var(--text-muted);white-space:pre-wrap;overflow-wrap:anywhere;opacity:.9}
 
 .header-admin-link{flex-shrink:0;margin-left:auto}
 /* ↑ margin-left:auto を付けることで、画面が狭くてこのボタンだけ次の行に折り返した場合でも
@@ -570,8 +581,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   box-shadow:0 1px 0 rgba(255,255,255,.55) inset, 0 10px 26px rgba(59,42,20,.16);
 }
 </style>
-<style id="customAssetsStyle">:root{}</style></head>
-<body class="admin-mode">
+</head>
+<body>
 <!-- PINロック画面（管理画面に入る前のゲート） -->
 <div class="pin-lock" id="pinLockScreen">
   <div class="pin-lock-card">
@@ -579,16 +590,18 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <h2 id="pinScreenTitle">PINを入力してね</h2>
     <p class="hint" id="pinScreenHint" style="margin-bottom:16px"></p>
     <label style="margin-top:0">PIN</label>
-    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" autocomplete="off"
+      onkeydown="if(event.key==='Enter'){ document.getElementById('pinConfirmRow').style.display==='block' ? document.getElementById('pinConfirmInput').focus() : submitPin() }">
     <div id="pinConfirmRow" style="display:none;margin-top:6px">
       <label>もう一度PINを入力（確認用）</label>
-      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off" onkeydown="if(event.key==='Enter') submitPin()">
+      <input type="password" id="pinConfirmInput" placeholder="PIN（確認）" inputmode="numeric" autocomplete="off"
+        onkeydown="if(event.key==='Enter') submitPin()">
     </div>
     <p class="pin-error" id="pinError"></p>
     <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" onclick="submitPin()">入る</button>
   </div>
 </div>
-<div class="app" id="appRoot">
+<div class="app is-loading" id="appRoot">
 <header>
   <div class="header-row">
     <div class="logo">壁打ち<span>日記</span></div>
@@ -597,29 +610,29 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">読み込む</button>
       <div class="menu-wrap">
         <button class="btn btn-ghost btn-icon" id="menuBtn" aria-label="メニュー">
-          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>
         </button>
         <div class="dropdown" id="dropdownMenu">
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🎨 カラーテーマ（ダーク＆ライト）</div>
-            <div class="theme-swatches-grid" id="themeSwatchesRow"><button type="button" class="tsw" title="紫夜（ダーク）"><div class="d-bg" style="background:#1a1620"></div><div class="d-ac" style="background:#ad9bd0"></div></button><button type="button" class="tsw" title="深森（ダーク）"><div class="d-bg" style="background:#141a16"></div><div class="d-ac" style="background:#8fc49a"></div></button><button type="button" class="tsw active" title="深海（ダーク）"><div class="d-bg" style="background:#101820"></div><div class="d-ac" style="background:#7ab8e0"></div></button><button type="button" class="tsw" title="夜桜（ダーク）"><div class="d-bg" style="background:#1e1418"></div><div class="d-ac" style="background:#e0a0b8"></div></button><button type="button" class="tsw" title="琥珀（ダーク）"><div class="d-bg" style="background:#1f160f"></div><div class="d-ac" style="background:#e0a050"></div></button><button type="button" class="tsw" title="墨（ダーク）"><div class="d-bg" style="background:#16171a"></div><div class="d-ac" style="background:#c7c7cf"></div></button><button type="button" class="tsw" title="蘇芳（ダーク）"><div class="d-bg" style="background:#1c1012"></div><div class="d-ac" style="background:#d97b7b"></div></button><button type="button" class="tsw" title="翡翠（ダーク）"><div class="d-bg" style="background:#0e1a18"></div><div class="d-ac" style="background:#6fc9b8"></div></button><button type="button" class="tsw" title="クリーム（ライト）"><div class="d-bg" style="background:#faf7f0"></div><div class="d-ac" style="background:#a07838"></div></button><button type="button" class="tsw" title="ハーブ（ライト）"><div class="d-bg" style="background:#f4f8f4"></div><div class="d-ac" style="background:#5a8f65"></div></button><button type="button" class="tsw" title="ラテ（ライト）"><div class="d-bg" style="background:#fbf6f0"></div><div class="d-ac" style="background:#8c6239"></div></button><button type="button" class="tsw" title="スカイ（ライト）"><div class="d-bg" style="background:#f2f7fb"></div><div class="d-ac" style="background:#4a8cb8"></div></button><button type="button" class="tsw" title="ブロッサム（ライト）"><div class="d-bg" style="background:#faf4f6"></div><div class="d-ac" style="background:#b85a7d"></div></button><button type="button" class="tsw" title="ミント（ライト）"><div class="d-bg" style="background:#f0f9f6"></div><div class="d-ac" style="background:#4aa88a"></div></button><button type="button" class="tsw" title="ラベンダー（ライト）"><div class="d-bg" style="background:#f6f3fb"></div><div class="d-ac" style="background:#8a6fc0"></div></button><button type="button" class="tsw" title="桃（ライト）"><div class="d-bg" style="background:#fdf3ee"></div><div class="d-ac" style="background:#e0855a"></div></button><button type="button" class="tsw" title="年代記（クロニクル）"><div class="d-bg" style="background:#ecdcb3"></div><div class="d-ac" style="background:#8a5a2b"></div></button></div>
+            <div class="theme-swatches-grid" id="themeSwatchesRow"></div>
           </div>
           <div class="dropdown-theme">
             <div class="dropdown-theme-label">🖼 カスタム画像（テーマに関係なく反映されます）</div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_bg" style="background-image: none;"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_bg"></div>
               <div class="custom-asset-label">背景</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('bg', this.files[0]); this.value=''"></label>
               <button type="button" id="customAssetReset_bg" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('bg')" style="display:none">戻す</button>
             </div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_header" style="background-image: none;"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_header"></div>
               <div class="custom-asset-label">ヘッダー</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('header', this.files[0]); this.value=''"></label>
               <button type="button" id="customAssetReset_header" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('header')" style="display:none">戻す</button>
             </div>
             <div class="custom-asset-row">
-              <div class="custom-asset-preview" id="customAssetPreview_tank" style="background-image: none;"></div>
+              <div class="custom-asset-preview" id="customAssetPreview_tank"></div>
               <div class="custom-asset-label">水槽</div>
               <label class="btn btn-ghost custom-asset-btn">選ぶ<input type="file" accept="image/*" style="display:none" onchange="handleCustomAssetFile('tank', this.files[0]); this.value=''"></label>
               <button type="button" id="customAssetReset_tank" class="btn btn-ghost custom-asset-reset" onclick="resetCustomAsset('tank')" style="display:none">戻す</button>
@@ -631,54 +644,49 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
           <button onclick="lockAdminNow();closeDropdown()">🔒 今すぐロックする</button>
         </div>
       </div>
-      <input id="importFile" type="file" accept=".json" hidden="" onchange="importData(event)">
+      <input id="importFile" type="file" accept=".json" hidden onchange="importData(event)">
     </div>
     <div class="viewer-only header-admin-link" style="display:none">
       <a href="?admin=1" class="btn btn-ghost" style="text-decoration:none;font-size:12px">🔑 管理画面へ</a>
     </div>
   </div>
-  <div class="sub viewer-only" id="headerSub" style="display:none" title="バイブコーディング好きのイラストレーター🎨
-↓最近FFCCのスクショ載せてるので権利表記
-　© 2003, 2020 SQUARE ENIX CO., LTD. All Rights Reserved.
-　CHARACTER DESIGN: Toshiyuki Itahana">バイブコーディング好きのイラストレーター🎨
-↓最近FFCCのスクショ載せてるので権利表記
-　© 2003, 2020 SQUARE ENIX CO., LTD. All Rights Reserved.
-　CHARACTER DESIGN: Toshiyuki Itahana</div>
-  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"><a href="https://pppzet.github.io/MyProfile/" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 ポートフォリオ</a><a href="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" target="_blank" rel="noopener noreferrer" class="header-profile-link">🔗 SKIMA</a></div>
+  <div class="sub viewer-only" id="headerSub" style="display:none">公開されている日記とつぶやき</div>
+  <button type="button" class="header-sub-toggle viewer-only is-empty" id="headerSubToggle" style="display:none" onclick="toggleHeaderSub()">続きを読む ▾</button>
+  <div class="header-profile-links viewer-only" id="headerProfileLinks" style="display:none"></div>
 </header>
 
 <div class="aquarium-wrap viewer-aquarium" id="aquariumWrap">
-  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽" style="--fish2-body: hsl(305.0 52% 55%); --fish2-tail: hsl(305.0 60% 70%); --fish-body: hsl(249.2 30% 55%); --fish-fin: hsl(249.2 39% 72%); --fish-fin-dark: hsl(249.2 28% 38%);">
+  <section class="aquarium-card" id="aquariumCard" aria-label="ベタの水槽">
     <div class="aquarium-head">
       <div class="aquarium-title">🐟 うちのベタたち</div>
-      <div class="aquarium-meta" id="fishMoodLabel">最近の気分がゆっくり色に反映中 🫧</div>
+      <div class="aquarium-meta" id="fishMoodLabel">今日もゆらゆら</div>
     </div>
     <div class="aquarium-tank" id="aquariumTank" onclick="feedBetta(event)" title="タップして餌をあげる">
       <div class="aquarium-waterline"></div>
       <div class="aquarium-bubble b1"></div><div class="aquarium-bubble b2"></div><div class="aquarium-bubble b3"></div><div class="aquarium-bubble b4"></div>
-      <div class="decor-part" data-id="d3" style="left: 7.86018%; top: 80.719%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d4" style="left: 79.7607%; top: 57.2737%; transform: translate(-50%, -50%) rotate(8deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882140939439" style="left: 21.4717%; top: 89.5435%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></div><div class="decor-part" data-id="d178882148041934" style="left: 29.3286%; top: 98%; transform: translate(-50%, -50%) rotate(350deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d1788821541788757" style="left: 42.8204%; top: 97.0302%; transform: translate(-50%, -50%) rotate(0deg) scale(0.5);"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></div><div class="decor-part" data-id="d1788821550747564" style="left: 67.695%; top: 98%; transform: translate(-50%, -50%) rotate(0deg) scale(1);"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></div><div class="decor-part" data-id="d178882252628272" style="left: 55.4443%; top: 92.5677%; transform: translate(-50%, -50%) rotate(7deg) scale(1.29);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div><svg class="betta" viewBox="0 0 180 110" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 101.004px; top: 29.6833px;">
+      <svg class="betta" viewBox="0 0 180 110" aria-hidden="true">
         <!-- シンプルな横長の菱形ボディ＋尾びれ -->
-        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"></path>
-        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"></path>
-        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"></path>
-        <circle class="eye" cx="39" cy="49" r="3.1"></circle><circle class="shine" cx="40" cy="48" r="1"></circle>
+        <path class="fin" d="M108 55 C128 32 155 25 177 35 C159 48 151 61 177 75 C151 84 127 77 108 55 Z"/>
+        <path class="fin-dark" d="M58 55 C71 43 91 35 111 37 C104 48 104 62 111 73 C91 75 71 67 58 55 Z"/>
+        <path class="body" d="M22 55 C38 30 78 27 110 55 C78 83 38 80 22 55 Z"/>
+        <circle class="eye" cx="39" cy="49" r="3.1"/><circle class="shine" cx="40" cy="48" r="1"/>
       </svg>
-      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true" style="transform: translate(-50%, -50%) scaleX(1); left: 49.5416px; top: 17.8186px;">
+      <svg class="betta betta2" viewBox="0 0 150 90" aria-hidden="true">
         <!-- 直近の気分をそのまま映す子。逆向きハート型の尾びれ（コンパクト版）＋背ビレ・腹ビレ付き -->
-        <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"></path>
-        <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"></path>
-        <path class="tail2" d="M38 28 C42 12 50 10 52 24 C48 32 42 33 38 28 Z"></path>
-        <path class="tail2" d="M20 60 C16 74 24 78 30 68 C28 60 24 58 20 60 Z"></path>
-        <path class="body2" d="M5 45 C16 26 48 23 60 45 C48 67 16 64 5 45 Z"></path>
-        <circle class="eye" cx="16" cy="40" r="3"></circle>
+        <path class="tail2" d="M58 33 C78 18 100 16 112 28 C120 35 124 40 124 45 C124 50 120 55 112 62 C100 74 78 72 58 57 C64 53 68 49 72 45 C68 41 64 37 58 33 Z"/>
+        <path class="tail2-curl" d="M124 45 C132 40 140 44 137 51 C135 56 128 54 130 49"/>
+        <path class="tail2" d="M38 28 C42 12 50 10 52 24 C48 32 42 33 38 28 Z"/>
+        <path class="tail2" d="M20 60 C16 74 24 78 30 68 C28 60 24 58 20 60 Z"/>
+        <path class="body2" d="M5 45 C16 26 48 23 60 45 C48 67 16 64 5 45 Z"/>
+        <circle class="eye" cx="16" cy="40" r="3"/>
       </svg>
       <div class="aquarium-decor"></div>
-    <div class="decor-part" data-id="d1788821314239317" style="left: 15.7443%; top: 72.3338%; transform: translate(-50%, -50%) rotate(350deg) scale(1.38);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></div><div class="decor-part" data-id="d178882141850636" style="left: 94.1406%; top: 47.1086%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827756550301" style="left: 95.8008%; top: 77.0079%; transform: translate(-50%, -50%) rotate(0deg) scale(2);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d1788827800636324" style="left: 85.4248%; top: 83.817%; transform: translate(-50%, -50%) rotate(0deg) scale(1.71);"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></div><div class="decor-part" data-id="d178882793287751" style="left: 96.167%; top: 17.2094%; transform: translate(-50%, -50%) rotate(15deg) scale(1.32);"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></div></div>
+    </div>
     <div class="aquarium-hint">tap to feed</div>
     <div class="aquarium-info">
-      <div class="fish-stat">飼育 <b id="fishDays">19日目</b></div>
-      <div class="fish-stat">色 <b id="fishColorName">深海色</b></div>
-      <div class="fish-stat">餌 <b id="fishFeedCount">223回</b></div>
+      <div class="fish-stat">飼育 <b id="fishDays">1日目</b></div>
+      <div class="fish-stat">色 <b id="fishColorName">はじめの色</b></div>
+      <div class="fish-stat">餌 <b id="fishFeedCount">0回</b></div>
     </div>
   </section>
 </div>
@@ -687,27 +695,19 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   <!-- プロフィール・リンク編集（管理画面） -->
   <div class="card accordion admin-only" style="margin-bottom:20px;">
     <button type="button" class="accordion-toggle" id="profileAccordionToggle" onclick="toggleProfileAccordion()" aria-expanded="false">
-      <span>🔗 プロフィール・リンクを編集</span>
+      <span>🔗 プロフィール・リンク・権利表記を編集</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="profileAccordionBody" style="display: none;">
+    <div class="accordion-body" id="profileAccordionBody" style="display:none">
       <p class="hint">ポートフォリオやSKIMAなど、公開ページのいちばん上に載せたいリンクを自由に追加できます。</p>
       <label>紹介文（任意）</label>
-      <textarea id="profileBio" placeholder="ひとことプロフィールなど" style="min-height:80px"></textarea>
+      <textarea id="profileBio" placeholder="ひとことプロフィールなど（改行もOK）" style="min-height:80px"></textarea>
+      <p class="hint" style="margin-top:4px">改行はそのまま反映されます。長い場合、公開ページのヘッダーでは3行まで表示され、「続きを読む」をタップすると全文が開きます。</p>
+      <label>権利表記（任意）</label>
+      <textarea id="profileCredit" placeholder="例：© 2003, 2020 SQUARE ENIX CO., LTD. All Rights Reserved." style="min-height:124px"></textarea>
+      <p class="hint" style="margin-top:4px">ゲームのスクショなどを載せる時の表記を入れておくと、公開ページの一番下に小さく表示されます。改行もそのまま反映されます。空にすると表示されません。</p>
       <label>リンク一覧</label>
-      <div id="profileLinksList">
-    <div class="profile-link-row">
-      <input value="ポートフォリオ" onchange="updateProfileLink('lk178822466269654','label',this.value)" placeholder="リンク名">
-      <input value="https://pppzet.github.io/MyProfile/" onchange="updateProfileLink('lk178822466269654','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822466269654')" title="削除">✕</button>
-    </div>
-  
-    <div class="profile-link-row">
-      <input value="SKIMA" onchange="updateProfileLink('lk178822483499964','label',this.value)" placeholder="リンク名">
-      <input value="https://skima.jp/profile?id=503415&amp;sh=ZDKCOXH" onchange="updateProfileLink('lk178822483499964','url',this.value)" placeholder="https://...">
-      <button class="btn btn-ghost btn-icon" onclick="removeProfileLink('lk178822483499964')" title="削除">✕</button>
-    </div>
-  </div>
+      <div id="profileLinksList"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newLinkLabel" placeholder="リンク名（例：ポートフォリオ）">
         <input id="newLinkUrl" placeholder="https://...">
@@ -728,13 +728,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
     <div class="accordion-body" id="moodDictAccordionBody" style="display:none">
       <p class="hint">つぶやき日記には気分アイコンが無いので、ここに登録した言葉が本文に含まれているかでベタの色の判定に使います。長文日記は気分アイコンで判定するので、この辞書は使いません。</p>
       <label>😊 ポジティブな言葉</label>
-      <div id="moodPositiveList" class="mood-word-chips"><span class="mood-word-chip">楽しい<button onclick="removeMoodWord('positive','楽しい')" title="削除">✕</button></span><span class="mood-word-chip">たのしい<button onclick="removeMoodWord('positive','たのしい')" title="削除">✕</button></span><span class="mood-word-chip">嬉しい<button onclick="removeMoodWord('positive','嬉しい')" title="削除">✕</button></span><span class="mood-word-chip">うれしい<button onclick="removeMoodWord('positive','うれしい')" title="削除">✕</button></span><span class="mood-word-chip">幸せ<button onclick="removeMoodWord('positive','幸せ')" title="削除">✕</button></span><span class="mood-word-chip">しあわせ<button onclick="removeMoodWord('positive','しあわせ')" title="削除">✕</button></span><span class="mood-word-chip">最高<button onclick="removeMoodWord('positive','最高')" title="削除">✕</button></span><span class="mood-word-chip">好き<button onclick="removeMoodWord('positive','好き')" title="削除">✕</button></span><span class="mood-word-chip">大好き<button onclick="removeMoodWord('positive','大好き')" title="削除">✕</button></span><span class="mood-word-chip">わくわく<button onclick="removeMoodWord('positive','わくわく')" title="削除">✕</button></span><span class="mood-word-chip">ワクワク<button onclick="removeMoodWord('positive','ワクワク')" title="削除">✕</button></span><span class="mood-word-chip">元気<button onclick="removeMoodWord('positive','元気')" title="削除">✕</button></span><span class="mood-word-chip">癒された<button onclick="removeMoodWord('positive','癒された')" title="削除">✕</button></span><span class="mood-word-chip">癒やされた<button onclick="removeMoodWord('positive','癒やされた')" title="削除">✕</button></span><span class="mood-word-chip">可愛い<button onclick="removeMoodWord('positive','可愛い')" title="削除">✕</button></span><span class="mood-word-chip">かわいい<button onclick="removeMoodWord('positive','かわいい')" title="削除">✕</button></span><span class="mood-word-chip">面白い<button onclick="removeMoodWord('positive','面白い')" title="削除">✕</button></span><span class="mood-word-chip">おもしろい<button onclick="removeMoodWord('positive','おもしろい')" title="削除">✕</button></span><span class="mood-word-chip">やった<button onclick="removeMoodWord('positive','やった')" title="削除">✕</button></span><span class="mood-word-chip">ハッピー<button onclick="removeMoodWord('positive','ハッピー')" title="削除">✕</button></span><span class="mood-word-chip">頑張った<button onclick="removeMoodWord('positive','頑張った')" title="削除">✕</button></span><span class="mood-word-chip">がんばった<button onclick="removeMoodWord('positive','がんばった')" title="削除">✕</button></span><span class="mood-word-chip">はかどった<button onclick="removeMoodWord('positive','はかどった')" title="削除">✕</button></span><span class="mood-word-chip">捗った<button onclick="removeMoodWord('positive','捗った')" title="削除">✕</button></span><span class="mood-word-chip">満足<button onclick="removeMoodWord('positive','満足')" title="削除">✕</button></span><span class="mood-word-chip">ラッキー<button onclick="removeMoodWord('positive','ラッキー')" title="削除">✕</button></span><span class="mood-word-chip">よかった<button onclick="removeMoodWord('positive','よかった')" title="削除">✕</button></span><span class="mood-word-chip">良かった<button onclick="removeMoodWord('positive','良かった')" title="削除">✕</button></span><span class="mood-word-chip">笑った<button onclick="removeMoodWord('positive','笑った')" title="削除">✕</button></span><span class="mood-word-chip">ニコニコ<button onclick="removeMoodWord('positive','ニコニコ')" title="削除">✕</button></span><span class="mood-word-chip">🥳<button onclick="removeMoodWord('positive','🥳')" title="削除">✕</button></span><span class="mood-word-chip">🥰<button onclick="removeMoodWord('positive','🥰')" title="削除">✕</button></span><span class="mood-word-chip">☺️<button onclick="removeMoodWord('positive','☺️')" title="削除">✕</button></span><span class="mood-word-chip">🤣<button onclick="removeMoodWord('positive','🤣')" title="削除">✕</button></span><span class="mood-word-chip">😂<button onclick="removeMoodWord('positive','😂')" title="削除">✕</button></span><span class="mood-word-chip">😊<button onclick="removeMoodWord('positive','😊')" title="削除">✕</button></span></div>
+      <div id="moodPositiveList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newPositiveWord" placeholder="言葉を追加（例：ほっとした）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('positive')}">
         <button class="btn btn-ghost" onclick="addMoodWord('positive')">＋ 追加</button>
       </div>
       <label style="margin-top:16px;display:block">😵 ネガティブな言葉</label>
-      <div id="moodNegativeList" class="mood-word-chips"><span class="mood-word-chip">疲れた<button onclick="removeMoodWord('negative','疲れた')" title="削除">✕</button></span><span class="mood-word-chip">つかれた<button onclick="removeMoodWord('negative','つかれた')" title="削除">✕</button></span><span class="mood-word-chip">しんどい<button onclick="removeMoodWord('negative','しんどい')" title="削除">✕</button></span><span class="mood-word-chip">辛い<button onclick="removeMoodWord('negative','辛い')" title="削除">✕</button></span><span class="mood-word-chip">つらい<button onclick="removeMoodWord('negative','つらい')" title="削除">✕</button></span><span class="mood-word-chip">不安<button onclick="removeMoodWord('negative','不安')" title="削除">✕</button></span><span class="mood-word-chip">悲しい<button onclick="removeMoodWord('negative','悲しい')" title="削除">✕</button></span><span class="mood-word-chip">かなしい<button onclick="removeMoodWord('negative','かなしい')" title="削除">✕</button></span><span class="mood-word-chip">最悪<button onclick="removeMoodWord('negative','最悪')" title="削除">✕</button></span><span class="mood-word-chip">無理<button onclick="removeMoodWord('negative','無理')" title="削除">✕</button></span><span class="mood-word-chip">むり<button onclick="removeMoodWord('negative','むり')" title="削除">✕</button></span><span class="mood-word-chip">だるい<button onclick="removeMoodWord('negative','だるい')" title="削除">✕</button></span><span class="mood-word-chip">落ち込<button onclick="removeMoodWord('negative','落ち込')" title="削除">✕</button></span><span class="mood-word-chip">凹んだ<button onclick="removeMoodWord('negative','凹んだ')" title="削除">✕</button></span><span class="mood-word-chip">へこんだ<button onclick="removeMoodWord('negative','へこんだ')" title="削除">✕</button></span><span class="mood-word-chip">イライラ<button onclick="removeMoodWord('negative','イライラ')" title="削除">✕</button></span><span class="mood-word-chip">ムカ<button onclick="removeMoodWord('negative','ムカ')" title="削除">✕</button></span><span class="mood-word-chip">ぷんすこ<button onclick="removeMoodWord('negative','ぷんすこ')" title="削除">✕</button></span><span class="mood-word-chip">泣きたい<button onclick="removeMoodWord('negative','泣きたい')" title="削除">✕</button></span><span class="mood-word-chip">泣いた<button onclick="removeMoodWord('negative','泣いた')" title="削除">✕</button></span><span class="mood-word-chip">きつい<button onclick="removeMoodWord('negative','きつい')" title="削除">✕</button></span><span class="mood-word-chip">こわい<button onclick="removeMoodWord('negative','こわい')" title="削除">✕</button></span><span class="mood-word-chip">怖い<button onclick="removeMoodWord('negative','怖い')" title="削除">✕</button></span><span class="mood-word-chip">ストレス<button onclick="removeMoodWord('negative','ストレス')" title="削除">✕</button></span><span class="mood-word-chip">モヤモヤ<button onclick="removeMoodWord('negative','モヤモヤ')" title="削除">✕</button></span><span class="mood-word-chip">もやもや<button onclick="removeMoodWord('negative','もやもや')" title="削除">✕</button></span><span class="mood-word-chip">😭<button onclick="removeMoodWord('negative','😭')" title="削除">✕</button></span><span class="mood-word-chip">😡<button onclick="removeMoodWord('negative','😡')" title="削除">✕</button></span><span class="mood-word-chip">😞<button onclick="removeMoodWord('negative','😞')" title="削除">✕</button></span><span class="mood-word-chip">😫<button onclick="removeMoodWord('negative','😫')" title="削除">✕</button></span><span class="mood-word-chip">😵<button onclick="removeMoodWord('negative','😵')" title="削除">✕</button></span><span class="mood-word-chip">😔<button onclick="removeMoodWord('negative','😔')" title="削除">✕</button></span><span class="mood-word-chip">😣<button onclick="removeMoodWord('negative','😣')" title="削除">✕</button></span></div>
+      <div id="moodNegativeList" class="mood-word-chips"></div>
       <div class="profile-link-row" style="margin-top:10px">
         <input id="newNegativeWord" placeholder="言葉を追加（例：もやもや）" onkeydown="if(event.key==='Enter'){event.preventDefault();addMoodWord('negative')}">
         <button class="btn btn-ghost" onclick="addMoodWord('negative')">＋ 追加</button>
@@ -753,13 +753,13 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🪸 水槽をデコレーション</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="decorAccordionBody" style="display: none;">
+    <div class="accordion-body" id="decorAccordionBody" style="display:none">
       <p class="hint">気分や成長とは関係のない、ただの模様替え機能だよ🐚 下のパーツをタップすると水槽に追加されるので、あとは水槽内で指でドラッグして位置を調整してね。魚より奥に置かれるので、魚の見やすさはそのまま守られます。</p>
       <label>パーツを追加</label>
-      <div class="decor-palette-grid" id="decorPaletteGrid"><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock1')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('rock2')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('driftwood')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_green')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_teal')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('plant_purple')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_pink')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="btn btn-ghost decor-palette-btn" onclick="addDecorPart('coral_orange')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button></div>
+      <div class="decor-palette-grid" id="decorPaletteGrid"></div>
       <label style="margin-top:6px;display:block">配置したパーツ（タップで選択）</label>
-      <div class="decor-placed-row" id="decorPlacedList"><button type="button" class="decor-placed-chip" onclick="selectDecor('d3')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d4')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 21C29 13 31 8 31 3" stroke="#9b7fd1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 43 18 25C19 17 22 11 20 5" stroke="#b49bdf" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 41 39 23C39 15 37 10 41 4" stroke="#7c5cbb" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>💜 水草（パープル）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821314239317')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e88fb0" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 20 38 16 26" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 40 34 46 22" stroke="#e88fb0" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 26 26 30 16" stroke="#f0a8c4" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="16" cy="26" r="3.4" fill="#f6bcd3"></circle><circle cx="46" cy="22" r="3.4" fill="#f6bcd3"></circle><circle cx="30" cy="16" r="3.4" fill="#f6bcd3"></circle></svg></span><span>🌸 サンゴ（ピンク）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882140939439')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 30 44 30 36" stroke="#e08a4f" stroke-width="5" stroke-linecap="round" fill="none"></path><path d="M30 44C30 44 19 39 14 28" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 40C30 40 41 35 47 24" stroke="#e08a4f" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 36C30 36 27 25 32 15" stroke="#eaa066" stroke-width="4" stroke-linecap="round" fill="none"></path><circle cx="14" cy="28" r="3.4" fill="#f0b686"></circle><circle cx="47" cy="24" r="3.4" fill="#f0b686"></circle><circle cx="32" cy="15" r="3.4" fill="#f0b686"></circle></svg></span><span>🧡 サンゴ（オレンジ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882141850636')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882148041934')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821541788757')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M4 48C0 34 12 20 26 20C32 8 52 10 56 24C62 30 58 46 44 50C28 56 12 56 4 48Z" fill="#a9927c"></path><path d="M46 46C50 40 50 30 44 24" stroke="#8c7862" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".5"></path><path d="M12 44C16 38 22 34 28 34" stroke="#8c7862" stroke-width="2" stroke-linecap="round" fill="none" opacity=".4"></path></svg></span><span>🪨 岩（大）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788821550747564')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M8 54C18 40 14 26 28 18C36 13 44 20 38 26C32 32 48 28 54 16" stroke="#8a5a3b" stroke-width="6" stroke-linecap="round" fill="none"></path><path d="M28 32C24 36 20 38 15 38" stroke="#8a5a3b" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M38 26C42 22 46 21 50 22" stroke="#7a4d31" stroke-width="3.4" stroke-linecap="round" fill="none"></path></svg></span><span>🌿 流木</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882252628272')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 21 39 26 20C28 12 30 8 30 3" stroke="#2fb6ac" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 15 42 17 24C18 16 21 11 19 5" stroke="#4fcbc1" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 41 41 40 22C40 14 38 9 42 4" stroke="#1f9a90" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🌊 水草（ターコイズ）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827756550301')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d1788827800636324')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M6 46C2 36 10 24 22 22C28 12 46 12 52 24C60 26 58 40 46 46C34 52 16 52 6 46Z" fill="#9aa3ba"></path><path d="M14 40C17 32 24 27 30 27" stroke="#7c869e" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".55"></path></svg></span><span>🪨 岩（小）</span></button><button type="button" class="decor-placed-chip" onclick="selectDecor('d178882793287751')"><span class="decor-thumb"><svg viewBox="0 0 60 60"><path d="M30 58C30 58 22 40 27 22C29 14 32 8 33 4" stroke="#4f9d6e" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 16 44 16 26C16 18 18 12 17 6" stroke="#5fae7d" stroke-width="4" stroke-linecap="round" fill="none"></path><path d="M30 58C30 58 40 42 42 24C43 16 42 10 45 5" stroke="#3d8a5c" stroke-width="4" stroke-linecap="round" fill="none"></path></svg></span><span>🍀 水草（グリーン）</span></button></div>
-      <div id="decorEditorControls"><p class="hint">パーツをタップ（水槽の中、または上の一覧）して選ぶと、回転・大きさ・前後・削除がここでできるよ。</p></div>
+      <div class="decor-placed-row" id="decorPlacedList"></div>
+      <div id="decorEditorControls"></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
         <button class="btn btn-ghost" onclick="resetAquariumDecor()">🔄 初期配置に戻す</button>
       </div>
@@ -772,7 +772,7 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
       <span>🐙 ネットのみんなに公開する</span>
       <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </button>
-    <div class="accordion-body" id="githubAccordionBody" style="display: none;">
+    <div class="accordion-body" id="githubAccordionBody" style="display:none">
       <p class="github-help" style="color:var(--accent-pink);font-weight:600;margin-bottom:12px;">
         ※GitHubアクセストークンが無いとネット上に公開されないのでご安心ください
       </p>
@@ -799,8 +799,8 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
   <!-- 長文日記／つぶやき日記の切り替え -->
   <div class="tab-nav">
     <button id="tabTL" class="tab-btn" onclick="switchMode('tl')">🕒 TL</button>
-    <button id="tabLong" class="tab-btn" onclick="switchMode('long')">📖 長文日記</button>
-    <button id="tabShort" class="tab-btn active" onclick="switchMode('short')">💬 つぶやき日記</button>
+    <button id="tabLong" class="tab-btn active" onclick="switchMode('long')">📖 長文日記</button>
+    <button id="tabShort" class="tab-btn" onclick="switchMode('short')">💬 つぶやき日記</button>
     <button id="tabMedia" class="tab-btn" onclick="switchMode('media')">🖼 メディア</button>
     <button id="tabCalendar" class="tab-btn" onclick="switchMode('calendar')">📅 カレンダー</button>
   </div>
@@ -813,315 +813,29 @@ body.viewer-mode .grid{grid-template-columns:1fr;max-width:720px;margin:auto}
 
   <section id="tlMode" style="display:none">
     <div class="tl-label">🕒 TL</div>
-    <div id="tlEntries" class="entries"><article class="tweet-card" id="entry-short-352b4898-d6ad-4b15-8bbf-6bec8fad0eec">
-   <div class="tweet-text">妄想で頭がパンクしそう！形にしたい！形にしたい！</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/18 08:46 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','352b4898-d6ad-4b15-8bbf-6bec8fad0eec',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('352b4898-d6ad-4b15-8bbf-6bec8fad0eec')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('352b4898-d6ad-4b15-8bbf-6bec8fad0eec')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','352b4898-d6ad-4b15-8bbf-6bec8fad0eec')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('352b4898-d6ad-4b15-8bbf-6bec8fad0eec')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="entry" id="entry-long-5a783ec5-d079-4250-9910-74cc44387f53">
-  <div class="entry-head"><span class="date">2026/09/17 09:27</span><span>🎨 創作</span></div>
-  <div class="entry-title">青い鳥達</div>
-  <div class="preview">※FFCCオリキャラ<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/ad1ebdaa-f45f-4f68-9cc6-4ab9a823ce86.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','5a783ec5-d079-4250-9910-74cc44387f53',0)">FFCC系、作画コストが凄まじく高くて各の大変過ぎて、線画を上から潰しながら整えていくタイプの厚塗りしてる余裕が無いぞ！
-
-<span class="hashtag" onclick="filterByTag('#FFCC')">#FFCC</span> <span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span> <span class="hashtag" onclick="filterByTag('#絵')">#絵</span></div>
-  
-  
-  <span class="pub-badge is-public">🌐 公開中</span>
-  <div class="entry-actions">
-    <button onclick="openReplyComposer('long','5a783ec5-d079-4250-9910-74cc44387f53',null)">🧵 返信する</button>
-    <button onclick="editLong('5a783ec5-d079-4250-9910-74cc44387f53')">編集</button>
-    <button onclick="togglePublicLong('5a783ec5-d079-4250-9910-74cc44387f53')">🔒 非公開にする</button>
-    <button onclick="shareEntry('long','5a783ec5-d079-4250-9910-74cc44387f53')">🔗 シェア</button>
-    <button onclick="delLong('5a783ec5-d079-4250-9910-74cc44387f53')">削除</button>
-  </div>
-  
- </article><article class="tweet-card" id="entry-short-f1872814-eca2-4ce3-b45c-36d84ad42bfd">
-   <div class="tweet-text"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/6f4474ed-062b-48e8-8fed-beb2badefc8e.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('short','f1872814-eca2-4ce3-b45c-36d84ad42bfd',0)">ノリノリで描けたリッチさん。
-<span class="spoiler-text" onclick="this.classList.toggle('revealed')">「必死に長い年月掛けて王都征服計画を練ってたのに、まさか隕石落下とその後の毒ガス被害のせいで人類が滅亡レベルの危機になるとはこのリッチの目を持ってしても……🥲」</span>みたいな感じで怨霊になったのかと思うと味わい深いですね。
-<span class="hashtag" onclick="filterByTag('#FFCC')">#FFCC</span> <span class="hashtag" onclick="filterByTag('#落書き')">#落書き</span> <span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span> <span class="hashtag" onclick="filterByTag('#絵')">#絵</span></div>
-   
-   
-   <div class="tweet-foot">
-     <span>🎨 創作　2026/09/17 08:31 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','f1872814-eca2-4ce3-b45c-36d84ad42bfd',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('f1872814-eca2-4ce3-b45c-36d84ad42bfd')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('f1872814-eca2-4ce3-b45c-36d84ad42bfd')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','f1872814-eca2-4ce3-b45c-36d84ad42bfd')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('f1872814-eca2-4ce3-b45c-36d84ad42bfd')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="entry" id="entry-long-d8835aea-fbeb-490a-b20f-03e7dac6b70f">
-  <div class="entry-head"><span class="date">2026/09/17 08:27</span><span>😊 元気</span></div>
-  <div class="entry-title">YouTubeのオススメがイオンモールだらけなの🥲</div>
-  <div class="preview"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/b4fa7414-6b9e-49b7-8f66-3e8f516395ef.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','d8835aea-fbeb-490a-b20f-03e7dac6b70f',0)">給水所だ！！！
-
-昨日は某所のイオンモール行ってました。
-滅多に行かない遠いところだったので、新鮮な気持ちになれて良かったです。
-イオンモール外観のめちゃくちゃ良い写真撮れたけど、特定されそうなのでネットには上げません。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/e0e73d56-0a27-4837-a927-a8ba10ec3775.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','d8835aea-fbeb-490a-b20f-03e7dac6b70f',1)">食欲がない日は辛味の肉と腸を食うに限る。<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/b733d230-25de-4a90-b8bb-cc5162a99a29.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','d8835aea-fbeb-490a-b20f-03e7dac6b70f',2)">総計1万歩歩いてたらしい。
-ど〜〜りで今日身体痛いわけだ！😮</div>
-  
-  
-  <span class="pub-badge is-public">🌐 公開中</span>
-  <div class="entry-actions">
-    <button onclick="openReplyComposer('long','d8835aea-fbeb-490a-b20f-03e7dac6b70f',null)">🧵 返信する</button>
-    <button onclick="editLong('d8835aea-fbeb-490a-b20f-03e7dac6b70f')">編集</button>
-    <button onclick="togglePublicLong('d8835aea-fbeb-490a-b20f-03e7dac6b70f')">🔒 非公開にする</button>
-    <button onclick="shareEntry('long','d8835aea-fbeb-490a-b20f-03e7dac6b70f')">🔗 シェア</button>
-    <button onclick="delLong('d8835aea-fbeb-490a-b20f-03e7dac6b70f')">削除</button>
-  </div>
-  
- </article><article class="tweet-card" id="entry-short-310ba243-f9cb-4c13-b0b0-8190f12d9562">
-   <div class="tweet-text">FFCCにのめりこんでしまっているが、この昂りをどう発散したら良いんだ😫</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/15 12:11 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','310ba243-f9cb-4c13-b0b0-8190f12d9562',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('310ba243-f9cb-4c13-b0b0-8190f12d9562')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('310ba243-f9cb-4c13-b0b0-8190f12d9562')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','310ba243-f9cb-4c13-b0b0-8190f12d9562')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('310ba243-f9cb-4c13-b0b0-8190f12d9562')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="entry" id="entry-long-47c0fad4-902b-4ce6-99ca-16ca54e3af72">
-  <div class="entry-head"><span class="date">2026/09/15 12:16</span><span>🎨 創作</span></div>
-  <div class="entry-title">FFCC小説：『くらふとこーら』</div>
-  <div class="preview">※FFCCオリキャラ
-<span class="hashtag" onclick="filterByTag('#FFCC')">#FFCC</span> <span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span> <span class="hashtag" onclick="filterByTag('#小説')">#小説</span>
-
-FFCCのエンディングから5年後の世界。
-FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺りと齟齬があるかも知れません。ご注意下さい。
-<button type="button" class="fold-toggle" onclick="toggleEntryFold(this)">🔽 続きを読む</button><div class="entry-fold-body" style="display:none">
-■『くらふとこーら』
-
-　シェラの里の装飾品鍛冶師、スピラーンはこう言った。
-
-「瘴気を利用しようなどとは考えてはいけない」
-
-　世界から瘴気が消えて5年が経った。多くの者はその奇跡を享受し、幸福と平穏を味わっていた。
-
-　だが今なお亡霊都市レベナ・テ・ラには瘴気が満ちている。
-
-「あれは人の世ならざるものよ」
-
-　決して口数は多くないその鍛冶屋が、唯一何度でも口にするのは、瘴気の恐ろしさ、悍ましさ。
-
-　彼の工房の奥には、ユーク族である彼らしからぬ、セルキー族が好んで着用するバンダナが、丁寧に折り畳まれて置かれていた。
-
-
-◆
-
-
-「『くらふとこーら』、本日分完売しました！」
-
-　シェラの里の入り口近くにて、食料品専門商人であるイエイライアの声が響く。
-　里の入口から橋を渡ってイエイライアの元まで長蛇の行列ができている。シェラの里の名産品『くらふとこーら』を手に入れるために訪れた人々だ。
-
-　イエイライアの隣で、彼女の夫であるマームラートが『くらふとよやくけん』を販売し、必死に行列を捌いている。眼の前で『くらふとこーら』が売り切れて不満を口にしていたリルティの若者も、『くらふとよやくけん』があると気付いて喜色をあらわにそちらの列に立った。
-
-「すげえ人気だよなあ」
-
-「然り」
-
-　そんな行列を、シェラの里で最も高い場所にある大聖堂の前から眺める者が二人。
-　見習い魔術師ラズリバードと、アルフィタリア出張衛兵のラズリ=バードだ。
-
-　ユーク族のラズリバードとリルティ族のラズリ=バードは種族が違う。
-　しかし奇跡的に同名だったからなのか二人は不思議とウマが合い、仕事でも頻繁に組むこととなった。
-
-　リルティのラズリ=バードは手にした『くらふとこーら』の栓を引っこ抜き、シュワシュワと音を立てる液体を口へと流し込んだ。
-
-「くぅ〜っ！　シェラの里といえばやはりこれであるな！　この狂おしい程の甘味と風味と弾ける舌触り！　ユークの知識と技術の全てがここに詰まっていると言っても過言ではないだろう！　実に美味である！」
-
-　ぴょんぴょんと身体を弾ませながら、ラズリ=バードは興奮気味に味の感想を述べる。着込んでいるアルフィタリア衛兵鎧がガチャガチャと音を立てた。
-
-「いやあ、オレは昔ながらの『ふしぎなえきたい』の方が好きだけどねえ……。とはいえ、アレ、もう貴重品になっちゃったしなあ」
-
-　そんなラズリ=バードを冷ややかに見つめながら、渋々『くらふとこーら』の栓を抜くのは、ユーク族の若者ラズリバードだ。
-　彼はこのシェラの里の大聖堂で、上級魔術師マクシームの弟子の弟子……即ち、メフォージの弟子として魔法を学んでいた。
-　最も、口下手で今なお学生気質のあるメフォージは、師匠というより兄弟子のような感覚が近い。
-
-「わ、私は逆に『ふしぎなえきたい』はちょっと……。瘴気が入っていると聞いて、生理的に受け付けなくなってしまったのだ」
-
-「微量だぜ、微量。とはいえ正直、味付けくらいの意味合いしか無かったんだよな、アレ。瘴気が身体に良いとか有り得ないしな……」
-
-　ラズリ=バードは、かつてのシェラの里の名産品、『ふしぎなえきたい』の味を思い出し、鎧兜越しに顔をしかめる。それを察して、ラズリバードが手元の『くらふとこーら』の容器を所在なげに弄びながら、少し淋しげに呟いた。
-
-「"瘴気を利用しようなどとは考えてはいけない"。スピラーン様の口癖だったな……」
-
-　シェラの里で装飾品を作る鍛冶工房を営んでいたスピラーンは、弟子の凄惨な死を知ったのがきっかけなのか体調を崩し、今では店を畳んでしまった。
-
-　彼の弟子……セルキー族の学者デ・ナムは、スピラーンの制止を聞かぬままコナル・クルハ湿原に旅立ち、そのまま帰らぬ人となった。
-
-　半ば破門のような形で送り出してしまった手前、スピラーンとデ・ナムは手紙のやり取りを互いに断っていた。
-　だから、瘴気の晴れた世界で、ティパの村のキャラバンがデ・ナムのしたためた手紙と形見のバンダナをスピラーンの元に届けにシェラの里に来た時、彼は自身の正気を疑った。
-
-　常軌を逸した手紙だったからだ。
-
-　ラズリバードは今でも覚えている。5年前、ティパの村のキャラバンがシェラの里に訪れ、スピラーンを訪ねた日のことを。
-
-　ティパの村のキャラバンの一人であるユークの女性が、スピラーンに対して不気味なほど淡々と、そして全く理解しがたい内容を、まくしたてるように説明をする。
-
-　――デ・ナムさんが瘴気を経口摂取した結果、身体がストーンサハギンに変質してしまったというような、そんなおとぎ話的なものではなく、つまるところ、デ・ナムさんの悲しい思い出……恐らく挫折とか絶望とかそういったものを元に、ラモエによって作られた魔物がデ・ナムさんを殺してバンダナを奪いとったと考えるのが自然でしょう。配達屋モーグリさんも、最後の手紙は確かにデ・ナムさんから受け取ったものだと言っていましたから、例の手紙はストーンサハギンがしたためたものではないということがそこから分かります。手紙の内容から、彼は明らかに精神に異常を来してはいたようですし、ストーンサハギンが彼を殺さずとももう長くはなかったのかもしれませんが……。そもそも瘴気というのは外来宇宙寄生生命体の吐き出す猛毒ガスであり穢れた魔力などではなく……。
-
-　ラズリバードはそれを窓の影から盗み聞きしていた。
-
-　話を聞いていてもちんぷんかんぷんだったが、こと、デ・ナムの師匠であったスピラーンは、もはや聞こえているのかいないのかも分からないほどに、なんの感情も無い声で相槌を打つだけだった。
-
-　彼がその話をどう受け取ったのかはラズリバードには分からなかった。しかし、その後彼が体調を崩し寝込みがちになったことを思えば、相当な精神的負担になったのは間違いない。
-
-「スピラーン様、大丈夫かなあ。今度にじいろぶどうをお見舞いに届けてあげようか。……『くらふとこーら』は流石にやめておこう」
-
-　世界から瘴気が消えて5年。その歳月は、スピラーンの深い悲嘆を癒すにはまだまだ足りないようだった。
-
-「思えば『ふしぎなえきたい』は、世界の歴史上で人類が瘴気を有効活用できた、たったひとつの成功例だったな」
-
-「あれが成功例だったとはとても思えぬ味であったが、しかし、うむ。辛うじて飲めるものにはなっていたな」
-
-　感慨深げにラズリバードが呟き、ラズリ=バードがそれに同意した。
-
-「瘴気がもうレベナ・テ・ラにしか無い今、『ふしぎなえきたい』は作れないけど……それで良かったのかも知れねえな。オレはあの味が恋しいが」
-
-「イエイライアさんがこんな美味い『くらふとこーら』を生み出してくれたことを考えたら、私はほとほと瘴気が無くなってよかったと思うがな」
-
-　世界から瘴気が消え、元来の『ふしぎなえきたい』が作れなくなったシェラの里では、新たなる名産品の確立が急務となった。
-
-　特に商家であるマームラート夫妻は収入の要だった『ふしぎなえきたい』の喪失がかなりの打撃となり、そこで代わりとなる新たな飲料を独自に開発した。
-
-　それこそが『ふしぎなえきたい』の主成分を使って作られた『くらふとこーら』である。
-
-「"かつて我々にとってありふれた物質だった瘴気が使えなくなったのなら、また別のありふれた物質を代わりに使えば良い"……。ああ、オレもそんな発想力が欲しいよ」
-
-　イエイライアは、瘴気の代わりに砂糖と、この世に普遍的に存在している別の気体を『ふしぎなえきたい』に封入した。すると爽やかな甘味とシュワシュワと弾ける不思議な舌触りの、どの種族にとっても飲みやすい新しい飲料商品が出来あがった。
-
-　この新鮮な甘味飲料は瞬く間にシェラの里の特産品となった。瘴気が消えてどんな人間でも集落の外に出られるようになったことも追い風となり、シェラの里は大いに賑わった。かつて『シェラのあかし』がなければ他種族は里に入ることすら許されなかった、そんな閉鎖的な集落の姿は今やすっかりと消えている。
-
-「時代は変わるなあ」
-
-「然り」
-
-　平和、死滅、戦争、和解、そして平和。
-
-　この先、人類がどうなっていくかは分からない。
-　だが、自由を求めたセルキーの学者の様な悲劇は二度と訪れないと、『くらふとこーら』を飲むと、そんな風に思える味をしていた。</div></div>
-  
-  
-  <span class="pub-badge is-public">🌐 公開中</span>
-  <div class="entry-actions">
-    <button onclick="openReplyComposer('long','47c0fad4-902b-4ce6-99ca-16ca54e3af72',null)">🧵 返信する</button>
-    <button onclick="editLong('47c0fad4-902b-4ce6-99ca-16ca54e3af72')">編集</button>
-    <button onclick="togglePublicLong('47c0fad4-902b-4ce6-99ca-16ca54e3af72')">🔒 非公開にする</button>
-    <button onclick="shareEntry('long','47c0fad4-902b-4ce6-99ca-16ca54e3af72')">🔗 シェア</button>
-    <button onclick="delLong('47c0fad4-902b-4ce6-99ca-16ca54e3af72')">削除</button>
-  </div>
-  
- </article><article class="entry" id="entry-long-43352c2e-a736-42e0-ac13-c9c2879d9990">
-  <div class="entry-head"><span class="date">2026/09/15 06:25</span><span>🎨 創作</span></div>
-  <div class="entry-title">青い鳥達</div>
-  <div class="preview">※FFCCオリキャラ<img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/2fd900b1-cee4-407d-abe2-dd75387115ed.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','43352c2e-a736-42e0-ac13-c9c2879d9990',0)">暫定的に色決めて塗った。
-後で小説も一本公開しよ〜っと！
-
-<span class="hashtag" onclick="filterByTag('#FFCC')">#FFCC</span> <span class="hashtag" onclick="filterByTag('#二次創作')">#二次創作</span> <span class="hashtag" onclick="filterByTag('#絵')">#絵</span></div>
-  
-  
-  <span class="pub-badge is-public">🌐 公開中</span>
-  <div class="entry-actions">
-    <button onclick="openReplyComposer('long','43352c2e-a736-42e0-ac13-c9c2879d9990',null)">🧵 返信する</button>
-    <button onclick="editLong('43352c2e-a736-42e0-ac13-c9c2879d9990')">編集</button>
-    <button onclick="togglePublicLong('43352c2e-a736-42e0-ac13-c9c2879d9990')">🔒 非公開にする</button>
-    <button onclick="shareEntry('long','43352c2e-a736-42e0-ac13-c9c2879d9990')">🔗 シェア</button>
-    <button onclick="delLong('43352c2e-a736-42e0-ac13-c9c2879d9990')">削除</button>
-  </div>
-  
- </article><article class="tweet-card" id="entry-short-0dda4471-2a12-41c7-8f76-e3a05d2da218">
-   <div class="tweet-text">久々に二次創作オリキャラにハマってとても妄想が楽しいのだが、誰とも共有できないのが孤独！😁</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/14 13:09 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','0dda4471-2a12-41c7-8f76-e3a05d2da218',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('0dda4471-2a12-41c7-8f76-e3a05d2da218')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('0dda4471-2a12-41c7-8f76-e3a05d2da218')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','0dda4471-2a12-41c7-8f76-e3a05d2da218')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('0dda4471-2a12-41c7-8f76-e3a05d2da218')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="tweet-card" id="entry-short-c6d2525e-f612-4344-8416-f185e69ed012">
-   <div class="tweet-text">雨降るのかなあ🤔
-杖を持っていくべきか傘を持っていくべきか悩む</div>
-   
-   
-   <div class="tweet-foot">
-     <span>2026/09/14 12:42 <span class="pub-badge is-public" style="margin-top:0">🌐</span></span>
-     <span style="display:flex;gap:6px">
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="openReplyComposer('short','c6d2525e-f612-4344-8416-f185e69ed012',null)">🧵 返信</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="editShort('c6d2525e-f612-4344-8416-f185e69ed012')">編集</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="togglePublicShort('c6d2525e-f612-4344-8416-f185e69ed012')">🔒</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="shareEntry('short','c6d2525e-f612-4344-8416-f185e69ed012')">🔗</button>
-       <button class="btn btn-ghost" style="padding:4px 8px;font-size:11px" onclick="delShort('c6d2525e-f612-4344-8416-f185e69ed012')">削除</button>
-     </span>
-   </div>
-   
- </article><article class="entry" id="entry-long-919728fc-4c35-40e2-a27e-47d4e0d216d9">
-  <div class="entry-head"><span class="date">2026/09/14 12:38</span><span>😌 穏やか</span></div>
-  <div class="entry-title">神社のお祭り</div>
-  <div class="preview"><img src="https://raw.githubusercontent.com/pppzet/KabeuchiDairy_public/main/images/f2c4df4b-857d-4b2b-b00d-e9382774d81c.jpg" class="entry-img-inline" loading="lazy" alt="" onclick="openLightboxFor('long','919728fc-4c35-40e2-a27e-47d4e0d216d9',0)">花手水の写真しかありませんが！
-
-縁日に行き、神社でお参りし、おみくじ引きました。
-末吉でした。
-無理矢理なんかやろうとするな、身の程わきまえなさい的なこと書いてたと思う（圧縮）。
-
-何事も自然体でいられる状況が一番なんやね😌</div>
-  
-  
-  <span class="pub-badge is-public">🌐 公開中</span>
-  <div class="entry-actions">
-    <button onclick="openReplyComposer('long','919728fc-4c35-40e2-a27e-47d4e0d216d9',null)">🧵 返信する</button>
-    <button onclick="editLong('919728fc-4c35-40e2-a27e-47d4e0d216d9')">編集</button>
-    <button onclick="togglePublicLong('919728fc-4c35-40e2-a27e-47d4e0d216d9')">🔒 非公開にする</button>
-    <button onclick="shareEntry('long','919728fc-4c35-40e2-a27e-47d4e0d216d9')">🔗 シェア</button>
-    <button onclick="delLong('919728fc-4c35-40e2-a27e-47d4e0d216d9')">削除</button>
-  </div>
-  
- </article><div id="tlLoadSentinel" class="load-sentinel"><button type="button" class="btn load-more-btn" onclick="loadMoreTL()">🕒 もっと読み込む（残り191件）</button></div></div>
+    <div id="tlEntries" class="entries"></div>
   </section>
 
-  <section id="longMode" style="display: none;">
+  <section id="longMode">
     <div class="grid">
       <div>
         <div class="card accordion admin-only" id="longFormAccordion">
-          <button type="button" class="accordion-toggle" id="longFormAccordionToggle" onclick="toggleLongFormAccordion()" aria-expanded="false">
+          <button type="button" class="accordion-toggle open" id="longFormAccordionToggle" onclick="toggleLongFormAccordion()" aria-expanded="true">
             <span>✍️ 今日のことを、長く書く</span>
             <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div class="accordion-body" id="longFormAccordionBody" style="display: none;">
+          <div class="accordion-body" id="longFormAccordionBody" style="display:block">
           <p class="hint">まとまってなくても大丈夫。思いついたことを自由に書いてみてね。</p>
           <label>タイトル</label>
           <input id="longTitle" placeholder="例：今日はなんだか疲れた日">
           <label>気分</label>
-          <div class="moods" id="longMoods"><button type="button" class="mood " onclick="selectMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectMood('🎨 創作')">🎨 創作</button></div>
+          <div class="moods" id="longMoods"></div>
           
           <label>画像</label>
           <div style="margin-bottom:12px">
-            <input type="file" id="longImageInput" accept="image/*" multiple="" onchange="handleLongImage(event)" style="display:none">
+            <input type="file" id="longImageInput" accept="image/*" multiple onchange="handleLongImage(event)" style="display:none">
             <button class="btn btn-ghost" onclick="document.getElementById('longImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
-            <div id="longImagePreviewBox" class="img-preview-box" style="display: none;"></div>
+            <div id="longImagePreviewBox" class="img-preview-box" style="display:none;"></div>
             <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。写真の📍ボタンで、あとから挿入位置を変えることもできるよ。</p>
           </div>
 
@@ -1136,17 +850,16 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
             <p class="img-count-hint">💡 小説など長い本文は、畳みたい位置にカーソルを置いて「🔽 ここから折りたたむ」を押すと、そこから先が「続きを読む」で開く形になるよ。押さないときは今まで通り全文そのまま表示されるよ。もう一度押すと畳む位置を動かせるよ。</p>
           </div>
           <div class="compose-wrap">
-          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。
-（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）" style="height: 180px;"></textarea>
+          <textarea id="longBody" placeholder="今日あったこと、考えたこと、創作のアイデア……何でも。&#10;（URLを貼るとリンクカードに、#タグを書くと検索できるようになるよ）"></textarea>
           <div class="tape-overlay" id="longTapeOverlay" aria-hidden="true"></div>
         </div>
-          <div class="meta"><span id="longStatus">保存しました</span><span id="longCount">0文字</span></div>
+          <div class="meta"><span id="longStatus">未保存</span><span id="longCount">0文字</span></div>
           <label class="public-toggle-row" style="margin-top:16px">
             <input type="checkbox" id="longCushionToggle">
             <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
           </label>
           <label class="public-toggle-row" style="margin-top:8px">
-            <input type="checkbox" id="longPublicToggle" checked="">
+            <input type="checkbox" id="longPublicToggle" checked>
             <span>🌐 この日記をネットに公開する（オフで下書き）</span>
           </label>
           <div class="row" style="margin-top:14px">
@@ -1162,27 +875,27 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
         <h3>📌 この場所のルール</h3>
         <p class="hint">・評価されない<br>・いいね数がない<br>・返信を待たなくていい<br>・炎上しない<br>・書きかけでもいい<br>・何日空いても怒られない</p>
         <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
-        <div class="stat"><span>長文日記</span><b id="longStat">45</b></div>
-        <div class="stat"><span>つぶやき</span><b id="shortStat">156</b></div>
+        <div class="stat"><span>長文日記</span><b id="longStat">0</b></div>
+        <div class="stat"><span>つぶやき</span><b id="shortStat">0</b></div>
         <div class="stat"><span>保存方式</span><b>端末内</b></div>
       </aside>
     </div>
   </section>
 
-  <section id="shortMode" style="">
+  <section id="shortMode" style="display:none">
     <div class="card tweet accordion admin-only" style="margin-bottom:20px;" id="shortFormAccordion">
-      <button type="button" class="accordion-toggle" id="shortFormAccordionToggle" onclick="toggleShortFormAccordion()" aria-expanded="false">
+      <button type="button" class="accordion-toggle open" id="shortFormAccordionToggle" onclick="toggleShortFormAccordion()" aria-expanded="true">
         <span>💬 つぶやき日記を書く</span>
         <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
       </button>
-      <div class="accordion-body" id="shortFormAccordionBody" style="display: none;">
+      <div class="accordion-body" id="shortFormAccordionBody" style="display:block">
       <p class="hint">「今こう思った」を置いておく場所です。気楽にぽいっと書いてみてね。</p>
 
       <label style="margin-top:2px">気分（任意・つけなくてもOK）</label>
-      <div class="moods" id="shortMoods"><button type="button" class="mood " onclick="selectShortMood('😊 元気')">😊 元気</button><button type="button" class="mood " onclick="selectShortMood('🙂 まあまあ')">🙂 まあまあ</button><button type="button" class="mood " onclick="selectShortMood('😌 穏やか')">😌 穏やか</button><button type="button" class="mood " onclick="selectShortMood('🤔 考え中')">🤔 考え中</button><button type="button" class="mood " onclick="selectShortMood('😵 疲れた')">😵 疲れた</button><button type="button" class="mood " onclick="selectShortMood('😭 しんどい')">😭 しんどい</button><button type="button" class="mood " onclick="selectShortMood('😡 ぷんすこ')">😡 ぷんすこ</button><button type="button" class="mood " onclick="selectShortMood('🥳 楽しい')">🥳 楽しい</button><button type="button" class="mood " onclick="selectShortMood('🎨 創作')">🎨 創作</button></div>
+      <div class="moods" id="shortMoods"></div>
 
       <div style="margin:10px 0">
-        <input type="file" id="shortImageInput" accept="image/*" multiple="" onchange="handleShortImage(event)" style="display:none">
+        <input type="file" id="shortImageInput" accept="image/*" multiple onchange="handleShortImage(event)" style="display:none">
         <button class="btn btn-ghost" onclick="document.getElementById('shortImageInput').click()" style="padding:6px 12px;font-size:12px;border:1px dashed var(--line)">📷 画像を添付する（複数OK・最大10枚）</button>
         <div id="shortImagePreviewBox" class="img-preview-box" style="display:none;"></div>
         <p class="img-count-hint">💡 本文中の入れたい位置にカーソルを置いてから画像を選ぶと、その場所に挿入されるよ。</p>
@@ -1199,13 +912,13 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
       <textarea id="shortBody" maxlength="1000" placeholder="今の気持ちをぽいっと書く……" style="min-height:160px;"></textarea>
       <div class="tape-overlay" id="shortTapeOverlay" aria-hidden="true"></div>
       </div>
-      <div class="meta"><span id="shortStatus">保存しました</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
+      <div class="meta"><span id="shortStatus">未保存</span><span class="count"><span id="shortCount">0</span>/1000</span></div>
       <label class="public-toggle-row">
         <input type="checkbox" id="shortCushionToggle">
         <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
       </label>
       <label class="public-toggle-row" style="margin-top:8px">
-        <input type="checkbox" id="shortPublicToggle" checked="">
+        <input type="checkbox" id="shortPublicToggle" checked>
         <span>🌐 このつぶやきをネットに公開する（オフで下書き）</span>
       </label>
       <div style="margin-top:12px" class="row">
@@ -1221,7 +934,7 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
     <div class="card" style="margin-bottom:0;">
       <h1>🖼 メディア</h1>
       <p class="hint">日記やつぶやきに添えた画像を自動で集めて並べています。タップで拡大表示、元の日記へのジャンプもできるよ📖</p>
-      <p class="media-count-hint" id="mediaCountHint">📷 128枚の画像</p>
+      <p class="media-count-hint" id="mediaCountHint"></p>
       <div id="mediaGrid" class="media-grid"></div>
     </div>
   </section>
@@ -1230,132 +943,12 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
     <div class="card" style="margin-bottom:20px;">
       <div class="calendar-head">
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="前の月">◀</button>
-        <h2 id="calendarMonthLabel">2026年9月</h2>
+        <h2 id="calendarMonthLabel"></h2>
         <button type="button" class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="次の月">▶</button>
       </div>
       <p class="hint" style="margin-bottom:14px">日付をタップすると、その日に書いた日記・つぶやきがまとめて見られるよ📖　印がついている日は、何か書いた日だよ。</p>
       <div class="calendar-weekdays"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-      <div id="calendarGrid" class="calendar-grid"><div class="calendar-day other-month"><span>30</span></div><div class="calendar-day other-month"><span>31</span></div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-01')">
-      <span>1</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">29</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-02')">
-      <span>2</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">12</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-03')">
-      <span>3</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">17</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-04')">
-      <span>4</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">18</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-05')">
-      <span>5</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">14</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-06')">
-      <span>6</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">11</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-07')">
-      <span>7</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">8</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-08')">
-      <span>8</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">15</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-09')">
-      <span>9</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">12</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-10')">
-      <span>10</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">15</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-11')">
-      <span>11</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">9</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-12')">
-      <span>12</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">5</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-13')">
-      <span>13</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">12</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-14')">
-      <span>14</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">9</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-15')">
-      <span>15</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">3</span>
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-16')">
-      <span>16</span>
-      
-      
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-17')">
-      <span>17</span>
-      <span class="calendar-dot"></span>
-      <span class="calendar-day-count">3</span>
-    </div><div class="calendar-day has-entry" onclick="selectCalendarDate('2026-09-18')">
-      <span>18</span>
-      <span class="calendar-dot"></span>
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-19')">
-      <span>19</span>
-      
-      
-    </div><div class="calendar-day is-today" onclick="selectCalendarDate('2026-09-20')">
-      <span>20</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-21')">
-      <span>21</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-22')">
-      <span>22</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-23')">
-      <span>23</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-24')">
-      <span>24</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-25')">
-      <span>25</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-26')">
-      <span>26</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-27')">
-      <span>27</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-28')">
-      <span>28</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-29')">
-      <span>29</span>
-      
-      
-    </div><div class="calendar-day" onclick="selectCalendarDate('2026-09-30')">
-      <span>30</span>
-      
-      
-    </div><div class="calendar-day other-month"><span>1</span></div><div class="calendar-day other-month"><span>2</span></div><div class="calendar-day other-month"><span>3</span></div></div>
+      <div id="calendarGrid" class="calendar-grid"></div>
       <div class="row" style="margin-top:14px;justify-content:center">
         <button type="button" class="btn btn-ghost" onclick="jumpCalendarToToday()">📍 今日に戻る</button>
       </div>
@@ -1372,6 +965,7 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
     </div>
   </section>
 </main>
+<footer class="site-credit" id="siteCredit" style="display:none"></footer>
 </div>
 
 <div id="modal" class="modal">
@@ -1392,7 +986,7 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
    <div class="moods" id="replyMoods"></div>
    <label>画像</label>
    <div style="margin-bottom:12px">
-     <input type="file" id="replyImageInput" accept="image/*" multiple="" onchange="handleReplyImage(event)" style="display:none">
+     <input type="file" id="replyImageInput" accept="image/*" multiple onchange="handleReplyImage(event)" style="display:none">
      <button class="btn btn-ghost" onclick="document.getElementById('replyImageInput').click()" style="width:100%;border:1px dashed var(--line);padding:10px;">📷 ギャラリーから画像を選択（複数OK・最大10枚）</button>
      <div id="replyImagePreviewBox" class="img-preview-box" style="display:none;"></div>
    </div>
@@ -1410,7 +1004,7 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
      <span>👁 添付した画像にワンクッションかける（ぼかし表示、タップで公開）</span>
    </label>
    <label class="public-toggle-row" style="margin-top:8px">
-     <input type="checkbox" id="replyPublicToggle" checked="">
+     <input type="checkbox" id="replyPublicToggle" checked>
      <span>🌐 この返信をネットに公開する（オフで下書き）</span>
    </label>
    <div class="reply-modal-actions">
@@ -1420,7 +1014,7 @@ FFCC原作のみプレイ済、他シリーズ未プレイなのでその辺り�
    </div>
  </div>
 </div>
-<div id="toast" class="toast" style="--toast-hue: 305;">プロフィールを保存したよ ✨</div>
+<div id="toast" class="toast"></div>
 
 <div id="lightbox" class="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">✕</button>
@@ -1445,6 +1039,10 @@ const DEFAULT_MOOD_POSITIVE_WORDS=['楽しい','たのしい','嬉しい','う�
 const DEFAULT_MOOD_NEGATIVE_WORDS=['疲れた','つかれた','しんどい','辛い','つらい','不安','悲しい','かなしい','最悪','無理','むり','だるい','落ち込','凹んだ','へこんだ','イライラ','ムカ','ぷんすこ','泣きたい','泣いた','きつい','こわい','怖い','ストレス','モヤモヤ','もやもや','😭','😡','😞','😫','😵','😔','😣'];
 let data=JSON.parse(localStorage.getItem(KEY)||'null')||{long:[],short:[]};
 if(!data.profile) data.profile = {bio:'', links:[]};
+/* 権利表記の初期値：まだ一度も設定していない時だけFFCCの表記を入れておく。
+   管理画面で編集・削除すると（空文字も含めて）その内容が優先されるので、勝手に復活しません。 */
+const DEFAULT_CREDIT_TEXT = '© 2003, 2020 SQUARE ENIX CO., LTD. All Rights Reserved.\nCHARACTER DESIGN: Toshiyuki Itahana';
+if(typeof data.profile.credit !== 'string') data.profile.credit = DEFAULT_CREDIT_TEXT;
 if(!data.fish) data.fish = {bornAt:new Date().toISOString(), colorStage:0, mood:'', feedCount:0, lastFed:null};
 if(!data.moodDictionary) data.moodDictionary = {positive:[...DEFAULT_MOOD_POSITIVE_WORDS], negative:[...DEFAULT_MOOD_NEGATIVE_WORDS]};
 if(!Array.isArray(data.aquariumDecor)) data.aquariumDecor = defaultAquariumDecor();
@@ -3915,6 +3513,8 @@ function renderMedia(){
 function renderProfileAdmin(){
   const bioEl = document.getElementById('profileBio');
   if(bioEl) bioEl.value = data.profile.bio||'';
+  const creditEl = document.getElementById('profileCredit');
+  if(creditEl) creditEl.value = data.profile.credit||'';
   const list = document.getElementById('profileLinksList');
   if(!list) return;
   if(!data.profile.links.length){
@@ -3965,6 +3565,8 @@ function removeProfileLink(id){
 function saveProfile(){
   const bioEl = document.getElementById('profileBio');
   data.profile.bio = bioEl ? bioEl.value : '';
+  const creditEl = document.getElementById('profileCredit');
+  if(creditEl) data.profile.credit = cleanCreditText(creditEl.value);
   save();
   renderProfileView();
   toast('プロフィールを保存したよ ✨');
@@ -3975,7 +3577,19 @@ function renderProfileView(){
   const bio = (data.profile && data.profile.bio) || '';
   const links = (data.profile && data.profile.links) || [];
   const subEl = document.getElementById('headerSub');
-  if(subEl){ subEl.textContent = bio || HEADER_SUB_DEFAULT; subEl.title = bio || ''; }
+  if(subEl){
+    const bioText = bio.replace(/^\s+|\s+$/g,'');   // 前後の余計な空白・空行は落とす（途中の改行はそのまま残す）
+    subEl.textContent = bioText || HEADER_SUB_DEFAULT;
+    subEl.title = '';
+  }
+  updateHeaderSubClamp();
+  // 権利表記（ページの一番下）。textContentで入れるので、記号や<>が入っても安全にそのまま表示される
+  const creditEl = document.getElementById('siteCredit');
+  if(creditEl){
+    const credit = cleanCreditText((data.profile && data.profile.credit) || '');
+    creditEl.textContent = credit;
+    creditEl.style.display = credit ? 'block' : 'none';
+  }
   const linksEl = document.getElementById('headerProfileLinks');
   if(linksEl){
     linksEl.innerHTML = links.map(l=>
@@ -3984,6 +3598,36 @@ function renderProfileView(){
     linksEl.classList.toggle('is-empty', links.length===0);
   }
 }
+
+/* 権利表記の整形：各行の前後の空白（全角スペース含む）を落とし、前後の空行も削除する */
+function cleanCreditText(t){
+  return String(t||'').split(/\r?\n/).map(x=>x.trim()).join('\n').trim();
+}
+
+/* ヘッダーの紹介文：3行を超える時だけ「続きを読む ▾ / たたむ ▴」ボタンを出す */
+let headerSubExpanded = false;
+function updateHeaderSubClamp(){
+  const subEl = document.getElementById('headerSub');
+  const btn = document.getElementById('headerSubToggle');
+  if(!subEl || !btn) return;
+  if(headerSubExpanded){
+    subEl.classList.remove('is-clamped');
+    btn.classList.remove('is-empty');
+    btn.textContent = 'たたむ ▴';
+    return;
+  }
+  subEl.classList.add('is-clamped');
+  const overflowing = subEl.scrollHeight > subEl.clientHeight + 1;
+  btn.classList.toggle('is-empty', !overflowing);
+  btn.textContent = '続きを読む ▾';
+}
+function toggleHeaderSub(){
+  headerSubExpanded = !headerSubExpanded;
+  updateHeaderSubClamp();
+}
+// 画面幅の変化（スマホの縦横回転など）やWebフォントの読み込み完了で行数が変わるため、判定し直す
+window.addEventListener('resize', ()=>{ updateHeaderSubClamp(); });
+if(document.fonts && document.fonts.ready){ document.fonts.ready.then(()=>updateHeaderSubClamp()); }
 
 function toggleProfileAccordion(){
   const body = document.getElementById('profileAccordionBody');
@@ -4692,5 +4336,5 @@ initApp();
 
 if(document.readyState === 'loading'){document.addEventListener('DOMContentLoaded', ()=>{startFishSwimming();startFish2Swimming();});}else{startFishSwimming();startFish2Swimming();}
 </script>
-
-</body></html>
+</body>
+</html>
